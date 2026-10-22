@@ -117,8 +117,11 @@ details[open] summary::after { content: "−"; }
 .tradeRow { display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; gap: 2px 10px; padding: 8px 0; border-top: 1px solid var(--soft); font-size: 14px; align-items: baseline; }
 .tradeRow .tr-why { grid-column: 2 / 4; }
 @media (max-width: 520px) { .tradeRow { grid-template-columns: minmax(0, 1fr) auto; } .tradeRow > :first-child { grid-column: 1 / 3; font-size: 12px; color: var(--muted); } .tradeRow .tr-why { grid-column: 1 / 3; } }
-#nowView, #histView { display: grid; gap: 14px; }
-.viewSeg { display: grid; grid-template-columns: 1fr 1fr; }
+#nowView, #histView, #rsView { display: grid; gap: 14px; }
+.badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 999px; }
+.bg-ok { background: var(--long-soft); color: var(--long); } .bg-no { background: var(--soft); color: var(--muted); }
+.viewSeg { display: grid; grid-template-columns: repeat(3, 1fr); }
+.viewSeg button { font-size: 13px; padding: 9px 6px; }
 .viewSeg button { padding: 9px 12px; font-weight: 600; }
 .vscroll { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
 .vscroll button { white-space: nowrap; font-size: 13px; padding: 6px 10px; }
@@ -163,7 +166,7 @@ footer { font-size: 12px; color: var(--muted); display: grid; gap: 6px; }
     </div>
   </div>
 
-  <div class="seg viewSeg" role="tablist" aria-label="Раздел" id="viewSeg"><button type="button" data-view="now" role="tab">Сейчас</button><button type="button" data-view="hist" role="tab">История сделок</button></div>
+  <div class="seg viewSeg" role="tablist" aria-label="Раздел" id="viewSeg"><button type="button" data-view="now" role="tab">Сейчас</button><button type="button" data-view="hist" role="tab">История сделок</button><button type="button" data-view="rs" role="tab">Закономерности</button></div>
   <div id="status"></div>
   <div id="nowView">
     <div class="tabs" role="tablist" id="tabs"></div>
@@ -172,6 +175,7 @@ footer { font-size: 12px; color: var(--muted); display: grid; gap: 6px; }
     <div class="panel" id="paperPanel" hidden></div>
   </div>
   <div id="histView" hidden></div>
+  <div id="rsView" hidden></div>
 
   <footer>
     <div>Это разбор позиционирования, а не рекомендация. Вероятность направления всегда в коридоре 30–70%. Термометр говорит о размере движения, а не о направлении.</div>
@@ -190,7 +194,7 @@ const COINS = ['BTC', 'ETH', 'SOL'];
 const $ = (id) => document.getElementById(id);
 const store = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
 
-let state = { latest: {}, hist: {}, coin: store.get('coin', 'BTC'), macro: store.get('macro', false), calc: store.get('calc', { dep: 10000, risk: 1, stop: 'sig', side: null, entry: null }), lastOk: null, error: null, signals: {}, trades: [], stats: null, view: store.get('view', 'now'), bt: null, btErr: null, btVar: 'live', btF: { coin: '', side: '', result: '' }, btRows: [], btTotal: 0, btOpen: {}, btLoading: false };
+let state = { latest: {}, hist: {}, coin: store.get('coin', 'BTC'), macro: store.get('macro', false), calc: store.get('calc', { dep: 10000, risk: 1, stop: 'sig', side: null, entry: null }), lastOk: null, error: null, signals: {}, trades: [], stats: null, view: store.get('view', 'now'), rs: null, rsErr: null, rsLoading: false, rsH: 'y4', rsFeat: null, bt: null, btErr: null, btVar: 'live', btF: { coin: '', side: '', result: '' }, btRows: [], btTotal: 0, btOpen: {}, btLoading: false };
 if (!COINS.includes(state.coin)) state.coin = 'BTC';
 
 // ---------- formatting ----------
@@ -220,8 +224,9 @@ function decide(d) {
 // ---------- render ----------
 function render() {
   document.querySelectorAll('[data-view]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.view === state.view)));
-  $('nowView').hidden = state.view !== 'now'; $('histView').hidden = state.view !== 'hist';
+  $('nowView').hidden = state.view !== 'now'; $('histView').hidden = state.view !== 'hist'; $('rsView').hidden = state.view !== 'rs';
   if (state.view === 'hist') renderHistory();
+  if (state.view === 'rs') renderResearch();
   const any = COINS.some((c) => state.latest[c]);
   const meta = $('meta');
   const ts = state.latest.BTC?.ts || state.latest.ETH?.ts;
@@ -607,6 +612,104 @@ document.addEventListener('change', async (e) => {
   const map = { btCoin: 'coin', btSide: 'side', btRes: 'result' }; const k = map[e.target.id];
   if (!k) return; state.btF[k] = e.target.value; state.btOpen = {}; try { await loadBtTrades(true); } catch (err) {} renderHistory();
 });
+
+
+// ---------- закономерности (исследование) ----------
+async function loadResearch() {
+  if (state.rsLoading) return; state.rsLoading = true; state.rsErr = null; renderResearch();
+  try { state.rs = await rpc('get_research', {}) || {}; }
+  catch (e) { state.rsErr = 'Не удалось загрузить исследование. Код: ' + (e?.code || 'error'); }
+  finally { state.rsLoading = false; renderResearch(); }
+}
+const icCls = (v) => v == null ? '' : v > 0.01 ? 'up' : v < -0.01 ? 'dn' : '';
+const icF = (v) => v == null ? '—' : (v > 0 ? '+' : '') + n(v, 3);
+function barsSvg(rows, keyA, keyB, labels, unit) {
+  if (!rows.length) return '';
+  const W = 640, Ht = 170, L = 40, R = 6, T = 10, B = 22;
+  const vals = rows.flatMap((r) => [r[keyA], keyB ? r[keyB] : 0]).filter((v) => v != null && isFinite(v));
+  const m = Math.max(1e-9, ...vals.map(Math.abs));
+  const gw = (W - L - R) / rows.length, bw = keyB ? gw * 0.38 : gw * 0.7;
+  const Y = (v) => T + (1 - (v + m) / (2 * m)) * (Ht - T - B);
+  const bar = (v, x, col) => v == null ? '' : `<rect x="${x.toFixed(1)}" y="${Y(Math.max(0, v)).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(0.5, Math.abs(Y(v) - Y(0))).toFixed(1)}" fill="${col}" rx="1"/>`;
+  const bars = rows.map((r, i) => { const x0 = L + i * gw + (gw - (keyB ? 2 * bw + 2 : bw)) / 2; return bar(r[keyA], x0, keyB ? 'var(--muted)' : (r[keyA] >= 0 ? 'var(--long)' : 'var(--short)')) + (keyB ? bar(r[keyB], x0 + bw + 2, r[keyB] >= 0 ? 'var(--long)' : 'var(--short)') : ''); }).join('');
+  const labs = rows.map((r, i) => labels(r, i) ? `<text x="${L + i * gw + gw / 2}" y="${Ht - 6}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">${labels(r, i)}</text>` : '').join('');
+  return `<div style="overflow-x:auto"><svg class="chart" viewBox="0 0 ${W} ${Ht}" role="img"><line x1="${L}" x2="${W - R}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)"/><text x="${L - 6}" y="${Y(m) + 8}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">+${n(m, 0)}${unit}</text><text x="${L - 6}" y="${Y(-m)}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">−${n(m, 0)}</text>${bars}${labs}</svg></div>`;
+}
+function rsVerdict(R) {
+  const st4 = R.ic.filter((x) => x.y4_stable).length, st24 = R.ic.filter((x) => x.y24_stable).length;
+  const m4 = R.models?.h4 || {}, best = ['logit', 'gbm'].map((k) => m4[k]).filter(Boolean).sort((a, b) => (b.auc || 0) - (a.auc || 0))[0];
+  const rules = R.rules || {};
+  const items = [];
+  items.push(st4 + st24 ? `Устойчивых признаков направления: ${st4} на горизонте 4 часа и ${st24} на 24 часа (одинаковый знак в 2023–2024 и 2025–2026, на большинстве монет, t ≥ 2).` : 'Ни один признак не предсказывает направление устойчиво: то, что работало в 2023–2024, не повторилось в 2025–2026.');
+  if (best) items.push(`Лучшая модель направления на 4 часа угадывает с AUC ${n(best.auc, 3)} (0,500 — монетка, 0,550 — уже полезно).`);
+  items.push(`Правил «признак в крайних 10% → вход» проверено ${rules.all || 0}; с t ≥ 2 на 2025–2026 прошло ${rules.testT2 ?? 0}, случайно ожидалось бы около ${n(rules.expectedByChance || 0, 0)}. Устойчивых после комиссий: ${(rules.stable || []).length}.`);
+  if (R.vol) items.push(`Размер движения предсказывается гораздо лучше: модель волатильности — AUC ${n(R.vol.aucModel, 3)}, текущий термометр — ${n(R.vol.aucThermo, 3)}.`);
+  return items;
+}
+function renderResearch() {
+  const el = $('rsView'); if (!el || state.view !== 'rs') return;
+  if (MODE === 'claude' && !mcp) { el.innerHTML = '<div class="panel empty">Подключаюсь к данным…</div>'; return; }
+  if (state.rsErr) { el.innerHTML = `<div class="panel"><div class="banner b-err">${esc(state.rsErr)}</div><div style="margin-top:8px"><button type="button" id="rsRetry">Повторить</button></div></div>`; return; }
+  if (!state.rs) { el.innerHTML = `<div class="panel empty">${state.rsLoading ? 'Загружаю исследование…' : ''}</div>`; if (!state.rsLoading) loadResearch(); return; }
+  if (!state.rs.data) { el.innerHTML = '<div class="panel empty">Исследование ещё считается на истории 2023–2026. Обычно это 20–40 минут.</div>'; return; }
+  const R = state.rs.data, H = state.rsH, Hn = H === 'y4' ? '4 часа' : '24 часа';
+  const ic = R.ic.filter((x) => !x.noData).slice().sort((a, b) => Math.abs(b[H + '_test'] || 0) - Math.abs(a[H + '_test'] || 0));
+  const coinsAgree = (x) => COINS.filter((c) => { const p = x[H + '_coins']?.[c]; return p && p.train != null && p.test != null && Math.sign(p.train) === Math.sign(p.test) && Math.sign(p.test) === Math.sign(x[H + '_train']); }).length;
+  const icRows = ic.map((x) => `<tr><td>${esc(x.name)}</td><td class="${icCls(x[H + '_train'])}">${icF(x[H + '_train'])}</td><td class="${icCls(x[H + '_test'])}">${icF(x[H + '_test'])}</td><td>${n(x[H + '_tTest'], 1)}</td><td>${coinsAgree(x)}/3</td><td>${x[H + '_stable'] ? '<span class="badge bg-ok">да</span>' : '<span class="badge bg-no">нет</span>'}</td></tr>`).join('');
+  const decKeys = Object.keys(R.deciles || {}); if (!state.rsFeat || !decKeys.includes(state.rsFeat)) state.rsFeat = decKeys[0];
+  const dec = R.deciles?.[state.rsFeat]?.[H];
+  const decRows = dec ? dec.train.map((d, i) => ({ d: d.d, tr: d.bps, te: dec.test[i]?.bps })) : [];
+  const rules = R.rules || {}, rtop = (rules.stable && rules.stable.length ? rules.stable : rules.top || []).slice(0, 10);
+  const ruleRows = rtop.map((r) => `<tr><td>${esc(r.name)}: ${esc(r.when)} → ${r.side === 'long' ? 'лонг' : 'шорт'} на ${r.horizonH}ч</td><td>${n(r.train.gross, 1)}</td><td class="${r.test.gross > 0 ? 'up' : 'dn'}">${n(r.test.gross, 1)}</td><td class="${r.test.netMaker > 0 ? 'up' : 'dn'}">${n(r.test.netMaker, 1)}</td><td>${n(r.test.hit, 0)}%</td><td>${r.test.n}</td><td>${n(r.test.t, 1)}</td></tr>`).join('');
+  const mod = (key) => { const m = R.models?.[key] || {}; return ['logit', 'gbm'].filter((k) => m[k]).map((k) => { const x = m[k]; const tr = Object.entries(x.trades || {}).map(([th, t]) => `<tr><td>${k === 'logit' ? 'Логистическая' : 'Бустинг'} · порог ${Math.round(th * 100)}%</td><td>${t.n}</td><td>${n(t.gross, 1)}</td><td class="${t.netMaker > 0 ? 'up' : 'dn'}">${n(t.netMaker, 1)}</td><td class="${t.netTaker > 0 ? 'up' : 'dn'}">${n(t.netTaker, 1)}</td><td>${n(t.hit, 0)}%</td><td>${n(t.t, 1)}</td></tr>`).join(''); return { auc: `${k === 'logit' ? 'Логистическая регрессия' : 'Градиентный бустинг'}: AUC ${n(x.auc, 3)} (2025–2026: ${n(x.auc2025, 3)}), точность ${n(x.acc, 1)}%`, tr }; }); };
+  const m4 = mod('h4'), m24 = mod('h24');
+  const weights = (R.models?.h4?.logitWeights || []).slice(0, 8).map((w) => `<div class="calrow"><span style="font-size:12px">${esc(w.name)}</span><span class="calbar" style="background:none"><span style="left:${w.w >= 0 ? 50 : 50 - Math.min(50, Math.abs(w.w) * 200)}%;width:${Math.min(50, Math.abs(w.w) * 200)}%;background:${w.w >= 0 ? 'var(--long)' : 'var(--short)'}"></span><i style="left:50%"></i></span><span class="num">${w.w > 0 ? '+' : ''}${n(w.w, 3)}</span></div>`).join('');
+  const vol = R.vol || {};
+  const volCal = (vol.calib || []).map((b) => `<div class="calrow"><span class="num">${b.from}–${b.to}%</span><span class="calbar"><span style="width:${b.actual}%"></span><i style="left:${b.predicted}%"></i></span><span class="num">${n(b.actual, 0)}%</span></div>`).join('');
+  const hours = R.time?.hours || [];
+  const bl = R.baselines || {};
+  const vItems = rsVerdict(R);
+  el.innerHTML = `
+  <section class="panel"><h2>Что нашли · ${esc(new Date(R.period.from).toLocaleDateString('ru-RU'))} – ${esc(new Date(R.period.to).toLocaleDateString('ru-RU'))}${R.synthetic ? ' · ТЕСТОВЫЕ ДАННЫЕ' : ''}</h2>
+    <div style="display:grid;gap:8px">${vItems.map((t) => `<div class="banner b-info">${esc(t)}</div>`).join('')}</div>
+    <div class="note" style="margin-top:8px">Правила и модели подбирались на 2023–2024, вывод — только по 2025–2026. Доходность в б.п. (0,01%) за сделку; комиссии Hyperliquid: ${R.costs.maker} б.п. лимитами, ${R.costs.taker} б.п. по рынку.</div>
+  </section>
+  <section class="panel"><h2>Какие признаки предсказывают направление</h2>
+    <div class="vscroll" role="group" style="margin-bottom:8px"><button type="button" data-rsh="y4" aria-pressed="${H === 'y4'}">На 4 часа</button><button type="button" data-rsh="y24" aria-pressed="${H === 'y24'}">На 24 часа</button></div>
+    <div class="note" style="margin-bottom:8px">IC — связь признака с будущим движением (от −1 до +1). Для рынка 0,02–0,05 — уже много. Плюс — чем выше признак, тем вероятнее рост; минус — наоборот. «Устойчиво» — тот же знак в обоих периодах, на большинстве монет и t ≥ 2.</div>
+    <div class="tblWrap"><table class="tbl"><thead><tr><th>Признак</th><th>IC 23–24</th><th>IC 25–26</th><th>t</th><th>Монеты</th><th>Устойчиво</th></tr></thead><tbody>${icRows}</tbody></table></div>
+  </section>
+  <section class="panel"><h2>Как движется цена по децилям признака, б.п. за ${Hn}</h2>
+    <select id="rsFeat" style="width:auto;font-family:var(--f-body);font-size:14px;margin-bottom:8px">${decKeys.map((k) => `<option value="${k}"${k === state.rsFeat ? ' selected' : ''}>${esc(R.names[k] || k)}</option>`).join('')}</select>
+    <div class="note" style="margin-bottom:6px">Слева 10% самых низких значений, справа 10% самых высоких. Серым — 2023–2024, цветом — 2025–2026. Закономерность настоящая, если картина повторилась.</div>
+    ${barsSvg(decRows, 'tr', 'te', (r) => String(r.d), '')}
+  </section>
+  <section class="panel"><h2>Простые правила входа</h2>
+    <div class="note" style="margin-bottom:8px">${rules.stable && rules.stable.length ? 'Правила, прошедшие проверку на 2025–2026 после комиссий и лучше простого роста рынка:' : 'Устойчивых правил нет. Ниже — лучшие по 2025–2026 среди тех, что были в плюсе на 2023–2024; при таком количестве проверок часть из них — случайность.'}</div>
+    <div class="tblWrap"><table class="tbl"><thead><tr><th>Правило</th><th>23–24, б.п.</th><th>25–26, б.п.</th><th>После комиссий</th><th>Прибыльных</th><th>Сделок</th><th>t</th></tr></thead><tbody>${ruleRows || '<tr><td colspan="7">нет</td></tr>'}</tbody></table></div>
+  </section>
+  <section class="panel"><h2>Модели на всех признаках сразу</h2>
+    <div class="note" style="margin-bottom:8px">Переобучаются каждый квартал только на прошлых данных. Сделка открывается, если модель уверена сильнее порога, и держится 4 часа. Доходность — средняя на сделку, б.п.</div>
+    ${m4.map((x) => `<div style="margin-bottom:4px"><b>${esc(x.auc)}</b></div>`).join('')}
+    <div class="tblWrap"><table class="tbl"><thead><tr><th>Модель, 4 часа</th><th>Сделок</th><th>До комиссий</th><th>Лимитами</th><th>По рынку</th><th>Прибыльных</th><th>t</th></tr></thead><tbody>${m4.map((x) => x.tr).join('')}</tbody></table></div>
+    ${m24.length ? `<div class="tblWrap" style="margin-top:10px"><table class="tbl"><thead><tr><th>Модель, 24 часа</th><th>Сделок</th><th>До комиссий</th><th>Лимитами</th><th>По рынку</th><th>Прибыльных</th><th>t</th></tr></thead><tbody>${m24.map((x) => x.tr).join('')}</tbody></table></div>` : ''}
+    ${weights ? `<h2 style="margin-top:14px">На что опирается логистическая модель</h2><div class="calib">${weights}</div>` : ''}
+  </section>
+  <section class="panel"><h2>Размер движения (термометр)</h2>
+    <div class="note" style="margin-bottom:8px">Значимый ход за 4 часа (больше 1,5 обычного) в 2025–2026 случался в ${n(vol.baseRate, 0)}% часов. AUC текущего термометра — ${n(vol.aucThermo, 3)}, новой модели — ${n(vol.aucModel, 3)}. Полоса — как часто ход реально был, черта — прогноз модели.</div>
+    <div class="calib">${volCal}</div>
+  </section>
+  <section class="panel"><h2>Время суток (UTC): средний ход за 4 часа, б.п.</h2>
+    <div class="note" style="margin-bottom:6px">Серым — 2023–2024, цветом — 2025–2026.</div>
+    ${barsSvg(hours, 'trainBps', 'testBps', (r) => r.h % 3 === 0 ? r.h : '', '')}
+    <div class="note">Простая покупка и удержание 4 часа: ${n(bl['4h_train']?.alwaysLong, 1)} б.п. в 2023–2024 и ${n(bl['4h_test']?.alwaysLong, 1)} б.п. в 2025–2026 — это фон роста рынка, с которым нужно сравнивать любое правило.</div>
+  </section>`;
+}
+document.addEventListener('click', (e) => {
+  const h = e.target.closest('[data-rsh]'); if (h) { state.rsH = h.dataset.rsh; renderResearch(); return; }
+  if (e.target.closest('#rsRetry')) { state.rs = null; loadResearch(); }
+});
+document.addEventListener('change', (e) => { if (e.target.id === 'rsFeat') { state.rsFeat = e.target.value; renderResearch(); } });
 
 // ---------- data ----------
 // Два режима: внутри Claude — через коннектор Supabase; на обычном сайте — напрямую через публичный API Supabase.
