@@ -1,0 +1,36 @@
+name: v7
+on:
+  workflow_dispatch:
+  push:
+    paths: ['backtest/v7.py', '.github/workflows/v7.yml']
+permissions:
+  contents: write
+concurrency: v7
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q pandas numpy yfinance
+      - uses: actions/cache@v7
+        with:
+          path: data_cache
+          key: binance-archive-${{ github.run_id }}
+          restore-keys: binance-archive-
+      - name: V3
+        run: |
+          set -o pipefail
+          mkdir -p data_cache
+          python -u backtest/v7.py 2>&1 | grep -v "Warning\|See https" | tee backtest/v7-log.txt
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name github-actions; git config user.email actions@github.com
+          git checkout -B v7
+          git add -f backtest/v7-log.txt backtest/v7.json 2>/dev/null || git add -f backtest/v7-log.txt
+          git commit -q -m "V7 results [skip ci]" || true
+          git push -f origin v7
