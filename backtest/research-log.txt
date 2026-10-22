@@ -1,0 +1,16 @@
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+  D['hour'] = hour; D['dow'] = pd.to_datetime(close_t, unit='ms').dayofweek.values
+BTC frame 33360 23
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+  D['hour'] = hour; D['dow'] = pd.to_datetime(close_t, unit='ms').dayofweek.values
+ETH frame 33360 46
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+  D['hour'] = hour; D['dow'] = pd.to_datetime(close_t, unit='ms').dayofweek.values
+SOL frame 33360 67
+rows 96840
+ic 71
+deciles 71
+rules 72
+models 98
+vol 99
+saved backtest/research.json 72547 99
