@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Бриф позиционирования</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: одна колонка как торговый тикет — вердикт, цели и уровни, калькулятор, затем доказательства по факторам и сырые данные */
+:root {
+  --bg: #eef1f4; --panel: #ffffff; --ink: #18202b; --muted: #5b6676; --line: #d5dbe3; --soft: #e6eaf0;
+  --accent: #2f45b5; --long: #127a4b; --long-soft: #dcf1e6; --short: #b8323a; --short-soft: #f8e1e2; --warm: #b06a00; --warm-soft: #fbecd2;
+  --f-display: "Unbounded", "IBM Plex Sans", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f141b; --panel: #171e28; --ink: #e6ebf2; --muted: #93a0b2; --line: #2a3443; --soft: #1f2834;
+  --accent: #8d9cf5; --long: #3ccf8a; --long-soft: #173a2a; --short: #f1727a; --short-soft: #45202a; --warm: #f2b14d; --warm-soft: #3d2c12; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f141b; --panel: #171e28; --ink: #e6ebf2; --muted: #93a0b2; --line: #2a3443; --soft: #1f2834;
+  --accent: #8d9cf5; --long: #3ccf8a; --long-soft: #173a2a; --short: #f1727a; --short-soft: #45202a; --warm: #f2b14d; --warm-soft: #3d2c12; color-scheme: dark; }
+a { color: var(--accent); }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.45; }
+.wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 48px; display: grid; gap: 14px; }
+.num, .mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+h1 { font-family: var(--f-display); font-weight: 700; font-size: 20px; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 10px; font-weight: 600; }
+.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px; }
+.meta { color: var(--muted); font-size: 13px; }
+.meta .stale { color: var(--warm); font-weight: 600; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, .seg button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 8px; padding: 7px 12px; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button[disabled] { opacity: 0.55; cursor: default; }
+.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.tab { display: grid; gap: 2px; text-align: left; padding: 10px 12px; }
+.tab .t { font-family: var(--f-display); font-weight: 500; font-size: 15px; }
+.tab .s { font-size: 12px; color: var(--muted); }
+.tab[aria-selected="true"] { border-color: var(--accent); box-shadow: inset 0 -3px 0 var(--accent); }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; min-width: 0; }
+.verdict { display: grid; gap: 14px; }
+.vhead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 14px; }
+.price { font-family: var(--f-mono); font-size: 28px; font-weight: 600; }
+.chg { font-family: var(--f-mono); font-size: 14px; }
+.up { color: var(--long); } .dn { color: var(--short); }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; border: 1px solid transparent; }
+.p-cold { background: var(--soft); color: var(--muted); }
+.p-warm { background: var(--warm-soft); color: var(--warm); }
+.p-hot { background: var(--short-soft); color: var(--short); border-color: var(--short); }
+.p-long { background: var(--long-soft); color: var(--long); }
+.p-short { background: var(--short-soft); color: var(--short); }
+.p-none { background: var(--soft); color: var(--muted); }
+.gauge { display: grid; gap: 6px; }
+.gbar { position: relative; height: 12px; border-radius: 6px; background: linear-gradient(90deg, var(--short-soft) 0 50%, var(--long-soft) 50% 100%); overflow: hidden; }
+.gbar .zone { position: absolute; top: 0; bottom: 0; border-left: 1px dashed var(--muted); opacity: 0.6; }
+.gbar .mark { position: absolute; top: -2px; bottom: -2px; width: 4px; margin-left: -2px; border-radius: 2px; background: var(--ink); }
+.glabels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+.big { font-size: 17px; font-weight: 600; }
+.note { font-size: 13px; color: var(--muted); }
+.banner { border-radius: 10px; padding: 10px 12px; font-size: 14px; }
+.b-warm { background: var(--warm-soft); color: var(--warm); }
+.b-info { background: var(--soft); color: var(--muted); }
+.b-err { background: var(--short-soft); color: var(--short); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } }
+.lvl { display: grid; grid-template-columns: auto 1fr auto; gap: 2px 10px; align-items: baseline; padding: 8px 0; border-top: 1px solid var(--soft); }
+.lvl:first-of-type { border-top: none; }
+.lvl .k { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; min-width: 92px; }
+.lvl .v { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; font-weight: 600; }
+.lvl .src { grid-column: 2 / 4; font-size: 12px; color: var(--muted); }
+.lvl .d { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.k-t { color: var(--long); } .k-l { color: var(--short); }
+.side-short .k-t { color: var(--short); } .side-short .k-l { color: var(--long); }
+.ladder { width: 100%; height: auto; display: block; }
+.calc { display: grid; gap: 12px; }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+label.f { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+input, select { font: inherit; font-family: var(--f-mono); font-size: 15px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); min-width: 0; width: 100%; box-sizing: border-box; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { border: none; border-radius: 0; padding: 7px 12px; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--panel); }
+.out { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 520px) { .out { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.cell { background: var(--bg); border-radius: 8px; padding: 8px 10px; display: grid; gap: 2px; min-width: 0; }
+.cell .l { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.cell .v { font-family: var(--f-mono); font-variant-numeric: tabular-nums; font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
+.factors { display: grid; gap: 0; }
+.fac { display: grid; grid-template-columns: minmax(0, 1fr) 96px; gap: 4px 12px; padding: 9px 0; border-top: 1px solid var(--soft); align-items: center; }
+.fac:first-child { border-top: none; }
+.fac .n { font-weight: 600; font-size: 14px; }
+.fac .w { grid-column: 1 / 3; font-size: 13px; color: var(--muted); }
+.fbar { position: relative; height: 8px; background: var(--soft); border-radius: 4px; }
+.fbar::after { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--muted); }
+.fbar span { position: absolute; top: 0; bottom: 0; border-radius: 4px; }
+details { border-top: 1px solid var(--line); }
+details:first-of-type { border-top: none; }
+summary { cursor: pointer; padding: 10px 0; font-weight: 600; list-style: none; display: flex; justify-content: space-between; }
+summary::after { content: "+"; font-family: var(--f-mono); color: var(--muted); }
+details[open] summary::after { content: "−"; }
+.kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; padding-bottom: 12px; font-size: 14px; }
+.kv .k2 { color: var(--muted); }
+.kv .v2 { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; overflow-wrap: anywhere; }
+.alts { display: grid; gap: 8px; }
+.alt { display: grid; grid-template-columns: 70px 1fr auto; gap: 10px; align-items: center; }
+.alt .sym { font-family: var(--f-display); font-weight: 500; font-size: 14px; }
+.spark { width: 100%; height: 44px; display: block; }
+.toggle { display: inline-flex; gap: 8px; align-items: center; font-size: 14px; cursor: pointer; }
+.toggle input { width: auto; }
+.empty { text-align: center; padding: 28px 12px; color: var(--muted); }
+footer { font-size: 12px; color: var(--muted); display: grid; gap: 6px; }
+@media (prefers-reduced-motion: no-preference) { .gbar .mark { transition: left .4s ease; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Бриф позиционирования</h1>
+      <div class="meta" id="meta">Загружаю данные…</div>
+    </div>
+    <div class="row">
+      <label class="toggle"><input type="checkbox" id="macro"> Макро-день</label>
+      <button id="refresh" type="button">Обновить сейчас</button>
+    </div>
+  </div>
+
+  <div id="status"></div>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div id="coin"></div>
+  <div class="panel" id="altsPanel" hidden></div>
+
+  <footer>
+    <div>Это разбор позиционирования, а не рекомендация. Вероятность направления всегда в коридоре 30–70%. Термометр говорит о размере движения, а не о направлении.</div>
+    <div id="webLink"></div>
+    <div>Источники: Binance (фьючерсы и спот), Deribit (опционы, DVOL), Hyperliquid (DEX), Coinbase (полный стакан), OKX (ликвидации, выборка). Опционы на крипто-ETF США не подключены: нужен платный поток данных. Обновление каждые 5 минут.</div>
+  </footer>
+</div>
+
+<script>
+const PROJECT = 'lnmdljepzszvjbxigwsr';
+const SB_URL = 'https://lnmdljepzszvjbxigwsr.supabase.co';
+const SB_KEY = 'sb_publishable_hkFk_DXScJPaAxRxeFAEnw_BLawPDBO';
+const QUERY = 'select public.get_brief() as j';
+const WEB_URL = '';
+const COINS = ['BTC', 'ETH', 'SOL'];
+const $ = (id) => document.getElementById(id);
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+
+let state = { latest: {}, hist: {}, coin: store.get('coin', 'BTC'), macro: store.get('macro', false), calc: store.get('calc', { dep: 10000, risk: 1, stop: 'l1', side: null, entry: null }), lastOk: null, error: null };
+if (!COINS.includes(state.coin)) state.coin = 'BTC';
+
+// ---------- formatting ----------
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function fp(x, coin) { if (x == null || !isFinite(x)) return '—'; const d = Math.abs(x) >= 1000 ? 0 : Math.abs(x) >= 100 ? 2 : Math.abs(x) >= 1 ? 3 : 5; return Number(x).toLocaleString('ru-RU', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+function fu(x) { if (x == null || !isFinite(x)) return '—'; const a = Math.abs(x), s = x < 0 ? '−' : ''; if (a >= 1e9) return s + '$' + (a / 1e9).toFixed(2) + ' млрд'; if (a >= 1e6) return s + '$' + (a / 1e6).toFixed(1) + ' млн'; if (a >= 1e3) return s + '$' + (a / 1e3).toFixed(0) + ' тыс'; return s + '$' + a.toFixed(0); }
+function pc(x, d = 2) { if (x == null || !isFinite(x)) return '—'; return (x > 0 ? '+' : x < 0 ? '−' : '') + Math.abs(x).toFixed(d) + '%'; }
+function n(x, d = 2) { if (x == null || !isFinite(x)) return '—'; return Number(x).toLocaleString('ru-RU', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+function ago(ts) { const m = Math.round((Date.now() - ts) / 60000); if (m < 1) return 'только что'; if (m < 60) return m + ' мин назад'; const h = Math.floor(m / 60); return h + ' ч ' + (m % 60) + ' мин назад'; }
+function tET(ts) { return new Date(ts).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', timeZone: 'America/New_York' }) + ' NY · ' + new Date(ts).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) + ' UTC'; }
+const thermoCls = (l) => l === 'ГОРЯЧО' ? 'p-hot' : l === 'ТЕПЛО' ? 'p-warm' : 'p-cold';
+
+// ---------- decision logic (по методологии) ----------
+function decide(d) {
+  const f = d.factors, th = d.thermo || {};
+  const active = th.label === 'ТЕПЛО' || th.label === 'ГОРЯЧО';
+  const side = f.pLong >= 55 ? 'long' : f.pShort >= 55 ? 'short' : null;
+  const plan = active && side ? side : null;
+  let why;
+  if (plan) why = `${th.label} и перевес ${side === 'long' ? 'лонга' : 'шорта'} ${side === 'long' ? f.pLong : f.pShort}% — план выходит.`;
+  else if (!active && side) why = `Перевес ${side === 'long' ? 'лонга' : 'шорта'} есть (${side === 'long' ? f.pLong : f.pShort}%), но термометр ТИХО — значимого хода в ближайшие 4 часа модель не ждёт. План не выходит.`;
+  else if (active && !side) why = `${th.label}: движение вероятно, но направление не определено (${f.pLong}/${f.pShort}). План не выходит.`;
+  else why = `ТИХО и перевеса нет (${f.pLong}/${f.pShort}). План не выходит.`;
+  return { plan, side, active, why };
+}
+
+// ---------- render ----------
+function render() {
+  const any = COINS.some((c) => state.latest[c]);
+  const meta = $('meta');
+  const ts = state.latest.BTC?.ts || state.latest.ETH?.ts;
+  if (ts) { const stale = Date.now() - ts > 15 * 60000; meta.innerHTML = `Данные: ${esc(tET(ts))} · <span class="${stale ? 'stale' : ''}">${esc(ago(ts))}</span>`; }
+  const st = $('status'); st.innerHTML = '';
+  if (state.error) st.innerHTML = `<div class="banner b-err">${esc(state.error)}${state.action === 'connect' ? '<div style="margin-top:8px"><button type="button" id="connectBtn">Разрешить доступ к Supabase</button></div>' : state.action === 'manage' ? '<div style="margin-top:8px"><button type="button" id="manageBtn">Открыть разрешения</button></div>' : ''}${MODE === 'claude' && WEB_URL ? `<div style="margin-top:8px">Веб-версия без коннекторов: <a href="${WEB_URL}" target="_blank" rel="noopener">${esc(WEB_URL.replace('https://', ''))}</a></div>` : ''}</div>`;
+  if (state.macro) st.innerHTML += `<div class="banner b-warm">Макро-день. Значимый ход в американскую сессию случается в 1,4–1,5 раза чаще, и направление задаёт новость, а не позиционирование. Позиция до публикации — дополнительный риск хаотичного движения.</div>`;
+  const errs = state.latest.META?.errors;
+  if (errs && errs.length) st.innerHTML += `<div class="banner b-info">Часть источников не ответила в последнем обновлении (${errs.length}). Показатели из них могут быть пустыми.</div>`;
+
+  $('webLink').innerHTML = MODE === 'claude' && WEB_URL ? `Веб-версия: <a href="${WEB_URL}" target="_blank" rel="noopener">${esc(WEB_URL.replace('https://', ''))}</a>` : '';
+  $('tabs').innerHTML = COINS.map((c) => { const d = state.latest[c]; const s = d ? `${fp(d.price)} · <span class="${d.ch24 >= 0 ? 'up' : 'dn'}">${pc(d.ch24, 1)}</span>` : '—';
+    return `<button class="tab" role="tab" aria-selected="${c === state.coin}" data-coin="${c}"><span class="t">${c}</span><span class="s num">${s}</span></button>`; }).join('');
+  if (!any) { $('coin').innerHTML = `<div class="panel empty">${state.error ? 'Данных пока нет.' : 'Жду первый снимок. Сборщик обновляет данные каждые 5 минут.'}</div>`; return; }
+  const d = state.latest[state.coin];
+  $('coin').innerHTML = d ? coinHtml(d) : `<div class="panel empty">По ${state.coin} в последнем снимке нет данных.</div>`;
+  if (d) bindCalc(d);
+  renderAlts();
+}
+
+function coinHtml(d) {
+  const f = d.factors, th = d.thermo || {}, dec = decide(d);
+  let P = th.P; if (state.macro && P != null) P = Math.min(95, Math.round(P * 1.45));
+  const bias = f.bias;
+  const biasTxt = bias === 'long' ? 'Перевес вверх' : bias === 'short' ? 'Перевес вниз' : 'Перевеса нет';
+  const biasCls = bias === 'long' ? 'p-long' : bias === 'short' ? 'p-short' : 'p-none';
+  const mk = (p) => `left:${(p - 30) / 40 * 100}%`;
+  const hist = state.hist[d.coin] || [];
+  return `
+  <section class="panel verdict" aria-label="Вердикт">
+    <div class="vhead">
+      <div><span class="price">${fp(d.price)}</span> <span class="chg ${d.ch24 >= 0 ? 'up' : 'dn'}">${pc(d.ch24)} за 24ч</span></div>
+      <div class="row"><span class="pill ${thermoCls(th.label)}">${esc(th.label || '—')} · P ${P ?? '—'}%</span><span class="pill ${biasCls}">${biasTxt}</span></div>
+    </div>
+    <div class="note">Термометр: вероятность значимого хода (больше 1,5 обычного 4-часового) в ближайшие 4 часа — ${P ?? '—'}%. Обычно в этот час ${th.base ?? '—'}%; сегодня выше, чем в ${th.pct ?? '—'}% дней (выборка ${th.days ?? '—'} дн.)${state.macro ? '; поправка на макро-день ×1,45' : ''}. Это прогноз размера, а не направления.</div>
+    <div class="gauge">
+      <div class="glabels"><span>Шорт ${f.pShort}%</span><span class="big ${f.pLong >= 55 ? 'up' : f.pShort >= 55 ? 'dn' : ''}">${f.pLong >= 50 ? 'Лонг ' + f.pLong + '%' : 'Шорт ' + f.pShort + '%'}</span><span>Лонг ${f.pLong}%</span></div>
+      <div class="gbar" role="img" aria-label="Вероятность лонга ${f.pLong}%"><span class="zone" style="${mk(45)}"></span><span class="zone" style="${mk(55)}"></span><span class="mark" style="${mk(f.pLong)}"></span></div>
+      <div class="glabels"><span>30</span><span>45 · 50 · 55</span><span>70</span></div>
+    </div>
+    <div class="banner ${dec.plan ? (dec.plan === 'long' ? 'b-info' : 'b-info') : 'b-info'}"><b>${dec.plan ? (dec.plan === 'long' ? 'План: лонг' : 'План: шорт') : 'Плана нет'}</b> — ${esc(dec.why)}</div>
+    ${hist.length > 3 ? sparkHtml(hist) : ''}
+  </section>
+  ${levelsHtml(d, dec)}
+  ${calcHtml(d, dec)}
+  <section class="panel"><h2>10 факторов направления · счёт ${n(f.score, 2)}</h2><div class="factors">${f.list.map(facHtml).join('')}</div></section>
+  <section class="panel"><h2>Данные</h2>${dataHtml(d)}</section>`;
+}
+
+function sparkHtml(h) {
+  const W = 600, Ht = 44, xs = h.map((x) => x.t), t0 = Math.min(...xs), t1 = Math.max(...xs);
+  const X = (t) => (t - t0) / Math.max(1, t1 - t0) * (W - 8) + 4;
+  const Y = (v) => Ht - 4 - (v - 30) / 40 * (Ht - 8);
+  const pts = h.filter((x) => x.pl != null).map((x) => `${X(x.t).toFixed(1)},${Y(x.pl).toFixed(1)}`).join(' ');
+  const last = h[h.length - 1];
+  return `<div><div class="note">Вероятность лонга за последние 24 часа</div><svg class="spark" viewBox="0 0 ${W} ${Ht}" preserveAspectRatio="none" role="img" aria-label="История вероятности лонга">
+    <line x1="0" x2="${W}" y1="${Y(50)}" y2="${Y(50)}" stroke="var(--line)" stroke-dasharray="3 3"/>
+    <line x1="0" x2="${W}" y1="${Y(55)}" y2="${Y(55)}" stroke="var(--long)" stroke-opacity=".35"/>
+    <line x1="0" x2="${W}" y1="${Y(45)}" y2="${Y(45)}" stroke="var(--short)" stroke-opacity=".35"/>
+    <polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+    <circle cx="${X(last.t)}" cy="${Y(last.pl)}" r="3" fill="var(--accent)"/></svg></div>`;
+}
+
+function lv(k, cls, x) { return `<div class="lvl"><span class="k ${cls}">${k}</span><span class="d">${pc(x.dist)}</span><span class="v">${fp(x.px)}</span><span class="src">${esc(x.src)}</span></div>`; }
+function levelsHtml(d, dec) {
+  const head = dec.side ? `Цели дня: перевес ${dec.side === 'long' ? 'вверх' : 'вниз'}` : 'Цели дня: перевеса нет — уровни для обеих сторон';
+  const block = (s) => { const q = d.plan[s]; const L = s === 'long' ? 'поддержка' : 'сопротивление';
+    return `<div class="${s === 'short' ? 'side-short' : ''}"><div class="row" style="justify-content:space-between"><b>${s === 'long' ? 'Лонг' : 'Шорт'}</b><span class="note">ATR ${fp(d.atr)} (${n(d.atrPct, 2)}%)</span></div>
+      ${lv('Цель 2', 'k-t', q.t2)}${lv('Цель 1', 'k-t', q.t1)}${lv(L + ' 1', 'k-l', q.l1)}${lv(L + ' 2', 'k-l', q.l2)}</div>`; };
+  return `<section class="panel"><h2>${head}</h2>
+    ${dec.side ? block(dec.side) : `<div class="grid2">${block('long')}${block('short')}</div>`}
+    ${ladderSvg(d)}
+    <div class="note">Цели — уровни, где движение вероятно затормозит, а не обещание. Уровень 1 — если цена ушла за него, идея сломана. Уровень 2 — запас на ложный пробой, отмерен в ATR.</div>
+  </section>`;
+}
+
+function ladderSvg(d) {
+  const P = d.price, L = d.plan.long, S = d.plan.short;
+  const marks = [
+    { px: L.t2.px, c: 'var(--long)', t: 'Ц2 ↑' }, { px: L.t1.px, c: 'var(--long)', t: 'Ц1 ↑' },
+    { px: S.l2.px, c: 'var(--short)', t: 'С2' }, { px: S.l1.px, c: 'var(--short)', t: 'С1' },
+    { px: L.l1.px, c: 'var(--long)', t: 'П1' }, { px: L.l2.px, c: 'var(--long)', t: 'П2' },
+    { px: S.t1.px, c: 'var(--short)', t: 'Ц1 ↓' }, { px: S.t2.px, c: 'var(--short)', t: 'Ц2 ↓' },
+  ];
+  const all = marks.map((m) => m.px).concat([P]);
+  const lo = Math.min(...all), hi = Math.max(...all), W = 640, H = 70, pad = 30;
+  const X = (v) => pad + (v - lo) / Math.max(1e-9, hi - lo) * (W - 2 * pad);
+  const ticks = marks.map((m, i) => { const x = X(m.px); const above = i % 2 === 0; return `<line x1="${x}" x2="${x}" y1="${above ? 22 : 34}" y2="${above ? 34 : 46}" stroke="${m.c}" stroke-width="2"/><text x="${x}" y="${above ? 16 : 60}" text-anchor="middle" font-size="11" fill="${m.c}" font-family="IBM Plex Mono, monospace">${m.t}</text>`; }).join('');
+  return `<div style="overflow-x:auto;margin-top:8px"><svg class="ladder" viewBox="0 0 ${W} ${H}" role="img" aria-label="Шкала уровней относительно цены">
+    <line x1="${pad}" x2="${W - pad}" y1="34" y2="34" stroke="var(--line)" stroke-width="2"/>${ticks}
+    <circle cx="${X(P)}" cy="34" r="6" fill="var(--ink)"/><text x="${X(P)}" y="${H - 1}" text-anchor="middle" font-size="11" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-weight="600">цена</text></svg></div>
+    <div class="note">Ц — цели, П — поддержка для лонга, С — сопротивление для шорта.</div>`;
+}
+
+function calcHtml(d, dec) {
+  const c = state.calc; const side = c.side && c.sideCoin === d.coin ? c.side : (dec.side || 'long');
+  const entry = c.entryCoin === d.coin && c.entry ? c.entry : d.price;
+  return `<section class="panel calc" aria-label="Калькулятор позиции"><h2>Размер позиции от риска</h2>
+    <div class="row"><div class="seg" role="group" aria-label="Сторона"><button type="button" data-side="long" aria-pressed="${side === 'long'}">Лонг</button><button type="button" data-side="short" aria-pressed="${side === 'short'}">Шорт</button></div>
+      <div class="seg" role="group" aria-label="Стоп"><button type="button" data-stop="l1" aria-pressed="${c.stop === 'l1'}">Стоп на уровне 1</button><button type="button" data-stop="l2" aria-pressed="${c.stop === 'l2'}">на уровне 2</button></div></div>
+    <div class="fields">
+      <label class="f" for="dep">Депозит, $<input id="dep" type="number" inputmode="decimal" min="0" step="100" value="${c.dep}"></label>
+      <label class="f" for="risk">Риск на сделку, %<input id="risk" type="number" inputmode="decimal" min="0" step="0.1" value="${c.risk}"></label>
+      <label class="f" for="entry">Вход<input id="entry" type="number" inputmode="decimal" step="any" value="${entry}"></label>
+      <label class="f" for="stopv">Стоп (можно поправить)<input id="stopv" type="number" inputmode="decimal" step="any" value=""></label>
+    </div>
+    <div class="out" id="calcOut"></div>
+    <div class="note" id="calcNote"></div>
+  </section>`;
+}
+
+function bindCalc(d) {
+  const dec = decide(d);
+  const c = state.calc;
+  const getSide = () => (c.side && c.sideCoin === d.coin ? c.side : (dec.side || 'long'));
+  const stopDefault = () => d.plan[getSide()][c.stop].px;
+  const sv = $('stopv'); sv.value = c.stopCoin === d.coin && c.stopSide === getSide() && c.stopLvl === c.stop && c.stopVal ? c.stopVal : stopDefault();
+  const calc = () => {
+    const dep = +$('dep').value, risk = +$('risk').value, E = +$('entry').value, S = +sv.value, side = getSide(), p = d.plan[side];
+    const dir = side === 'long' ? 1 : -1; const dist = (E - S) * dir;
+    const out = $('calcOut'), note = $('calcNote');
+    if (!(dep > 0 && risk > 0 && E > 0 && S > 0)) { out.innerHTML = ''; note.textContent = 'Заполните депозит, риск, вход и стоп.'; return; }
+    if (dist <= 0) { out.innerHTML = ''; note.textContent = side === 'long' ? 'Для лонга стоп должен быть ниже входа.' : 'Для шорта стоп должен быть выше входа.'; return; }
+    const riskUsd = dep * risk / 100, qty = riskUsd / dist, notional = qty * E, lev = notional / dep;
+    const rr = (t) => ((t - E) * dir) / dist;
+    const cells = [['Риск', fu(riskUsd)], ['Объём, ' + d.coin, n(qty, qty >= 100 ? 1 : qty >= 1 ? 3 : 5)], ['Номинал', fu(notional)], ['Плечо к депо', n(lev, 2) + '×'], ['R:R до цели 1', n(rr(p.t1.px), 2)], ['R:R до цели 2', n(rr(p.t2.px), 2)]];
+    out.innerHTML = cells.map(([l, v]) => `<div class="cell"><span class="l">${l}</span><span class="v">${v}</span></div>`).join('');
+    const parts = [`Стоп в ${n(dist / E * 100, 2)}% от входа (${n(dist / d.atr, 2)} ATR).`];
+    if (rr(p.t1.px) < 1) parts.push('До цели 1 меньше, чем до стопа: соотношение невыгодное.');
+    if (state.macro) parts.push('Макро-день: подумайте о меньшем размере или входе после публикации.');
+    if (!dec.plan) parts.push('По правилам методологии плана сейчас нет — расчёт справочный.');
+    else if (dec.plan !== side) parts.push('Выбрана сторона против перевеса модели.');
+    parts.push('Комиссии и проскальзывание не учтены.');
+    note.textContent = parts.join(' ');
+    Object.assign(c, { dep, risk, entry: E, entryCoin: d.coin, stopVal: S, stopCoin: d.coin, stopSide: side, stopLvl: c.stop }); store.set('calc', c);
+  };
+  ['dep', 'risk', 'entry', 'stopv'].forEach((id) => $(id).addEventListener('input', calc));
+  document.querySelectorAll('[data-side]').forEach((b) => b.addEventListener('click', () => { c.side = b.dataset.side; c.sideCoin = d.coin; c.stopVal = null; store.set('calc', c); render(); }));
+  document.querySelectorAll('[data-stop]').forEach((b) => b.addEventListener('click', () => { c.stop = b.dataset.stop; c.stopVal = null; store.set('calc', c); render(); }));
+  calc();
+}
+
+function facHtml(x) {
+  const w = Math.abs(x.s) * 50, left = x.s >= 0 ? 50 : 50 - w; const col = x.s > 0 ? 'var(--long)' : 'var(--short)';
+  return `<div class="fac"><span class="n">${esc(x.name)}</span><span class="fbar" title="${x.s}"><span style="left:${left}%;width:${w}%;background:${col}"></span></span><span class="w">${esc(x.why)}</span></div>`;
+}
+
+function kv(rows) { return `<div class="kv">${rows.filter(Boolean).map(([k, v]) => `<span class="k2">${esc(k)}</span><span class="v2">${v}</span>`).join('')}</div>`; }
+function dataHtml(d) {
+  const o = d.options && !d.options.empty ? d.options : null, x = d.dex, b = d.book, c = d.changes;
+  const fut = kv([
+    ['Диапазон 14д', `${fp(d.range14.lo)} – ${fp(d.range14.hi)} · ${d.range14.pos}%`],
+    ['CVD фьючерсов 24ч / 14д', `${fu(d.cvdFut.h24)} / ${fu(d.cvdFut.d14)}`],
+    ['CVD спота 24ч / 14д', `${fu(d.cvdSpot.h24)} / ${fu(d.cvdSpot.d14)}`],
+    ['OI', `${fu(d.oi.usd)} · 24ч ${pc(d.oi.ch24)} · 7д ${pc(d.oi.ch7d)} · от пика 20д ${pc(d.oi.fromPeak20d)}`],
+    ['Фандинг (за 8ч)', `${n(d.funding.now, 4)}% · ср. 30д ${n(d.funding.avg30, 4)}% · плюсовых ${d.funding.posShare}%`],
+    ['L/S толпы', `${n(d.crowd.ratio)} · ${d.crowd.pct}-й перцентиль`],
+    ['L/S топ-трейдеров', `${n(d.top.ratio)} · ${d.top.pct}-й перцентиль`],
+    ['Тейкеры buy/sell 24ч', n(d.takerRatio)],
+    ['Объём 24ч', `${fu(d.vol.usd24)} · ${n(d.vol.x30)}× нормы`],
+    ['Ликвидации (OKX, ' + d.liq.hours + 'ч)', `лонги ${fu(d.liq.longUsd)} · шорты ${fu(d.liq.shortUsd)}`],
+    b && ['Стакан ±2% (' + (b.src || '') + ')', `биды ${b.bidShare}% · ${fu(b.bidsUsd2)} / ${fu(b.asksUsd2)}`],
+    b?.futNear && ['Ближний стакан Binance ±' + b.futNear.rangePct + '%', `биды ${b.futNear.bidShare}%`],
+    b && ['Кластеры бидов', b.bidClusters.map((q) => `${fp(q.px)} (${fu(q.usd)})`).join(', ')],
+    b && ['Кластеры асков', b.askClusters.map((q) => `${fp(q.px)} (${fu(q.usd)})`).join(', ')],
+  ]);
+  const dex = x ? kv([
+    ['OI на Hyperliquid', `${fu(x.oiUsd)} · доля ${x.oiShare}% от пары с Binance`],
+    ['Фандинг DEX (8ч)', `${n(x.funding8h, 4)}% · разрыв с Binance ${n(x.fundGap, 4)} п.п.`],
+    ['Премия к оракулу', `${n(x.premiumPct, 3)}%`],
+    ['Стакан ±2%', `биды ${x.bidShare ?? '—'}% · разница с Coinbase ${x.bookGap ?? '—'} п.п.`],
+    ['Объём 24ч', fu(x.vol24)],
+  ]) + `<div class="note" style="padding-bottom:12px">${x.fundGap > 0.005 ? 'На DEX лонги платят больше — там позиционирование более лонговое.' : x.fundGap < -0.005 ? 'На DEX фандинг ниже — там позиционирование менее лонговое.' : 'Фандинг на площадках близок.'}</div>` : '<div class="note">Нет данных</div>';
+  const opt = o ? kv([
+    ['OI коллов / путов', `${n(o.callOI, 0)} / ${n(o.putOI, 0)} ${d.coin} · P/C ${n(o.pcOI)}`],
+    ['P/C объёма 24ч', `${n(o.pcVol)} · объём ${fu(o.volUsd)}`],
+    ['Колл-стены', o.callWalls.map((w) => `${fp(w.K)} (${fu(w.usd)})`).join(', ')],
+    ['Пут-стены', o.putWalls.map((w) => `${fp(w.K)} (${fu(w.usd)})`).join(', ')],
+    ...o.maxPain.map((m) => ['Max pain ' + m.label, `${fp(m.K)} · ${fu(m.oiUsd)} · через ${n(m.daysTo, 1)} д`]),
+    o.gammaPeak && ['Пик гаммы ' + o.gammaPeak.exp, `${fp(o.gammaPeak.K)} · ${o.gammaPeak.share}% гаммы · ${pc(o.gammaPeak.distPct)}`],
+    ['Net GEX на 1%', `${fu(o.netGex)} · ${o.netGex >= 0 ? 'дилеры гасят движение' : 'дилеры разгоняют движение'}`],
+    ['Gamma flip', o.flip ? `${fp(o.flip)} · цена ${d.price > o.flip ? 'выше' : 'ниже'}` : 'не найден в ±15%'],
+    ['Гасящая гамма', o.gexPos.map((g) => fp(g.K)).join(', ') || '—'],
+    ['Разгоняющая гамма', o.gexNeg.map((g) => fp(g.K)).join(', ') || '—'],
+    ['IV 7д / 30д', `${n(o.iv7, 1)}% / ${n(o.iv30, 1)}%${o.iv7 > o.iv30 ? ' · ждут события на неделе' : ''}`],
+    ['25Δ skew (30д)', `${n(o.skew25, 2)} п.${o.skew25 > 0 ? ' · боятся падения' : ' · страха нет'}`],
+    d.dvol && ['DVOL', `${n(d.dvol.now, 1)} · выше, чем в ${d.dvol.pct}% из 20 дней`],
+    o.changes && ['OI путов / коллов за сутки', `${fu(o.changes.putsNet)} / ${fu(o.changes.callsNet)}`],
+    o.changes && o.changes.up.length && ['Выросли сильнее всего', o.changes.up.map((q) => `${q.exp} ${fp(q.K)}${q.call ? 'C' : 'P'} ${fu(q.usd)}`).join(', ')],
+    o.changes && o.changes.down.length && ['Сократились', o.changes.down.map((q) => `${q.exp} ${fp(q.K)}${q.call ? 'C' : 'P'} ${fu(q.usd)}`).join(', ')],
+  ]) + '<div class="note" style="padding-bottom:12px">Инициатор сделок по опционам (кто покупал, кто продавал) в бесплатных данных не виден, поэтому «хедж или ставка» оценивается по изменению OI вместе с ценой.</div>' : '<div class="note">Опционов по этой монете нет или Deribit не ответил.</div>';
+  const chg = c ? kv([
+    ['Сравнение с', esc(new Date(c.since).toLocaleString('ru-RU', { timeZone: 'America/New_York', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })) + ' NY'],
+    ['Цена', pc(c.price)], ['OI', pc(c.oi)], ['Фандинг', (c.funding > 0 ? '+' : '') + n(c.funding, 4) + ' п.п.'], ['L/S толпы', (c.crowd > 0 ? '+' : '') + n(c.crowd)],
+    ['IV 7д', (c.iv7 > 0 ? '+' : '') + n(c.iv7, 1) + ' п.'], ['Skew', (c.skew > 0 ? '+' : '') + n(c.skew, 2) + ' п.'], ['P/C объёма', (c.pcVol > 0 ? '+' : '') + n(c.pcVol)],
+  ]) : '<div class="note" style="padding-bottom:12px">Сравнение появится, когда накопится история (первые сутки — с самым ранним снимком).</div>';
+  return `<details open><summary>Фьючерсы и спот</summary>${fut}</details>
+    <details><summary>DEX и межбиржевой срез</summary>${dex}</details>
+    <details><summary>Опционы Deribit</summary>${opt}</details>
+    <details><summary>Опционы на ETF США</summary><div class="note" style="padding-bottom:12px">Не подключены. Для IBIT/ETHA нужен платный поток опционных данных; без него этот блок методологии не считается.</div></details>
+    <details><summary>Что изменилось со вчера</summary>${chg}</details>`;
+}
+
+function renderAlts() {
+  const a = state.latest.ALTS?.list; const el = $('altsPanel');
+  if (!a || !a.length) { el.hidden = true; return; }
+  el.hidden = false;
+  const top = a.slice(0, 3);
+  el.innerHTML = `<h2>Горячие альты · топ-20 по капитализации</h2><div class="alts">${top.map((x) => `<div class="alt"><span class="sym">${esc(x.sym)}</span><span class="note">P ${x.P}% · обычно ${x.base}% · выше, чем в ${x.pct}% дней</span><span class="pill ${thermoCls(x.label)}">${esc(x.label)}</span></div>`).join('')}</div>
+    <div class="note" style="margin-top:8px">Только вероятность значимого хода в ближайшие 4 часа, без направления.</div>`;
+}
+
+// ---------- data ----------
+// Два режима: внутри Claude — через коннектор Supabase; на обычном сайте — напрямую через публичный API Supabase.
+const MODE = window.claude && typeof window.claude.use === 'function' ? 'claude' : 'web';
+function parsePayload(res) {
+  let p = res?.payload; if (p == null && res?.content?.[0]?.text) p = res.content[0].text;
+  let text = typeof p === 'string' ? p : (p && typeof p.result === 'string' ? p.result : JSON.stringify(p));
+  const m = String(text).match(/<untrusted-data-[^>]+>\s*([\s\S]*?)\s*<\/untrusted-data/);
+  const rows = JSON.parse(m ? m[1] : text);
+  const j = Array.isArray(rows) ? rows[0]?.j : rows?.j ?? rows;
+  return typeof j === 'string' ? JSON.parse(j) : j;
+}
+function apply(j) {
+  if (!j || !Array.isArray(j.latest)) throw new Error('пустой ответ');
+  const latest = {}; for (const r of j.latest) latest[r.coin] = r.data;
+  const hist = {}; for (const r of j.hist || []) (hist[r.coin] ||= []).push(r);
+  state.latest = latest; state.hist = hist; state.error = null; state.action = null; state.lastOk = Date.now();
+  render();
+}
+const ERR = {
+  needs_reauth: 'Подключение Supabase истекло. Переподключите Supabase в claude.ai → Settings → Connectors.',
+  server_not_connected: 'Supabase не подключён в этом аккаунте. Добавьте его в claude.ai → Settings → Connectors.',
+  selection_required: 'Подключено несколько коннекторов Supabase — выберите нужный в окне claude.ai.',
+  not_in_manifest: 'Доступ к Supabase для этой страницы выключен.',
+  approval_required: 'Странице нужно разрешение читать Supabase.',
+  blocked_by_policy: 'Политика организации блокирует этот инструмент Supabase.',
+  not_granted: 'Это окно не даёт странице доступ к коннекторам. Откройте ссылку на веб-версию ниже.',
+  capability_disabled: 'Это окно не даёт странице доступ к коннекторам. Откройте ссылку на веб-версию ниже.',
+  capability_removed: 'Это окно не даёт странице доступ к коннекторам. Откройте ссылку на веб-версию ниже.',
+};
+function onErr(e, retry) {
+  const code = e?.code || 'upstream_error';
+  if (['needs_reauth', 'server_not_connected', 'not_in_manifest', 'blocked_by_policy', 'approval_required'].includes(code)) { state.latest = {}; state.hist = {}; }
+  const needsAsk = code === 'approval_required' || code === 'not_in_manifest' || (code === 'upstream_error' && e?.retryable);
+  state.action = needsAsk ? 'connect' : null;
+  state.error = (ERR[code] || (code === 'tool_error' ? 'Запрос к базе вернул ошибку.' : 'Supabase не ответил.')) + ` Код: ${code}${e?.message ? ' — ' + String(e.message).slice(0, 140) : ''}`;
+  render();
+  if (retry && e?.retryable && !retried) { retried = true; setTimeout(() => load(), Math.max(1500, Math.min(60000, e.retryAfterMs || 3000))); }
+}
+let mcp = null, perms = null, poll = null, retried = false, inflight = false;
+async function load() {
+  if (inflight) return; inflight = true;
+  try {
+    if (MODE === 'web') {
+      const r = await fetch(SB_URL + '/rest/v1/rpc/get_brief', { method: 'POST', headers: { apikey: SB_KEY, 'content-type': 'application/json' }, body: '{}' });
+      if (!r.ok) throw { code: 'http_' + r.status, message: (await r.text()).slice(0, 140) };
+      apply(await r.json());
+    } else {
+      if (!mcp) throw { code: 'not_granted' };
+      const r = await mcp.callTool('Supabase', 'execute_sql', { project_id: PROJECT, query: QUERY }, { cache: false });
+      apply(parsePayload(r));
+    }
+    retried = false; startPolling();
+  } catch (e) { onErr(e?.code ? e : { code: MODE === 'web' ? 'network' : 'parse', message: String(e?.message || e) }, true); }
+  finally { inflight = false; }
+}
+function startPolling() { if (poll) return; poll = setInterval(() => { if (!document.hidden) load(); }, 60000); }
+document.addEventListener('visibilitychange', () => { if (!document.hidden && state.lastOk && Date.now() - state.lastOk > 60000) load(); });
+
+async function connect() {
+  if (perms) { try { await perms.request(['mcp:Supabase']); } catch {} }
+  retried = false; await load();
+}
+document.addEventListener('click', (e) => {
+  if (e.target.closest('#connectBtn')) connect();
+  if (e.target.closest('#manageBtn') && perms) perms.manage().catch(() => {});
+});
+
+$('refresh').addEventListener('click', async () => {
+  const btn = $('refresh'); btn.disabled = true; btn.textContent = 'Запускаю сбор…';
+  try {
+    let res;
+    if (MODE === 'web') { const r = await fetch(SB_URL + '/rest/v1/rpc/request_refresh', { method: 'POST', headers: { apikey: SB_KEY, 'content-type': 'application/json' }, body: '{}' }); res = await r.json(); }
+    else { if (!mcp) throw { code: 'not_granted' }; res = parsePayload(await mcp.callTool('Supabase', 'execute_sql', { project_id: PROJECT, query: 'select public.request_refresh() as j' }, { cache: false })); }
+    if (res && res.started === false) { btn.textContent = 'Данные свежие'; await load(); setTimeout(() => { btn.disabled = false; btn.textContent = 'Обновить сейчас'; }, 4000); return; }
+    btn.textContent = 'Собираю данные… ~40 с';
+    setTimeout(async () => { await load(); btn.disabled = false; btn.textContent = 'Обновить сейчас'; }, 40000);
+  } catch (e) { onErr(e?.code ? e : { code: 'refresh', message: String(e?.message || e) }); btn.disabled = false; btn.textContent = 'Обновить сейчас'; }
+});
+$('macro').checked = state.macro;
+$('macro').addEventListener('change', (e) => { state.macro = e.target.checked; store.set('macro', state.macro); render(); });
+$('tabs').addEventListener('click', (e) => { const b = e.target.closest('[data-coin]'); if (!b) return; state.coin = b.dataset.coin; store.set('coin', state.coin); render(); });
+setInterval(() => { if (state.lastOk) render(); }, 60000 * 5);
+
+render();
+(async () => {
+  if (MODE === 'web') { load(); return; }
+  try { [mcp, perms] = await Promise.all([window.claude.use('mcp'), window.claude.use('permissions')]); } catch { mcp = null; }
+  if (!mcp) { onErr({ code: 'not_granted' }); return; }
+  const st = perms ? await perms.state('mcp:Supabase').catch(() => 'unavailable') : 'unavailable';
+  if (st === 'denied') { state.action = 'manage'; state.error = 'Доступ к Supabase для этой страницы запрещён.'; render(); return; }
+  load();
+})();
+</script>
+
+</body>
+</html>
