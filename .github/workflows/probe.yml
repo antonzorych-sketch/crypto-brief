@@ -1,13 +1,20 @@
 name: probe
-on: [push, workflow_dispatch]
+on: [workflow_dispatch, push]
+permissions:
+  contents: write
 jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - run: |
+          {
           for u in https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2026-10-01.zip https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2024-01.zip https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2024-01-01.zip https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2024-01.zip https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2024-01.zip; do echo "$u $(curl -s -o /tmp/f.zip -w '%{http_code} %{size_download}' $u)"; done
           curl -s -o /tmp/m.zip https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2023-01-01.zip && unzip -p /tmp/m.zip | head -3
           curl -s -o /tmp/b.zip https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2024-01-01.zip && unzip -p /tmp/b.zip | head -12
           curl -s -o /tmp/k.zip https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2024-01.zip && unzip -p /tmp/k.zip | head -2
           curl -s -o /tmp/r.zip https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2024-01.zip && unzip -p /tmp/r.zip | head -3
           for d in 2021-12-01 2022-06-01 2023-01-01 2023-06-01; do echo "metrics $d $(curl -s -o /dev/null -w '%{http_code}' https://data.binance.vision/data/futures/um/daily/metrics/SOLUSDT/SOLUSDT-metrics-$d.zip)  book $(curl -s -o /dev/null -w '%{http_code}' https://data.binance.vision/data/futures/um/daily/bookDepth/SOLUSDT/SOLUSDT-bookDepth-$d.zip)"; done
+          } > probe.txt 2>&1
+          git config user.name github-actions; git config user.email actions@github.com
+          git add probe.txt && git commit -m 'probe output [skip ci]' && git push
