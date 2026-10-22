@@ -67,7 +67,7 @@ def run(d, kind, p):
         e = a['o'][i + 1]
         r = sim(a, i + 1, side, e + side * p['tp'] * at if p['tp'] else None, e - side * p['sl'] * at, p['hold'])
         if r is None: i += 1; continue
-        out.append((d['t'].values[i], r[0])); i = r[1] + 1
+        out.append((d['t'].values[i], r[0], d['t'].values[min(r[1] + 1, n - 1)])); i = r[1] + 1
     return out
 def summ(tr):
     if len(tr) < 20: return None
@@ -97,4 +97,5 @@ def main():
         b = rs[0]; by = {}
         for x in sorted(b['tr'] + b['te'], key=lambda x: x[0]): by.setdefault(pd.Timestamp(x[0]).year, []).append(x)
         print('лучшая по годам:', {y: (summ(v) or {}).get('avgR') for y, v in by.items()})
-main()
+if __name__ == '__main__':
+    main()
