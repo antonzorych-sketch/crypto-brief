@@ -1,0 +1,36 @@
+name: v15
+on:
+  workflow_dispatch:
+  push:
+    paths: ['backtest/v15.py', '.github/workflows/v15.yml']
+permissions:
+  contents: write
+concurrency: v15
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q pandas numpy scipy scikit-learn
+      - uses: actions/cache@v4
+        with:
+          path: data_cache
+          key: binance-archive-${{ github.run_id }}
+          restore-keys: binance-archive-
+      - name: V3
+        run: |
+          set -o pipefail
+          mkdir -p data_cache
+          python -u backtest/v15.py 2>&1 | grep -v "Warning\|See https" | tee backtest/v15-log.txt
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name github-actions; git config user.email actions@github.com
+          git checkout -B v15
+          git add -f backtest/v15-log.txt backtest/v15.json 2>/dev/null || git add -f backtest/v15-log.txt
+          git commit -q -m "V15 results [skip ci]" || true
+          git push -f origin v15
