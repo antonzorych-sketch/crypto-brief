@@ -1,0 +1,32 @@
+BTC 2020-01-01 00:00:00 2026-09-30 23:00:00 59160
+ETH 2020-01-01 00:00:00 2026-09-30 23:00:00 59160
+SOL 2020-09-14 07:00:00 2026-09-30 23:00:00 52865
+конфигов 192 с достаточной статистикой 148
+
+ТОП-10 по обучению (2020–23) и их проверка (2024–26):
+{'N': 96, 'w': 0.06, 'z': 0.1, 'sk': 0.5, 'tgt': 'top', 'sides': 'long'} train {'n': 64, 'avgR': np.float64(0.438), 'sumR': np.float64(28.1), 'win': np.float64(39.1), 'pf': np.float64(1.7), 't': np.float64(1.66)} TEST {'n': 92, 'avgR': np.float64(-0.406), 'sumR': np.float64(-37.4), 'win': np.float64(21.7), 'pf': np.float64(0.5), 't': np.float64(-2.92)}
+{'N': 96, 'w': 0.06, 'z': 0.1, 'sk': 1.0, 'tgt': 'top', 'sides': 'long'} train {'n': 62, 'avgR': np.float64(0.295), 'sumR': np.float64(18.3), 'win': np.float64(41.9), 'pf': np.float64(1.5), 't': np.float64(1.35)} TEST {'n': 84, 'avgR': np.float64(-0.371), 'sumR': np.float64(-31.1), 'win': np.float64(27.4), 'pf': np.float64(0.5), 't': np.float64(-2.91)}
+{'N': 96, 'w': 0.06, 'z': 0.1, 'sk': 0.5, 'tgt': 'mid', 'sides': 'long'} train {'n': 65, 'avgR': np.float64(0.271), 'sumR': np.float64(17.6), 'win': np.float64(53.8), 'pf': np.float64(1.57), 't': np.float64(1.63)} TEST {'n': 95, 'avgR': np.float64(-0.315), 'sumR': np.float64(-29.9), 'win': np.float64(34.7), 'pf': np.float64(0.54), 't': np.float64(-2.82)}
+{'N': 96, 'w': 0.06, 'z': 0.1, 'sk': 0.5, 'tgt': 'top', 'sides': 'both'} train {'n': 123, 'avgR': np.float64(0.173), 'sumR': np.float64(21.3), 'win': np.float64(33.3), 'pf': np.float64(1.25), 't': np.float64(0.99)} TEST {'n': 175, 'avgR': np.float64(-0.21), 'sumR': np.float64(-36.7), 'win': np.float64(22.9), 'pf': np.float64(0.74), 't': np.float64(-1.54)}
+{'N': 96, 'w': 0.06, 'z': 0.1, 'sk': 1.0, 'tgt': 'mid', 'sides': 'long'} train {'n': 63, 'avgR': np.float64(0.169), 'sumR': np.float64(10.7), 'win': np.float64(57.1), 'pf': np.float64(1.39), 't': np.float64(1.22)} TEST {'n': 89, 'avgR': np.float64(-0.307), 'sumR': np.float64(-27.3), 'win': np.float64(40.4), 'pf': np.float64(0.5), 't': np.float64(-3.14)}
+{'N': 96, 'w': 0.12, 'z': 0.1, 'sk': 1.0, 'tgt': 'top', 'sides': 'long'} train {'n': 201, 'avgR': np.float64(0.157), 'sumR': np.float64(31.5), 'win': np.float64(43.8), 'pf': np.float64(1.29), 't': np.float64(1.48)} TEST {'n': 226, 'avgR': np.float64(-0.244), 'sumR': np.float64(-55.1), 'win': np.float64(32.7), 'pf': np.float64(0.64), 't': np.float64(-2.95)}
+{'N': 96, 'w': 0.08, 'z': 0.1, 'sk': 1.0, 'tgt': 'top', 'sides': 'long'} train {'n': 114, 'avgR': np.float64(0.15), 'sumR': np.float64(17.1), 'win': np.float64(42.1), 'pf': np.float64(1.25), 't': np.float64(1.02)} TEST {'n': 148, 'avgR': np.float64(-0.248), 'sumR': np.float64(-36.6), 'win': np.float64(31.1), 'pf': np.float64(0.64), 't': np.float64(-2.39)}
+{'N': 96, 'w': 0.12, 'z': 0.1, 'sk': 0.5, 'tgt': 'top', 'sides': 'long'} train {'n': 215, 'avgR': np.float64(0.14), 'sumR': np.float64(30.0), 'win': np.float64(35.8), 'pf': np.float64(1.22), 't': np.float64(1.12)} TEST {'n': 255, 'avgR': np.float64(-0.243), 'sumR': np.float64(-62.0), 'win': np.float64(26.7), 'pf': np.float64(0.68), 't': np.float64(-2.54)}
+{'N': 96, 'w': 0.08, 'z': 0.1, 'sk': 1.0, 'tgt': 'mid', 'sides': 'long'} train {'n': 119, 'avgR': np.float64(0.137), 'sumR': np.float64(16.3), 'win': np.float64(55.5), 'pf': np.float64(1.3), 't': np.float64(1.29)} TEST {'n': 154, 'avgR': np.float64(-0.233), 'sumR': np.float64(-35.9), 'win': np.float64(41.6), 'pf': np.float64(0.61), 't': np.float64(-2.97)}
+{'N': 96, 'w': 0.08, 'z': 0.1, 'sk': 0.5, 'tgt': 'top', 'sides': 'long'} train {'n': 119, 'avgR': np.float64(0.125), 'sumR': np.float64(14.9), 'win': np.float64(32.8), 'pf': np.float64(1.18), 't': np.float64(0.71)} TEST {'n': 164, 'avgR': np.float64(-0.266), 'sumR': np.float64(-43.6), 'win': np.float64(26.2), 'pf': np.float64(0.65), 't': np.float64(-2.34)}
+
+доля конфигов с avgR>0: обучение 24%, проверка 6%
+среднее avgR топ-20: train 0.140 test -0.215
+
+Лучшая по обучению, по годам:
+2020 {'n': 18, 'avgR': np.float64(1.49), 'sumR': np.float64(26.8), 'win': np.float64(55.6), 'pf': np.float64(4.19), 't': np.float64(2.34)}
+2021 None
+2022 {'n': 10, 'avgR': np.float64(-0.547), 'sumR': np.float64(-5.5), 'win': np.float64(10.0), 'pf': np.float64(0.42), 't': np.float64(-1.15)}
+2023 {'n': 35, 'avgR': np.float64(0.222), 'sumR': np.float64(7.8), 'win': np.float64(40.0), 'pf': np.float64(1.36), 't': np.float64(0.79)}
+2024 {'n': 28, 'avgR': np.float64(-0.389), 'sumR': np.float64(-10.9), 'win': np.float64(21.4), 'pf': np.float64(0.52), 't': np.float64(-1.48)}
+2025 {'n': 29, 'avgR': np.float64(-0.525), 'sumR': np.float64(-15.2), 'win': np.float64(20.7), 'pf': np.float64(0.34), 't': np.float64(-2.73)}
+2026 {'n': 35, 'avgR': np.float64(-0.321), 'sumR': np.float64(-11.2), 'win': np.float64(22.9), 'pf': np.float64(0.61), 't': np.float64(-1.28)}
+по монетам:
+BTC {'n': 101, 'avgR': np.float64(-0.022), 'sumR': np.float64(-2.2), 'win': np.float64(29.7), 'pf': np.float64(0.97), 't': np.float64(-0.12)}
+ETH {'n': 41, 'avgR': np.float64(0.025), 'sumR': np.float64(1.0), 'win': np.float64(31.7), 'pf': np.float64(1.04), 't': np.float64(0.09)}
+SOL {'n': 14, 'avgR': np.float64(-0.578), 'sumR': np.float64(-8.1), 'win': np.float64(14.3), 'pf': np.float64(0.36), 't': np.float64(-1.78)}
