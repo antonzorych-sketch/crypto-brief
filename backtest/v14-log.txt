@@ -1,0 +1,189 @@
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  dividends.set_index("date", inplace=True)
+  dividends.sort_index(inplace=True)
+  splits.set_index("date", inplace=True)
+  splits.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  splits.set_index("date", inplace=True)
+  splits.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  splits.set_index("date", inplace=True)
+  splits.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  dividends.set_index("date", inplace=True)
+  dividends.sort_index(inplace=True)
+  splits.set_index("date", inplace=True)
+  splits.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  dividends.set_index("date", inplace=True)
+  dividends.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+  quotes.sort_index(inplace=True)
+  dividends.set_index("date", inplace=True)
+  dividends.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+Актив | train: год/мес/Шарп | test 2013-26: год/мес/Шарп/dd | 2022-26 год
+NVDA      NVDA             |   13.2%  1.04м sh 0.62 |   17.1%  1.32м sh 0.70 dd -48.4 | 12.8%
+NQ=F      Nasdaq фьюч      |   -0.0% -0.00м sh 0.12 |    9.2%  0.74м sh 0.47 dd -54.4 | 7.1%
+TSLA      TSLA             |  -22.9% -2.14м sh-1.09 |    6.3%  0.51м sh 0.37 dd -70.3 | -12.0%
+ES=F      S&P фьюч         |   -0.1% -0.01м sh 0.12 |    4.5%  0.37м sh 0.30 dd -49.7 | 3.8%
+CL=F      Нефть WTI        |   -3.1% -0.26м sh-0.01 |    4.3%  0.35м sh 0.28 dd -57.1 | -4.8%
+GC=F      Золото           |    8.4%  0.68м sh 0.45 |    2.6%  0.21м sh 0.23 dd -71.5 | 23.2%
+BZ=F      Brent            |    7.6%  0.61м sh 0.42 |    1.6%  0.14м sh 0.19 dd -59.2 | -3.8%
+JPY=X     USD/JPY          |   -9.0% -0.79м sh-0.36 |    1.4%  0.12м sh 0.17 dd -54.1 | 1.7%
+ZB=F      US 30Y           |   -9.4% -0.82м sh-0.40 |   -0.7% -0.06м sh 0.07 dd -61.3 | -8.8%
+PA=F      Палладий         |   24.6%  1.85м sh 0.93 |   -0.9% -0.08м sh 0.09 dd -69.7 | -7.2%
+UNG       UNG ETF          |   18.2%  1.40м sh 0.78 |   -1.4% -0.11м sh 0.06 dd -54.4 | -9.4%
+YM=F      Dow              |   -1.1% -0.09м sh 0.07 |   -1.7% -0.14м sh 0.04 dd -70.3 | -5.7%
+ZN=F      US 10Y           |   -7.5% -0.64м sh-0.46 |   -1.7% -0.14м sh-0.07 dd -43.2 | -1.8%
+LE=F      Скот             |   -6.4% -0.55м sh-0.15 |   -1.7% -0.15м sh 0.08 dd -51.9 | -5.2%
+EURUSD=X  EUR/USD          |   -4.6% -0.40м sh-0.11 |   -2.2% -0.19м sh-0.05 dd -56.2 | -0.6%
+HO=F      Мазут            |   -0.7% -0.06м sh 0.09 |   -3.0% -0.25м sh 0.00 dd -63.7 | -4.0%
+XLE       Энергетика ETF   |   -2.0% -0.17м sh 0.04 |   -3.1% -0.26м sh-0.00 dd -80.8 | -17.1%
+KC=F      Кофе             |   -8.7% -0.76м sh-0.27 |   -3.2% -0.27м sh-0.01 dd -70.3 | -3.1%
+HG=F      Медь             |    6.0%  0.49м sh 0.36 |   -3.6% -0.31м sh-0.03 dd -59.7 | -5.7%
+GDX       Золотодобыча     |  -18.4% -1.69м sh-0.80 |   -3.7% -0.31м sh-0.04 dd -79.0 | 0.1%
+GBPUSD=X  GBP/USD          |   -6.8% -0.58м sh-0.29 |   -3.8% -0.33м sh-0.13 dd -56.1 | -3.1%
+CT=F      Хлопок           |    0.2%  0.02м sh 0.13 |   -4.0% -0.34м sh-0.04 dd -65.7 | -9.2%
+TLT       TLT              |   -7.2% -0.62м sh-0.24 |   -4.1% -0.35м sh-0.07 dd -66.6 | -10.7%
+SI=F      Серебро          |    0.3%  0.02м sh 0.14 |   -4.3% -0.36м sh-0.05 dd -85.4 | 2.3%
+USDCAD=X  USD/CAD          |   -4.0% -0.34м sh-0.11 |   -6.0% -0.52м sh-0.33 dd -76.2 | -13.6%
+SB=F      Сахар            |    2.4%  0.20м sh 0.22 |   -6.4% -0.55м sh-0.16 dd -75.4 | -11.6%
+CC=F      Какао            |  -14.9% -1.34м sh-0.56 |   -6.6% -0.57м sh-0.17 dd -89.0 | 15.0%
+ZC=F      Кукуруза         |   -2.5% -0.21м sh 0.01 |   -7.0% -0.60м sh-0.19 dd -81.1 | -3.3%
+AUDUSD=X  AUD/USD          |   -3.0% -0.25м sh-0.02 |   -7.2% -0.62м sh-0.28 dd -83.3 | -18.2%
+ZS=F      Соя              |    2.3%  0.19м sh 0.22 |   -7.3% -0.63м sh-0.21 dd -73.5 | -7.6%
+RB=F      Бензин           |   -3.1% -0.26м sh-0.00 |   -7.9% -0.68м sh-0.21 dd -76.1 | -10.7%
+NG=F      Природный газ    |   -3.6% -0.30м sh-0.02 |   -8.9% -0.77м sh-0.28 dd -77.1 | -16.7%
+PL=F      Платина          |   10.0%  0.80м sh 0.48 |  -10.1% -0.89м sh-0.35 dd -90.1 | -12.7%
+ZW=F      Пшеница          |   -9.3% -0.81м sh-0.31 |  -12.7% -1.13м sh-0.45 dd -91.7 | -14.3%
+HE=F      Свиньи           |  -20.8% -1.93м sh-0.57 |  -19.3% -1.77м sh-0.44 dd -96.6 | -27.1%
+
+Топ-8 по Шарпу на обучении -> их проверка:
+PA=F Палладий train sh 0.93 -> test -0.9 % год, sh 0.09
+UNG UNG ETF train sh 0.78 -> test -1.4 % год, sh 0.06
+NVDA NVDA train sh 0.62 -> test 17.1 % год, sh 0.7
+PL=F Платина train sh 0.48 -> test -10.1 % год, sh -0.35
+GC=F Золото train sh 0.45 -> test 2.6 % год, sh 0.23
+BZ=F Brent train sh 0.42 -> test 1.6 % год, sh 0.19
+HG=F Медь train sh 0.36 -> test -3.6 % год, sh -0.03
+ZS=F Соя train sh 0.22 -> test -7.3 % год, sh -0.21
+
+доля активов с test mo>=5%: 0 из 35
+  allr = pd.concat(rets, axis=1).fillna(0).mean(axis=1)
+равновесный портфель всех активов: {'train 2000-12': {'ann': np.float64(0.1), 'mo': np.float64(0.01), 'sharpe': np.float64(0.05), 'maxDD': np.float64(-22.0)}, 'test 2013-26': {'ann': np.float64(0.8), 'mo': np.float64(0.07), 'sharpe': np.float64(0.18), 'maxDD': np.float64(-20.0)}, '2022-26': {'ann': np.float64(-1.6), 'mo': np.float64(-0.13), 'sharpe': np.float64(-0.28), 'maxDD': np.float64(-20.0)}}
+
+NG сезонность (по месяцам, средняя доходность за месяц NG=F, 2000-26):
+  quotes.sort_index(inplace=True)
+  data.rename(columns=ctx.isins, inplace=True)
+  data.sort_index(level=0, axis=1, inplace=True)
+{1: -5.2, 2: -2.1, 3: 1.5, 4: 3.8, 5: 2.6, 6: 0.2, 7: -1.1, 8: 0.5, 9: 8.6, 10: 6.8, 11: 2.4, 12: -5.0}
