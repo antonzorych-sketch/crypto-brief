@@ -113,6 +113,9 @@ details[open] summary::after { content: "−"; }
 .toggle { display: inline-flex; gap: 8px; align-items: center; font-size: 14px; cursor: pointer; }
 .toggle input { width: auto; }
 .empty { text-align: center; padding: 28px 12px; color: var(--muted); }
+.tradeRow { display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; gap: 2px 10px; padding: 8px 0; border-top: 1px solid var(--soft); font-size: 14px; align-items: baseline; }
+.tradeRow .tr-why { grid-column: 2 / 4; }
+@media (max-width: 520px) { .tradeRow { grid-template-columns: minmax(0, 1fr) auto; } .tradeRow > :first-child { grid-column: 1 / 3; font-size: 12px; color: var(--muted); } .tradeRow .tr-why { grid-column: 1 / 3; } }
 footer { font-size: 12px; color: var(--muted); display: grid; gap: 6px; }
 @media (prefers-reduced-motion: no-preference) { .gbar .mark { transition: left .4s ease; } }
 </style>
@@ -135,6 +138,7 @@ footer { font-size: 12px; color: var(--muted); display: grid; gap: 6px; }
   <div class="tabs" role="tablist" id="tabs"></div>
   <div id="coin"></div>
   <div class="panel" id="altsPanel" hidden></div>
+  <div class="panel" id="paperPanel" hidden></div>
 
   <footer>
     <div>Это разбор позиционирования, а не рекомендация. Вероятность направления всегда в коридоре 30–70%. Термометр говорит о размере движения, а не о направлении.</div>
@@ -148,12 +152,12 @@ const PROJECT = 'lnmdljepzszvjbxigwsr';
 const SB_URL = 'https://lnmdljepzszvjbxigwsr.supabase.co';
 const SB_KEY = 'sb_publishable_hkFk_DXScJPaAxRxeFAEnw_BLawPDBO';
 const QUERY = 'select public.get_brief() as j';
-const WEB_URL = '';
+const WEB_URL = 'https://antonzorych-sketch.github.io/crypto-brief/';
 const COINS = ['BTC', 'ETH', 'SOL'];
 const $ = (id) => document.getElementById(id);
 const store = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
 
-let state = { latest: {}, hist: {}, coin: store.get('coin', 'BTC'), macro: store.get('macro', false), calc: store.get('calc', { dep: 10000, risk: 1, stop: 'l1', side: null, entry: null }), lastOk: null, error: null };
+let state = { latest: {}, hist: {}, coin: store.get('coin', 'BTC'), macro: store.get('macro', false), calc: store.get('calc', { dep: 10000, risk: 1, stop: 'sig', side: null, entry: null }), lastOk: null, error: null, signals: {}, trades: [], stats: null };
 if (!COINS.includes(state.coin)) state.coin = 'BTC';
 
 // ---------- formatting ----------
@@ -200,6 +204,7 @@ function render() {
   $('coin').innerHTML = d ? coinHtml(d) : `<div class="panel empty">По ${state.coin} в последнем снимке нет данных.</div>`;
   if (d) bindCalc(d);
   renderAlts();
+  renderPaper();
 }
 
 function coinHtml(d) {
@@ -225,6 +230,7 @@ function coinHtml(d) {
     <div class="banner ${dec.plan ? (dec.plan === 'long' ? 'b-info' : 'b-info') : 'b-info'}"><b>${dec.plan ? (dec.plan === 'long' ? 'План: лонг' : 'План: шорт') : 'Плана нет'}</b> — ${esc(dec.why)}</div>
     ${hist.length > 3 ? sparkHtml(hist) : ''}
   </section>
+  ${signalHtml(d)}
   ${levelsHtml(d, dec)}
   ${calcHtml(d, dec)}
   <section class="panel"><h2>10 факторов направления · счёт ${n(f.score, 2)}</h2><div class="factors">${f.list.map(facHtml).join('')}</div></section>
@@ -278,10 +284,12 @@ function ladderSvg(d) {
 
 function calcHtml(d, dec) {
   const c = state.calc; const side = c.side && c.sideCoin === d.coin ? c.side : (dec.side || 'long');
-  const entry = c.entryCoin === d.coin && c.entry ? c.entry : d.price;
+  const sig = state.signals[d.coin];
+  const sigOk = sig && sig.action === 'enter' && sig.side === side;
+  const entry = c.entryCoin === d.coin && c.entryTs === d.ts && c.entry ? c.entry : (sigOk ? sig.entry : d.price);
   return `<section class="panel calc" aria-label="Калькулятор позиции"><h2>Размер позиции от риска</h2>
     <div class="row"><div class="seg" role="group" aria-label="Сторона"><button type="button" data-side="long" aria-pressed="${side === 'long'}">Лонг</button><button type="button" data-side="short" aria-pressed="${side === 'short'}">Шорт</button></div>
-      <div class="seg" role="group" aria-label="Стоп"><button type="button" data-stop="l1" aria-pressed="${c.stop === 'l1'}">Стоп на уровне 1</button><button type="button" data-stop="l2" aria-pressed="${c.stop === 'l2'}">на уровне 2</button></div></div>
+      <div class="seg" role="group" aria-label="Стоп"><button type="button" data-stop="sig" aria-pressed="${c.stop === 'sig'}">Стоп системы</button><button type="button" data-stop="l1" aria-pressed="${c.stop === 'l1'}">Уровень 1</button><button type="button" data-stop="l2" aria-pressed="${c.stop === 'l2'}">Уровень 2</button></div></div>
     <div class="fields">
       <label class="f" for="dep">Депозит, $<input id="dep" type="number" inputmode="decimal" min="0" step="100" value="${c.dep}"></label>
       <label class="f" for="risk">Риск на сделку, %<input id="risk" type="number" inputmode="decimal" min="0" step="0.1" value="${c.risk}"></label>
@@ -297,7 +305,7 @@ function bindCalc(d) {
   const dec = decide(d);
   const c = state.calc;
   const getSide = () => (c.side && c.sideCoin === d.coin ? c.side : (dec.side || 'long'));
-  const stopDefault = () => d.plan[getSide()][c.stop].px;
+  const stopDefault = () => { const sg = state.signals[d.coin]; if (c.stop === 'sig' && sg && sg.side === getSide() && sg.stop) return sg.stop; return d.plan[getSide()][c.stop === 'l2' ? 'l2' : 'l1'].px; };
   const sv = $('stopv'); sv.value = c.stopCoin === d.coin && c.stopSide === getSide() && c.stopLvl === c.stop && c.stopVal ? c.stopVal : stopDefault();
   const calc = () => {
     const dep = +$('dep').value, risk = +$('risk').value, E = +$('entry').value, S = +sv.value, side = getSide(), p = d.plan[side];
@@ -316,7 +324,7 @@ function bindCalc(d) {
     else if (dec.plan !== side) parts.push('Выбрана сторона против перевеса модели.');
     parts.push('Комиссии и проскальзывание не учтены.');
     note.textContent = parts.join(' ');
-    Object.assign(c, { dep, risk, entry: E, entryCoin: d.coin, stopVal: S, stopCoin: d.coin, stopSide: side, stopLvl: c.stop }); store.set('calc', c);
+    Object.assign(c, { dep, risk, entry: E, entryCoin: d.coin, entryTs: d.ts, stopVal: S, stopCoin: d.coin, stopSide: side, stopLvl: c.stop }); store.set('calc', c);
   };
   ['dep', 'risk', 'entry', 'stopv'].forEach((id) => $(id).addEventListener('input', calc));
   document.querySelectorAll('[data-side]').forEach((b) => b.addEventListener('click', () => { c.side = b.dataset.side; c.sideCoin = d.coin; c.stopVal = null; store.set('calc', c); render(); }));
@@ -385,6 +393,48 @@ function dataHtml(d) {
     <details><summary>Что изменилось со вчера</summary>${chg}</details>`;
 }
 
+
+const SIDE = { long: 'Лонг', short: 'Шорт' };
+const STATUS = { pending: 'ждёт входа', open: 'в позиции', tp1: 'цель 1 взята', closed: 'закрыта', cancelled: 'отменена' };
+function tLocal(x) { return new Date(x).toLocaleString('ru-RU', { timeZone: 'America/New_York', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }); }
+function signalHtml(d) {
+  const sg = state.signals[d.coin];
+  const tr = state.trades.find((t) => t.coin === d.coin && ['pending', 'open', 'tp1'].includes(t.status));
+  let body;
+  if (!sg) body = '<div class="note">Сигнал появится после ближайшего пересчёта (каждые 5 минут).</div>';
+  else if (sg.action === 'enter') {
+    const cls = sg.side === 'long' ? 'p-long' : 'p-short';
+    body = `<div class="row" style="justify-content:space-between"><span class="pill ${cls}">${SIDE[sg.side]} · ${sg.type === 'limit' ? 'лимитный ордер' : 'по рынку'}</span><span class="note">действует до ${esc(tET(sg.validUntil).split(' · ')[0])}</span></div>
+      <div class="out" style="margin-top:10px">${[['Вход', fp(sg.entry)], ['Стоп', fp(sg.stop) + ` · ${n(sg.stopAtr, 2)} ATR`], ['Цель 1 (50%)', fp(sg.t1)], ['Цель 2 (50%)', fp(sg.t2)], ['R:R цель 1', n(sg.rr1, 2)], ['R:R в среднем', n(sg.rrB, 2)]].map(([l, v]) => `<div class="cell"><span class="l">${l}</span><span class="v">${v}</span></div>`).join('')}</div>
+      <div class="note" style="margin-top:8px">${esc(sg.reason)}. Стоп — за уровнем 1 (${esc(sg.l1src || '')}) с буфером 0,2 ATR. После цели 1 стоп переносится в безубыток. Если лимит не исполнится за 4 часа или цена уйдёт к цели без отката — сигнал снимается.</div>`;
+  } else {
+    body = `<div class="row"><span class="pill ${sg.action === 'skip' ? 'p-warm' : 'p-none'}">${sg.action === 'skip' ? 'Пропуск' : 'Ждать'}</span><span>${esc(sg.reason)}</span></div>`;
+  }
+  const trHtml = tr ? `<div class="banner b-info" style="margin-top:10px">Бумажная сделка #${tr.id}: ${SIDE[tr.side]}, ${STATUS[tr.status]}${tr.fill_px ? ` по ${fp(+tr.fill_px)}` : ` (лимит ${fp(+tr.entry)})`}, стоп ${fp(+(tr.status === 'tp1' ? tr.fill_px : tr.stop))}, цели ${fp(+tr.t1)} / ${fp(+tr.t2)}.</div>` : '';
+  return `<section class="panel" aria-label="Сигнал на вход"><h2>Сигнал на вход</h2>${body}${trHtml}</section>`;
+}
+function renderPaper() {
+  const el = $('paperPanel'), st = state.stats;
+  if (!st) { el.hidden = true; return; }
+  el.hidden = false;
+  const winRate = st.closed ? Math.round(100 * st.wins / st.closed) : null;
+  const curve = st.curve || [];
+  let eq = 0; const pts = curve.map((c) => (eq += +c.pnl));
+  let spark = '';
+  if (pts.length > 1) { const W = 600, Ht = 60, lo = Math.min(0, ...pts), hi = Math.max(0, ...pts), Y = (v) => Ht - 4 - (v - lo) / Math.max(1, hi - lo) * (Ht - 8), X = (i) => 4 + i / (pts.length - 1) * (W - 8);
+    spark = `<svg class="spark" style="height:60px" viewBox="0 0 ${W} ${Ht}" preserveAspectRatio="none" role="img" aria-label="Кривая капитала"><line x1="0" x2="${W}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)" stroke-dasharray="3 3"/><polyline points="${pts.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(' ')}" fill="none" stroke="${eq >= 0 ? 'var(--long)' : 'var(--short)'}" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`; }
+  const rows = (state.trades || []).slice(0, 12).map((t) => {
+    const res = t.status === 'closed' ? `<span class="${+t.r_result > 0 ? 'up' : 'dn'}">${(+t.r_result > 0 ? '+' : '') + n(+t.r_result, 2)} R</span>` : `<span class="note">${STATUS[t.status]}</span>`;
+    return `<div class="tradeRow"><span class="num">${esc(tLocal(t.created_at))}</span><span><b>${esc(t.coin)}</b> ${SIDE[t.side]} · ${t.entry_type === 'limit' ? 'лимит' : 'рынок'} ${fp(+(t.fill_px || t.entry))}</span><span class="num">${res}</span><span class="note tr-why">${esc(t.close_reason || (t.status === 'pending' ? 'ждёт отката до ' + fp(+t.entry) : 'стоп ' + fp(+t.stop) + ' · цели ' + fp(+t.t1) + ' / ' + fp(+t.t2)))}</span></div>`;
+  }).join('');
+  el.innerHTML = `<h2>Бумажная торговля · проверка системы</h2>
+    <div class="out">${[['Закрыто сделок', st.closed], ['Прибыльных', winRate == null ? '—' : winRate + '%'], ['Средний результат', n(+st.avgR, 2) + ' R'], ['Итого', n(+st.sumR, 2) + ' R'], ['P&L на $10 000', fu(+st.pnl)], ['Комиссии', fu(+st.fees)]].map(([l, v]) => `<div class="cell"><span class="l">${l}</span><span class="v">${v}</span></div>`).join('')}</div>
+    ${spark}
+    <div class="note" style="margin:8px 0">Виртуальный счёт $10 000, риск $100 (1%) на сделку, комиссии Hyperliquid 0,015% / 0,045%. Исполнение считается по минутным свечам Binance; если в одной минуте задеты и стоп, и цель — засчитывается стоп. Отменено сигналов: ${st.cancelled}. Активных: ${st.active}.${st.since ? ' Учёт с ' + esc(tLocal(st.since)) + '.' : ''}</div>
+    <div class="trades">${rows || '<div class="note">Сделок пока нет: система входит только при ТЕПЛО/ГОРЯЧО, перевесе от 55% и выгодном R:R.</div>'}</div>
+    <div class="note" style="margin-top:8px">Решение о реальной торговле — после 30+ закрытых сделок с положительным средним результатом.</div>`;
+}
+
 function renderAlts() {
   const a = state.latest.ALTS?.list; const el = $('altsPanel');
   if (!a || !a.length) { el.hidden = true; return; }
@@ -409,7 +459,7 @@ function apply(j) {
   if (!j || !Array.isArray(j.latest)) throw new Error('пустой ответ');
   const latest = {}; for (const r of j.latest) latest[r.coin] = r.data;
   const hist = {}; for (const r of j.hist || []) (hist[r.coin] ||= []).push(r);
-  state.latest = latest; state.hist = hist; state.error = null; state.action = null; state.lastOk = Date.now();
+  state.latest = latest; state.hist = hist; state.signals = j.signals || {}; state.trades = j.trades || []; state.stats = j.stats || null; state.error = null; state.action = null; state.lastOk = Date.now();
   render();
 }
 const ERR = {
