@@ -53,14 +53,23 @@ def fetch(url):
     return None
 
 
+PARSE_ERRORS = []
+
+
 def read_zip_csv(b, names=None):
     if not b:
         return None
-    with zipfile.ZipFile(io.BytesIO(b)) as z:
-        raw = z.read(z.namelist()[0])
-    first = raw[:20].decode(errors='ignore')
-    header = 0 if not first[:1].isdigit() else None
-    return pd.read_csv(io.BytesIO(raw), header=header, names=None if header == 0 else names)
+    try:
+        with zipfile.ZipFile(io.BytesIO(b)) as z:
+            raw = z.read(z.namelist()[0])
+        if not raw.strip():
+            return None
+        first = raw[:20].decode(errors='ignore')
+        header = 0 if not first[:1].isdigit() else None
+        return pd.read_csv(io.BytesIO(raw), header=header, names=None if header == 0 else names)
+    except Exception as e:
+        PARSE_ERRORS.append(repr(e)[:120])
+        return None
 
 
 def months(start, end):
@@ -106,8 +115,8 @@ def load_klines(market, sym, start, end, pool):
 def load_metrics(sym, start, end, pool):
     urls = [f'{BASE}/futures/um/daily/metrics/{sym}/{sym}-metrics-{d:%Y-%m-%d}.zip' for d in days(start, end)]
     frames = [read_zip_csv(b) for b in pool.map(fetch, urls)]
-    df = pd.concat([f for f in frames if f is not None], ignore_index=True)
-    df['t'] = pd.to_datetime(df['create_time']).astype('int64') // 10**6
+    df = pd.concat([f for f in frames if f is not None and 'create_time' in f], ignore_index=True)
+    df['t'] = pd.to_datetime(df['create_time']).astype('datetime64[ms]').astype('int64')
     df = df.drop_duplicates('t').sort_values('t').set_index('t')
     return df[['sum_open_interest', 'count_long_short_ratio', 'sum_toptrader_long_short_ratio']].astype(float)
 
@@ -126,11 +135,13 @@ def load_book(sym, start, end, pool):
     out = []
     for b in pool.map(fetch, urls):
         f = read_zip_csv(b)
-        if f is None:
+        if f is None or 'percentage' not in f:
             continue
         f = f[f['percentage'].isin([-2, 2])]
+        if f.empty or f['percentage'].nunique() < 2:
+            continue
         p = f.pivot_table(index='timestamp', columns='percentage', values='notional', aggfunc='last')
-        p.index = pd.to_datetime(p.index).astype('int64') // 10**6
+        p.index = pd.to_datetime(p.index).astype('datetime64[ms]').astype('int64')
         p = p.rename(columns={-2: 'bid2', 2: 'ask2'})
         # 5-минутная сетка: последнее значение внутри интервала
         p['bucket'] = (p.index // (5 * MIN)) * (5 * MIN) + 5 * MIN
@@ -656,6 +667,7 @@ def main():
                 met = load_metrics(sym, start, end, pool); print(coin, 'metrics', len(met), round(time.time() - t0), flush=True)
                 fund = load_funding(sym, start, end, pool); print(coin, 'funding', len(fund), flush=True)
                 book = load_book(sym, start, end, pool); print(coin, 'book', 0 if book is None else len(book), round(time.time() - t0), flush=True)
+            print(coin, 'parse errors', len(PARSE_ERRORS), PARSE_ERRORS[:3], flush=True)
             F, th, _ = build_features(fut, spot, met, fund, book)
             S = factor_scores(F)
             all_F[coin], all_S[coin], all_th[coin], data[coin] = F, S, th, (fut, fund)

@@ -23,12 +23,17 @@ jobs:
           restore-keys: binance-archive-
       - name: Backtest
         run: |
+          set -o pipefail
           mkdir -p data_cache
-          python backtest/run.py --start 2023-01-01 --out backtest/results.json 2>&1 | tee backtest/log.txt
+          python -u backtest/run.py --start 2023-01-01 --out backtest/results.json 2>&1 | tee backtest/log.txt
       - name: Save results
         if: always()
         run: |
           git config user.name github-actions; git config user.email actions@github.com
-          git pull -q --rebase origin main || true
-          git add backtest/results.json backtest/log.txt 2>/dev/null || true
-          git commit -m "Backtest results [skip ci]" && git push || echo "nothing to commit"
+          git checkout -B results
+          git add -f backtest/log.txt backtest/results.json 2>/dev/null || git add -f backtest/log.txt
+          git commit -q -m "Backtest results [skip ci]" || true
+          git push -f origin results
+      - name: Import into app
+        if: success()
+        run: curl -s -X POST https://lnmdljepzszvjbxigwsr.supabase.co/functions/v1/import-backtest
