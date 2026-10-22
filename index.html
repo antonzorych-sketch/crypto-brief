@@ -194,7 +194,7 @@ const COINS = ['BTC', 'ETH', 'SOL'];
 const $ = (id) => document.getElementById(id);
 const store = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
 
-let state = { latest: {}, hist: {}, coin: store.get('coin', 'BTC'), macro: store.get('macro', false), calc: store.get('calc', { dep: 10000, risk: 1, stop: 'sig', side: null, entry: null }), lastOk: null, error: null, signals: {}, trades: [], stats: null, view: store.get('view', 'now'), rs: null, rsErr: null, rsLoading: false, rsH: 'y4', rsFeat: null, bt: null, btErr: null, btVar: 'live', btF: { coin: '', side: '', result: '' }, btRows: [], btTotal: 0, btOpen: {}, btLoading: false };
+let state = { latest: {}, hist: {}, coin: store.get('coin', 'BTC'), macro: store.get('macro', false), calc: store.get('calc', { dep: 10000, risk: 1, stop: 'sig', side: null, entry: null }), lastOk: null, error: null, signals: {}, trades: [], stats: null, view: store.get('view', 'now'), v2: null, rs: null, rsErr: null, rsLoading: false, rsH: 'y4', rsFeat: null, bt: null, btErr: null, btVar: 'live', btF: { coin: '', side: '', result: '' }, btRows: [], btTotal: 0, btOpen: {}, btLoading: false };
 if (!COINS.includes(state.coin)) state.coin = 'BTC';
 
 // ---------- formatting ----------
@@ -516,7 +516,7 @@ function verdict(s) {
   if (s.avgR > 0) return { cls: 'b-warm', t: `Небольшой плюс: ${n(s.avgR, 2)} R на сделку, но статистически это может быть случайностью (t = ${n(s.tStat, 1)}; нужно ≥ 2).` };
   return { cls: 'b-err', t: `Преимущества нет: после комиссий система теряет ${n(Math.abs(s.avgR), 2)} R на сделку. В таком виде торговать её нельзя.` };
 }
-function equitySvg(eq) {
+function equitySvg(eq, unit = 'R') {
   if (!eq || eq.length < 2) return '';
   const W = 640, Ht = 200, L = 40, R = 8, T = 10, B = 24;
   const xs = eq.map((p) => p[0]), ys = eq.map((p) => p[1]);
@@ -525,7 +525,7 @@ function equitySvg(eq) {
   const pts = eq.map((p) => `${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join(' ');
   const area = `${X(xs[0]).toFixed(1)},${Y(0).toFixed(1)} ${pts} ${X(xs[xs.length - 1]).toFixed(1)},${Y(0).toFixed(1)}`;
   const last = ys[ys.length - 1], col = last >= 0 ? 'var(--long)' : 'var(--short)';
-  const yt = [y0, 0, y1].filter((v, i, a) => a.indexOf(v) === i).map((v) => `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)" ${v === 0 ? '' : 'stroke-dasharray="3 3"'}/><text x="${L - 6}" y="${Y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">${n(v, 0)}R</text>`).join('');
+  const yt = [y0, 0, y1].filter((v, i, a) => a.indexOf(v) === i).map((v) => `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)" ${v === 0 ? '' : 'stroke-dasharray="3 3"'}/><text x="${L - 6}" y="${Y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">${n(v, 0)}${unit}</text>`).join('');
   const years = []; for (let y = new Date(x0).getUTCFullYear() + 1; y <= new Date(x1).getUTCFullYear(); y++) years.push(Date.UTC(y, 0, 1));
   const xt = years.map((t) => `<line x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${Ht - B}" stroke="var(--soft)"/><text x="${X(t)}" y="${Ht - 6}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">${new Date(t).getUTCFullYear()}</text>`).join('');
   return `<div style="overflow-x:auto"><svg class="chart" viewBox="0 0 ${W} ${Ht}" role="img" aria-label="Кривая капитала в R">${xt}${yt}<polygon points="${area}" fill="${col}" fill-opacity=".12"/><polyline points="${pts}" fill="none" stroke="${col}" stroke-width="2" vector-effect="non-scaling-stroke"/><circle cx="${X(xs[xs.length - 1])}" cy="${Y(last)}" r="3.5" fill="${col}"/></svg></div>`;
@@ -617,7 +617,7 @@ document.addEventListener('change', async (e) => {
 // ---------- закономерности (исследование) ----------
 async function loadResearch() {
   if (state.rsLoading) return; state.rsLoading = true; state.rsErr = null; renderResearch();
-  try { state.rs = await rpc('get_research', {}) || {}; }
+  try { const [a, b, c] = await Promise.all([rpc('get_research', {}), rpc('get_v2', {}).catch(() => null), rpc('get_trend', {}).catch(() => null)]); state.rs = a || {}; state.v2 = b && b.data ? b.data : null; state.tr = c && c.data ? c.data : null; }
   catch (e) { state.rsErr = 'Не удалось загрузить исследование. Код: ' + (e?.code || 'error'); }
   finally { state.rsLoading = false; renderResearch(); }
 }
@@ -646,6 +646,60 @@ function rsVerdict(R) {
   if (R.vol) items.push(`Размер движения предсказывается гораздо лучше: модель волатильности — AUC ${n(R.vol.aucModel, 3)}, текущий термометр — ${n(R.vol.aucThermo, 3)}.`);
   return items;
 }
+
+function v2Html() {
+  const V = state.v2; if (!V) return '<section class="panel"><h2>Система v2 · логика входа</h2><div class="note">Подбор логики входа ещё считается.</div></section>';
+  const b = V.best, tr = b.train, te = b.test;
+  const good = te.n >= 30 && te.avg > 0 && (te.t || 0) >= 2;
+  const verdictT = good ? `На 2025–2026, которые не участвовали в подборе, система заработала в среднем ${n(te.avg, 1)} б.п. на сделку после комиссий (${te.n} сделок, t = ${n(te.t, 1)}).` : `На 2025–2026 выбранная логика ${te.avg > 0 ? 'в небольшом плюсе (' + n(te.avg, 1) + ' б.п.), но статистически это может быть случайностью' : 'в минусе (' + n(te.avg, 1) + ' б.п. на сделку)'} — t = ${n(te.t, 1)}, сделок ${te.n}.`;
+  const t2 = (x) => x && x.n ? `${x.n} · ${n(x.avg, 1)} б.п. · ${n(x.win, 0)}%` : '—';
+  const by = (k, names) => Object.entries(b['by_' + k] || {}).map(([v, x]) => `<tr><td>${esc(names[v] || v)}</td><td>${t2(x.train)}</td><td class="${(x.test.avg || 0) > 0 ? 'up' : 'dn'}">${t2(x.test)}</td></tr>`).join('');
+  const top = (V.topTrain || []).map((g, i) => `<tr><td>${i + 1}. ${esc(g.label)}</td><td>${g.train.n} · ${n(g.train.avg, 1)}</td><td class="${(g.test.avg || 0) > 0 ? 'up' : 'dn'}">${g.test.n || 0} · ${n(g.test.avg, 1)}</td><td>${n(g.test.t, 1)}</td></tr>`).join('');
+  const recent = (b.trades || []).slice(-15).reverse().map((x) => `<tr><td>${esc(new Date(x.t).toLocaleString('ru-RU', { timeZone: 'America/New_York', day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }))}</td><td>${esc(x.coin)} ${x.side === 'long' ? 'лонг' : 'шорт'}</td><td>${esc(x.why)}</td><td class="${x.bps > 0 ? 'up' : 'dn'}">${n(x.bps, 1)}</td></tr>`).join('');
+  const bl = V.baselineMarket4h;
+  return `<section class="panel"><h2>Система v2 · лучшая логика входа${V.synthetic ? ' · ТЕСТОВЫЕ ДАННЫЕ' : ''}</h2>
+    <div class="banner ${good ? 'b-ok' : 'b-warm'}">${esc(verdictT)}</div>
+    <div style="margin:10px 0"><b>${esc(b.label)}</b></div>
+    <div class="note" style="margin-bottom:8px">Сигнал: модель направления на 4 часа и модель размера движения; обе переобучаются каждый квартал только на прошлом. Параметры входа выбраны из ${V.nGrid} вариантов только по 2024 году. Исполнение по минутным свечам, комиссии ${V.costs.maker} б.п. лимитом и ${V.costs.taker} б.п. по рынку за сторону.</div>
+    <div class="out">${[['2024 (подбор)', t2(tr)], ['2025–26 (проверка)', t2(te)], ['t на проверке', n(te.t, 1)], ['Итого 2025–26', n(te.sum, 0) + ' б.п.'], ['Макс. просадка 25–26', n(te.maxDD, 0) + ' б.п.'], ['Лимиток исполнилось', n(b.all.fillRate, 0) + '%']].map(([l, x]) => `<div class="cell"><span class="l">${l}</span><span class="v" style="font-size:14px">${x}</span></div>`).join('')}</div>
+    <h2 style="margin-top:14px">Накопленный результат, б.п.</h2>${equitySvg(b.equity, '')}
+    <h2 style="margin-top:14px">По месяцам, б.п.</h2>${monthsSvg(b.months)}
+    <div class="tblWrap" style="margin-top:10px"><table class="tbl"><thead><tr><th>Срез</th><th>2024: сделок · б.п. · прибыльных</th><th>2025–26</th></tr></thead><tbody>${by('coin', {})}${by('side', { long: 'Лонг', short: 'Шорт' })}${by('why', { 'тейк': 'Выход по тейку', 'стоп': 'Выход по стопу', 'время': 'Выход по времени' })}</tbody></table></div>
+    <h2 style="margin-top:14px">Насколько выбор устойчив</h2>
+    <div class="note" style="margin-bottom:8px">Из всех вариантов с 150+ сделками в 2024 году в плюсе на 2025–2026 оказались ${n(V.testPositiveShare, 0)}%, медиана — ${n(V.testMedianAvg, 1)} б.п. на сделку.${bl ? ` Для сравнения, простой вход по рынку с выходом через 4 часа: ${n(bl.test.avg, 1)} б.п. на 2025–2026.` : ''} Ниже — 15 лучших вариантов по 2024 и что с ними стало потом.</div>
+    <div class="tblWrap"><table class="tbl"><thead><tr><th>Вариант</th><th>2024: сделок · б.п.</th><th>2025–26</th><th>t</th></tr></thead><tbody>${top}</tbody></table></div>
+    <h2 style="margin-top:14px">Последние сделки по системе</h2>
+    <div class="tblWrap"><table class="tbl"><thead><tr><th>Время NY</th><th>Сделка</th><th>Выход</th><th>Б.п.</th></tr></thead><tbody>${recent}</tbody></table></div>
+  </section>`;
+}
+
+
+function trendHtml() {
+  const T = state.tr; if (!T) return '<section class="panel"><h2>Трендовая торговля</h2><div class="note">Проверка трендовых стратегий ещё считается.</div></section>';
+  const st = (x) => x && x.n ? `${n(x.annPct, 1)}% в год · ${x.n} сд. · просадка ${n(x.maxDDPct, 1)}%` : '—';
+  const trendWord = (v) => v === 1 ? '<span class="pill p-long">вверх</span>' : v === -1 ? '<span class="pill p-short">вниз</span>' : '<span class="pill p-none">нет тренда</span>';
+  const now = COINS.map((c) => { const x = T.trendNow?.[c]; if (!x) return ''; return `<tr><td><b>${c}</b></td><td>${trendWord(x.ema)}</td><td>${trendWord(x.slopeState)} <span class="note">${n(x.slope, 1)}σ</span></td><td>${fp(x.lo20)} – ${fp(x.hi20)}</td></tr>`; }).join('');
+  const fams = Object.values(T.families || {});
+  const famHtml = fams.map((F) => {
+    const b = F.best, ok = b.test.n >= 15 && b.test.annPct > 0 && (b.test.t || 0) >= 1.5;
+    const bc = COINS.map((c) => `<tr><td>${c}</td><td>${st(F.byCoin[c].train)}</td><td>${st(F.byCoin[c].test)}</td></tr>`).join('') + ['long', 'short'].map((sd) => `<tr><td>${sd === 'long' ? 'Лонг' : 'Шорт'}</td><td>${st(F.bySide[sd].train)}</td><td>${st(F.bySide[sd].test)}</td></tr>`).join('');
+    const top = F.top.map((g) => `<tr><td>${esc(g.label)}</td><td>${n(g.train.annPct, 1)}%</td><td class="${(g.test.annPct || 0) > 0 ? 'up' : 'dn'}">${n(g.test.annPct, 1)}%</td><td>${g.test.n || 0}</td></tr>`).join('');
+    return `<section class="panel"><h2>${esc(F.name)}</h2>
+      <div class="banner ${ok ? 'b-ok' : 'b-warm'}">${ok ? 'Работает и на 2025–2026, которые не участвовали в подборе.' : 'На 2025–2026 устойчивого результата нет.'} В плюсе на проверке ${n(F.positiveTestShare, 0)}% из ${F.nVariants} вариантов.</div>
+      <div style="margin:8px 0"><b>${esc(b.label)}</b></div>
+      <div class="out">${[['2023–24 (подбор)', st(b.train)], ['2025–26 (проверка)', st(b.test)], ['Прибыльных 25–26', b.test.n ? n(b.test.win, 0) + '%' : '—'], ['Средняя сделка 25–26', b.test.n ? n(b.test.avg, 0) + ' б.п.' : '—'], ['t', n(b.test.t, 1)], ['Держим в среднем', b.test.n ? n(b.test.holdH, 0) + ' ч' : '—']].map(([l, x]) => `<div class="cell"><span class="l">${l}</span><span class="v" style="font-size:14px">${x}</span></div>`).join('')}</div>
+      ${equitySvg(F.equity, '%')}
+      <details><summary>Разбивка и другие варианты</summary>
+      <div class="tblWrap"><table class="tbl"><thead><tr><th>Срез</th><th>2023–24</th><th>2025–26</th></tr></thead><tbody>${bc}</tbody></table></div>
+      <div class="tblWrap" style="margin-top:8px"><table class="tbl"><thead><tr><th>Вариант (лучшие по 2023–24)</th><th>В год 23–24</th><th>В год 25–26</th><th>Сделок</th></tr></thead><tbody>${top}</tbody></table></div></details>
+    </section>`;
+  }).join('');
+  return `<section class="panel"><h2>Трендовая торговля · где тренд сейчас</h2>
+    <div class="tblWrap"><table class="tbl"><thead><tr><th>Монета</th><th>EMA 4ч</th><th>Наклон недели</th><th>Канал 20 дней</th></tr></thead><tbody>${now}</tbody></table></div>
+    <div class="note" style="margin-top:8px">Тренд вверх по EMA — цена выше EMA50 и EMA50 выше EMA200 на 4-часовом графике. Наклон — движение за неделю в единицах обычной волатильности (больше 1σ — тренд). Доходность — на весь капитал, разделённый поровну на BTC, ETH и SOL, без плеча, после комиссий. Для сравнения, просто купить и держать: ${n(T.buyHold.train, 0)}% за 2023–24 и ${n(T.buyHold.test, 0)}% за 2025–26.</div>
+  </section>${famHtml}`;
+}
+
 function renderResearch() {
   const el = $('rsView'); if (!el || state.view !== 'rs') return;
   if (MODE === 'claude' && !mcp) { el.innerHTML = '<div class="panel empty">Подключаюсь к данным…</div>'; return; }
@@ -669,7 +723,7 @@ function renderResearch() {
   const hours = R.time?.hours || [];
   const bl = R.baselines || {};
   const vItems = rsVerdict(R);
-  el.innerHTML = `
+  el.innerHTML = trendHtml() + v2Html() + `
   <section class="panel"><h2>Что нашли · ${esc(new Date(R.period.from).toLocaleDateString('ru-RU'))} – ${esc(new Date(R.period.to).toLocaleDateString('ru-RU'))}${R.synthetic ? ' · ТЕСТОВЫЕ ДАННЫЕ' : ''}</h2>
     <div style="display:grid;gap:8px">${vItems.map((t) => `<div class="banner b-info">${esc(t)}</div>`).join('')}</div>
     <div class="note" style="margin-top:8px">Правила и модели подбирались на 2023–2024, вывод — только по 2025–2026. Доходность в б.п. (0,01%) за сделку; комиссии Hyperliquid: ${R.costs.maker} б.п. лимитами, ${R.costs.taker} б.п. по рынку.</div>
