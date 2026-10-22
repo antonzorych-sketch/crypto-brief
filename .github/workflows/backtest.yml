@@ -1,0 +1,34 @@
+name: backtest
+on:
+  workflow_dispatch:
+  push:
+    paths: ['backtest/run.py', '.github/workflows/backtest.yml']
+permissions:
+  contents: write
+concurrency: backtest
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q pandas numpy requests
+      - uses: actions/cache@v4
+        with:
+          path: data_cache
+          key: binance-archive-${{ github.run_id }}
+          restore-keys: binance-archive-
+      - name: Backtest
+        run: |
+          mkdir -p data_cache
+          python backtest/run.py --start 2023-01-01 --out backtest/results.json 2>&1 | tee backtest/log.txt
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name github-actions; git config user.email actions@github.com
+          git pull -q --rebase origin main || true
+          git add backtest/results.json backtest/log.txt 2>/dev/null || true
+          git commit -m "Backtest results [skip ci]" && git push || echo "nothing to commit"
