@@ -1,0 +1,36 @@
+name: v13
+on:
+  workflow_dispatch:
+  push:
+    paths: ['backtest/v13.py', '.github/workflows/v13.yml']
+permissions:
+  contents: write
+concurrency: v13
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q pandas numpy yfinance
+      - uses: actions/cache@v4
+        with:
+          path: data_cache
+          key: binance-archive-${{ github.run_id }}
+          restore-keys: binance-archive-
+      - name: V3
+        run: |
+          set -o pipefail
+          mkdir -p data_cache
+          python -u backtest/v13.py 2>&1 | grep -v "Warning\|See https" | tee backtest/v13-log.txt
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name github-actions; git config user.email actions@github.com
+          git checkout -B v13
+          git add -f backtest/v13-log.txt backtest/v13.json 2>/dev/null || git add -f backtest/v13-log.txt
+          git commit -q -m "V13 results [skip ci]" || true
+          git push -f origin v13
