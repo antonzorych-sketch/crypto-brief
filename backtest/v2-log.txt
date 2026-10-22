@@ -1,0 +1,11 @@
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+BTC frame 25
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+ETH frame 50
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+SOL frame 77
+models 95
+signals 73764 98
+grid 540 116
+best лимит −0.25 ATR, ждать 2ч; выход через 8ч; уверенность ≥58%, фильтр времени {'n': 1328, 'avg': 16.94, 'sum': 22497.0, 'win': 56.4, 't': 2.59, 'maxDD': -4888.0, 'missed': 0, 'fillRate': 100.0} {'n': 1499, 'avg': 6.04, 'sum': 9047.0, 'win': 54.0, 't': 1.12, 'maxDD': -6677.0, 'missed': 0, 'fillRate': 100.0}
+saved backtest/v2.json 124224 116
