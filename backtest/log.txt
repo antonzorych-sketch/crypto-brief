@@ -1,0 +1,39 @@
+BTC fut 2001600 2
+BTC spot 2001520 4
+BTC metrics 400187 6
+BTC funding 4107
+BTC book 396223 31
+BTC parse errors 0 []
+/home/runner/work/crypto-brief/crypto-brief/backtest/run.py:313: RuntimeWarning: divide by zero encountered in divide
+  'oiCh24': (oi / oi24 - 1) * 100, 'crowdPct': crowd_pct, 'topPct': top_pct,
+/home/runner/work/crypto-brief/crypto-brief/backtest/run.py:313: RuntimeWarning: invalid value encountered in divide
+  'oiCh24': (oi / oi24 - 1) * 100, 'crowdPct': crowd_pct, 'topPct': top_pct,
+BTC features 387360 35
+ETH fut 2001600 37
+ETH spot 2001520 39
+ETH metrics 400187 41
+ETH funding 4107
+ETH book 396511 67
+ETH parse errors 0 []
+/home/runner/work/crypto-brief/crypto-brief/backtest/run.py:313: RuntimeWarning: divide by zero encountered in divide
+  'oiCh24': (oi / oi24 - 1) * 100, 'crowdPct': crowd_pct, 'topPct': top_pct,
+/home/runner/work/crypto-brief/crypto-brief/backtest/run.py:313: RuntimeWarning: invalid value encountered in divide
+  'oiCh24': (oi / oi24 - 1) * 100, 'crowdPct': crowd_pct, 'topPct': top_pct,
+ETH features 387360 71
+SOL fut 2001600 72
+SOL spot 2001519 74
+SOL metrics 400170 76
+SOL funding 4107
+SOL book 395647 101
+SOL parse errors 0 []
+/home/runner/work/crypto-brief/crypto-brief/backtest/run.py:313: RuntimeWarning: divide by zero encountered in divide
+  'oiCh24': (oi / oi24 - 1) * 100, 'crowdPct': crowd_pct, 'topPct': top_pct,
+/home/runner/work/crypto-brief/crypto-brief/backtest/run.py:313: RuntimeWarning: invalid value encountered in divide
+  'oiCh24': (oi / oi24 - 1) * 100, 'crowdPct': crowd_pct, 'topPct': top_pct,
+SOL features 387360 105
+live 3943 32.8 -0.017 -68.97 -147.41 187
+scaled 4322 33.5 -0.01 -42.35 -134.61 275
+market 5324 37.4 0.001 6.25 -114.7 386
+nothermo 6269 34.6 -0.012 -72.65 -204.8 512
+norr 4311 33.6 -0.01 -43.22 -137.67 599
+saved backtest/results.json 4478100 599
