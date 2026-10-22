@@ -1,0 +1,13 @@
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+BTC frame 29
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+ETH frame 58
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+SOL frame 86
+prep 110
+grid 99 114
+breakout пробой 55-дневного максимума/минимума; тренд по EMA 4ч; стоп 2.0 ATR, трейлинг 4.0 ATR {'n': 41, 'avg': 671.0, 'win': 36.6, 't': 1.04, 'retPct': 91.7, 'annPct': 49.5, 'maxDDPct': -10.8, 'holdH': 454.0} {'n': 39, 'avg': 162.2, 'win': 48.7, 't': 0.77, 'retPct': 21.1, 'annPct': 11.7, 'maxDDPct': -34.0, 'holdH': 534.0} 83.0
+pullback откат против тренда ≥0.5σ → вход по тренду; тренд по 20-дневному каналу; стоп 1.5 ATR, цель 3.0 ATR, максимум 5д {'n': 23, 'avg': 107.2, 'win': 52.2, 't': 0.99, 'retPct': 8.2, 'annPct': 4.4, 'maxDDPct': -4.3, 'holdH': 89.0} {'n': 22, 'avg': 13.3, 'win': 40.9, 't': 0.18, 'retPct': 1.0, 'annPct': 0.5, 'maxDDPct': -3.4, 'holdH': 100.0} 78.0
+cross пересечение EMA20/50 (4ч), всегда в рынке; без фильтра тренда; стоп 5.0 ATR {'n': 231, 'avg': 101.4, 'win': 30.7, 't': 1.11, 'retPct': 78.1, 'annPct': 42.2, 'maxDDPct': -23.0, 'holdH': 211.0} {'n': 221, 'avg': 58.5, 'win': 33.0, 't': 0.91, 'retPct': 43.1, 'annPct': 23.9, 'maxDDPct': -19.7, 'holdH': 211.0} 100.0
+model модель ≥58% по тренду; тренд по наклону недели; стоп 1.0 ATR, цель 2.0 ATR, максимум 1д {'n': 237, 'avg': 47.2, 'win': 54.9, 't': 2.04, 'retPct': 37.3, 'annPct': 37.2, 'maxDDPct': -9.1, 'holdH': 22.0} {'n': 261, 'avg': 7.5, 'win': 47.1, 't': 0.37, 'retPct': 6.5, 'annPct': 3.6, 'maxDDPct': -11.8, 'holdH': 22.0} 75.0
+saved backtest/trend.json 47788 114
