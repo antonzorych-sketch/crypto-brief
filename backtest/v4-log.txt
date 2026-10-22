@@ -1,0 +1,64 @@
+BTC 2020-01-01 2026-09-30 2465
+ETH 2020-01-01 2026-09-30 2465
+SOL 2020-09-14 2026-09-30 2203
+
+вариант                                   2020-22                2023-24                2025-26
+mom20|ls|vol                  42.2% sh 1.24 dd -32.6    19.6% sh 0.69 dd -40.6    17.8% sh 0.63 dd -30.3
+ema20/100|long|flat          147.4% sh 1.88 dd -42.8    57.0% sh 1.20 dd -40.6    15.7% sh 0.61 dd -23.5
+ema20/100|ls|flat            129.8% sh 1.49 dd -55.1   -16.7% sh-0.11 dd -61.9    19.3% sh 0.60 dd -41.0
+ema10/40|ls|vol               49.3% sh 1.39 dd -45.3    21.5% sh 0.73 dd -39.5    14.7% sh 0.56 dd -31.2
+ema10/40|long|flat           137.5% sh 1.85 dd -57.4    87.4% sh 1.59 dd -40.2    13.2% sh 0.55 dd -34.7
+ema20/100|ls|vol              63.2% sh 1.65 dd -26.0   -13.4% sh-0.27 dd -51.3    14.9% sh 0.55 dd -33.2
+mom50|ls|vol                  26.9% sh 0.89 dd -38.5    20.2% sh 0.69 dd -48.9    14.2% sh 0.54 dd -32.3
+mom50|long|flat               99.0% sh 1.49 dd -52.8    81.4% sh 1.49 dd -44.5    12.8% sh 0.53 dd -37.5
+ema10/40|ls|flat             109.0% sh 1.37 dd -66.6    16.0% sh 0.54 dd -57.3    15.1% sh 0.53 dd -36.5
+ema20/100|long|vol            51.8% sh 1.88 dd -27.6    35.5% sh 1.13 dd -29.2    10.0% sh 0.53 dd -16.7
+mom20|long|vol                41.5% sh 1.56 dd -40.7    61.3% sh 1.83 dd -23.7    10.4% sh 0.51 dd -30.0
+mom50|ls|flat                 49.0% sh 0.91 dd -59.3     9.5% sh 0.44 dd -65.6    13.7% sh 0.51 dd -40.4
+ema10/40|long|vol             44.8% sh 1.64 dd -39.0    62.1% sh 1.80 dd -26.0     8.7% sh 0.45 dd -32.6
+mom50|long|vol                33.6% sh 1.31 dd -35.7    61.2% sh 1.73 dd -29.6     8.6% sh 0.44 dd -37.1
+mom20|long|flat              114.6% sh 1.68 dd -62.3    88.9% sh 1.69 dd -35.1     9.0% sh 0.42 dd -37.2
+ENS_ema|ls|vol                56.7% sh 1.68 dd -26.3     6.8% sh 0.38 dd -37.4     8.5% sh 0.42 dd -26.3
+mom20|ls|flat                 71.6% sh 1.10 dd -60.9    15.8% sh 0.54 dd -54.8     6.8% sh 0.39 dd -40.5
+ENS_ema|ls|flat              126.3% sh 1.55 dd -46.1     8.2% sh 0.40 dd -46.0     6.4% sh 0.37 dd -30.3
+ENS_ema|long|flat            156.4% sh 2.12 dd -38.7    55.1% sh 1.31 dd -39.0     3.9% sh 0.28 dd -24.0
+ENS_ema|long|vol              54.9% sh 2.16 dd -16.7    37.6% sh 1.38 dd -26.0     2.9% sh 0.25 dd -18.7
+ENS_mom|ls|vol                49.2% sh 1.63 dd -25.3    19.4% sh 0.85 dd -31.4     1.7% sh 0.20 dd -21.0
+don20|long|flat              145.0% sh 1.92 dd -58.5    83.8% sh 1.55 dd -37.6     0.1% sh 0.16 dd -39.8
+mom100|long|flat             153.0% sh 1.90 dd -46.1    84.4% sh 1.55 dd -27.9    -1.9% sh 0.11 dd -34.2
+BUYHOLD                      102.1% sh 1.24 dd -84.6   173.5% sh 2.01 dd -33.0   -11.3% sh 0.10 dd -64.3
+ENSEMBLE|ls|vol               53.6% sh 1.75 dd -23.6    14.6% sh 0.69 dd -28.1    -1.3% sh 0.09 dd -21.1
+don20|ls|flat                127.6% sh 1.46 dd -64.5    12.1% sh 0.48 dd -62.7    -8.5% sh 0.08 dd -36.3
+ENS_mom|ls|flat              107.3% sh 1.49 dd -42.8    22.4% sh 0.72 dd -45.0    -5.8% sh 0.07 dd -33.1
+ENSEMBLE|ls|flat             121.6% sh 1.60 dd -41.6    19.1% sh 0.65 dd -38.9    -6.7% sh 0.06 dd -32.6
+don20|long|vol                49.1% sh 1.68 dd -38.7    56.1% sh 1.61 dd -32.6    -1.9% sh 0.04 dd -35.3
+mom100|ls|flat               117.9% sh 1.40 dd -56.7    14.3% sh 0.52 dd -45.8   -14.2% sh 0.02 dd -48.9
+ema50/200|long|vol            45.8% sh 1.57 dd -31.7    50.5% sh 1.42 dd -22.3    -2.9% sh-0.00 dd -27.1
+ENSEMBLE|long|flat           142.2% sh 2.16 dd -33.7    53.8% sh 1.35 dd -32.7    -2.4% sh-0.00 dd -21.9
+don20|ls|vol                  59.2% sh 1.57 dd -39.2    13.8% sh 0.55 dd -51.2    -5.7% sh-0.01 dd -37.4
+ENSEMBLE|long|vol             50.6% sh 2.19 dd -17.1    36.8% sh 1.45 dd -20.9    -1.9% sh-0.04 dd -18.2
+ema50/200|long|flat          127.4% sh 1.64 dd -50.7    82.7% sh 1.51 dd -30.4    -8.5% sh-0.08 dd -36.9
+ema50/200|ls|vol              51.5% sh 1.36 dd -40.5     7.7% sh 0.39 dd -48.7    -9.6% sh-0.08 dd -38.3
+don55|long|flat              123.1% sh 1.71 dd -60.9    84.5% sh 1.47 dd -35.6    -8.5% sh-0.08 dd -44.6
+mom100|long|vol               55.1% sh 1.97 dd -28.9    56.0% sh 1.63 dd -21.9    -5.0% sh-0.09 dd -32.1
+ENS_mom|long|vol              46.5% sh 2.09 dd -18.8    41.6% sh 1.61 dd -19.4    -3.5% sh-0.17 dd -21.4
+mom100|ls|vol                 57.9% sh 1.51 dd -34.7    14.1% sh 0.57 dd -30.4   -14.0% sh-0.18 dd -47.0
+don55|ls|flat                 79.7% sh 1.17 dd -63.2    18.2% sh 0.58 dd -59.1   -23.3% sh-0.20 dd -57.0
+ENS_mom|long|flat            129.5% sh 2.05 dd -34.8    59.1% sh 1.47 dd -31.6    -5.9% sh-0.20 dd -24.6
+ENS_don|long|flat            143.6% sh 2.16 dd -36.1    62.6% sh 1.44 dd -28.2    -7.4% sh-0.20 dd -26.4
+ema50/200|ls|flat             99.5% sh 1.27 dd -63.2    13.2% sh 0.50 dd -56.3   -22.1% sh-0.22 dd -53.2
+don100|long|vol               48.2% sh 1.83 dd -30.7    59.0% sh 1.60 dd -20.5    -8.5% sh-0.28 dd -27.5
+ENS_don|ls|flat              132.4% sh 1.68 dd -42.2    23.7% sh 0.73 dd -44.1   -20.5% sh-0.28 dd -42.7
+mom200|long|vol               47.5% sh 1.61 dd -37.4    51.0% sh 1.40 dd -23.2    -9.2% sh-0.31 dd -28.4
+don55|long|vol                44.8% sh 1.68 dd -40.0    47.3% sh 1.38 dd -34.5   -11.7% sh-0.34 dd -43.0
+don100|long|flat             137.4% sh 1.84 dd -46.6    90.9% sh 1.63 dd -28.4   -16.3% sh-0.37 dd -42.5
+don100|ls|vol                 58.0% sh 1.56 dd -42.2    20.9% sh 0.77 dd -39.0   -20.6% sh-0.39 dd -44.3
+ENS_don|long|vol              51.1% sh 2.17 dd -21.1    37.7% sh 1.39 dd -24.8    -7.9% sh-0.40 dd -22.6
+ENS_don|ls|vol                56.2% sh 1.80 dd -25.2    14.7% sh 0.67 dd -37.2   -15.0% sh-0.41 dd -31.7
+mom200|ls|vol                 61.3% sh 1.52 dd -47.3     9.1% sh 0.43 dd -30.8   -20.2% sh-0.49 dd -45.1
+mom200|long|flat             106.0% sh 1.48 dd -56.6    87.3% sh 1.54 dd -33.0   -20.2% sh-0.51 dd -47.7
+don55|ls|vol                  43.5% sh 1.28 dd -42.1     2.5% sh 0.24 dd -56.1   -24.5% sh-0.53 dd -53.4
+don100|ls|flat               139.4% sh 1.57 dd -61.6    24.2% sh 0.69 dd -48.8   -36.5% sh-0.56 dd -63.3
+mom200|ls|flat               131.3% sh 1.46 dd -69.3    21.1% sh 0.63 dd -40.9   -40.1% sh-0.84 dd -67.9
+  out = {'generated': pd.Timestamp.utcnow().isoformat(), 'res': res,
+saved
