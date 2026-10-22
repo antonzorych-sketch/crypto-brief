@@ -1,0 +1,118 @@
+BTC 2098 фандинг 10.8%
+ETH 2098 фандинг 11.4%
+SOL 2093 фандинг 1.0%
+BNB 2098 фандинг -0.5%
+XRP 2093 фандинг 12.9%
+DOGE 2098 фандинг 12.6%
+ADA 2098 фандинг 11.3%
+AVAX 2098 фандинг 7.8%
+LINK 2098 фандинг 14.1%
+DOT 2098 фандинг 6.7%
+LTC 2093 фандинг 13.0%
+BCH 2098 фандинг 2.2%
+ATOM 2098 фандинг 6.1%
+NEAR 2093 фандинг 10.3%
+APT 1442 фандинг -0.9%
+ARB 1287 фандинг 8.7%
+OP 1582 фандинг 6.9%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+INJ 1505 фандинг -2.0%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+SUI 1246 фандинг 5.5%
+SEI 1140 фандинг -4.4%
+TIA 1065 фандинг -2.0%
+FIL 2093 фандинг 12.5%
+UNI 2098 фандинг 14.1%
+AAVE 2098 фандинг 14.0%
+ETC 2098 фандинг 8.5%
+TRX 2093 фандинг 0.8%
+XLM 2093 фандинг 11.6%
+ALGO 2098 фандинг 12.1%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+HBAR 2018 фандинг 7.8%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+SAND 2069 фандинг 9.2%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+MANA 2020 фандинг 7.3%
+AXS 2098 фандинг -30.2%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+GALA 1838 фандинг 7.6%
+APE 1658 фандинг -5.3%
+DYDX 1846 фандинг 8.0%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+LDO 1469 фандинг 8.4%
+RUNE 2098 фандинг 8.5%
+WLD 1164 фандинг 3.9%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+FET 1352 фандинг 3.7%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+ENS 1765 фандинг 7.4%
+CRV 2098 фандинг 6.2%
+SNX 2098 фандинг 7.4%
+COMP 2098 фандинг 2.0%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+ICP 1464 фандинг 5.1%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+IMX 1687 фандинг 0.0%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+STX 1317 фандинг 6.8%
+EGLD 2098 фандинг 13.5%
+THETA 2098 фандинг 12.5%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+FLOW 1688 фандинг -1.7%
+CHZ 2078 фандинг 10.1%
+KAVA 2098 фандинг -2.0%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+ONE 2017 фандинг -0.6%
+ZIL 2093 фандинг 3.2%
+ENJ 2098 фандинг -3.4%
+BAT 2098 фандинг 11.2%
+ZEC 2093 фандинг 8.3%
+DASH 2098 фандинг 7.5%
+NEO 2098 фандинг 12.5%
+EOS 1601 фандинг 15.1%
+IOTA 2093 фандинг 10.5%
+XTZ 2098 фандинг 9.2%
+VET 2093 фандинг 14.6%
+QTUM 2098 фандинг 7.8%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+MASK 1855 фандинг 2.6%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+GMT 1658 фандинг -6.4%
+BLUR 1041 фандинг -11.0%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+PENDLE 1160 фандинг 7.7%
+  df = pd.concat({'f': fund.rename(lambda x: x.normalize()), 'p': perp, 's': spot}, axis=1).dropna()
+JUP 972 фандинг -0.3%
+ONDO 537 фандинг 0.8%
+ENA 911 фандинг -13.1%
+STRK 953 фандинг 3.9%
+PYTH 971 фандинг 3.0%
+TIA 1065 фандинг -2.0%
+монет с данными: 72
+
+Средний фандинг по всем монетам по годам (годовых): {'2021': 35.3, '2022': -4.0, '2023': 5.8, '2024': 10.9, '2025': -0.6, '2026': -7.2}
+
+топ-3, порог 15%, окно 7д | в позиции 24% дней
+   2021: 41.4% | 2022: 0.0% | 2023: -1.9% | 2024: 4.6% | 2025: 0.0% | 2026: -1.2% | all: 6.5% | Шарп 2.84 maxDD -3.6% худший день -0.74%
+   риск шорт-ноги: макс. рост за день 57%, дней с ростом >20%: 36
+
+топ-5, порог 15%, окно 7д | в позиции 24% дней
+   2021: 43.3% | 2022: 0.0% | 2023: -2.0% | 2024: 4.7% | 2025: 0.0% | 2026: -1.2% | all: 6.8% | Шарп 3.03 maxDD -3.3% худший день -0.74%
+   риск шорт-ноги: макс. рост за день 57%, дней с ростом >20%: 53
+
+топ-5, порог 30%, окно 7д | в позиции 16% дней
+   2021: 42.3% | 2022: 0.0% | 2023: 0.2% | 2024: 5.5% | 2025: 0.0% | 2026: 0.0% | all: 7.3% | Шарп 3.42 maxDD -1.2% худший день -0.39%
+   риск шорт-ноги: макс. рост за день 57%, дней с ростом >20%: 43
+
+топ-10, порог 15%, окно 7д | в позиции 24% дней
+   2021: 43.0% | 2022: 0.0% | 2023: -1.4% | 2024: 5.9% | 2025: 0.0% | 2026: -1.2% | all: 7.1% | Шарп 3.32 maxDD -3.3% худший день -0.74%
+   риск шорт-ноги: макс. рост за день 57%, дней с ростом >20%: 97
+
+топ-5, порог 15%, окно 3д | в позиции 24% дней
+   2021: 31.7% | 2022: -1.3% | 2023: -5.0% | 2024: -0.3% | 2025: -0.8% | 2026: -11.8% | all: 1.8% | Шарп 0.61 maxDD -18.0% худший день -3.20%
+   риск шорт-ноги: макс. рост за день 57%, дней с ростом >20%: 53
+
+топ-5, порог 15%, окно 30д | в позиции 24% дней
+   2021: 45.8% | 2022: 0.0% | 2023: 2.8% | 2024: 7.7% | 2025: -0.2% | 2026: 0.0% | all: 8.6% | Шарп 4.20 maxDD -0.7% худший день -0.41%
+   риск шорт-ноги: макс. рост за день 104%, дней с ростом >20%: 56
