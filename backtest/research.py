@@ -192,7 +192,7 @@ def deciles(D, f, tgt_bps):
     for part, mask in (('train', tr), ('test', ~tr)):
         g = D[mask].groupby('_dec')[tgt_bps].agg(['mean', 'count'])
         out[part] = [{'d': int(i) + 1, 'bps': round(float(v['mean']), 2), 'n': int(v['count'])} for i, v in g.iterrows()]
-    D.drop(columns=['_dec'], inplace=True)
+    del D['_dec']
     return out
 
 
@@ -240,6 +240,7 @@ def walk_forward(D, target, horizon):
     from sklearn.linear_model import LogisticRegression
     from sklearn.preprocessing import StandardScaler
     from sklearn.pipeline import make_pipeline
+    from sklearn.impute import SimpleImputer
     from sklearn.ensemble import HistGradientBoostingClassifier
     from sklearn.metrics import roc_auc_score
     feats = [f for f in FEATS if not D[f].isna().all()] + ['hs', 'hc']
@@ -258,8 +259,8 @@ def walk_forward(D, target, horizon):
         tem = (D.t.values >= s_ms) & (D.t.values < e_ms)
         if trm.sum() < 2000 or tem.sum() == 0:
             continue
-        Xtr = np.nan_to_num(X[trm]); Xte = np.nan_to_num(X[tem])
-        lg = make_pipeline(StandardScaler(), LogisticRegression(C=0.05, max_iter=500))
+        Xtr, Xte = X[trm], X[tem]
+        lg = make_pipeline(SimpleImputer(strategy='median'), StandardScaler(), LogisticRegression(C=0.05, max_iter=500))
         lg.fit(Xtr, y[trm]); preds['logit'][tem] = lg.predict_proba(Xte)[:, 1]
         gb = HistGradientBoostingClassifier(max_depth=3, learning_rate=0.04, max_iter=250, min_samples_leaf=300, l2_regularization=1.0, random_state=1)
         gb.fit(X[trm], y[trm]); preds['gbm'][tem] = gb.predict_proba(X[tem])[:, 1]
@@ -379,6 +380,12 @@ def main():
             print(coin, 'frame', len(frames[-1]), round(time.time() - t0), flush=True)
     D = pd.concat(frames, ignore_index=True)
     D = D[D.t >= D.t.min() + 45 * 24 * H].reset_index(drop=True)
+    D[FEATS] = D[FEATS].replace([np.inf, -np.inf], np.nan)
+    for f in FEATS:   # подрезаем выбросы по каждой монете (0.1% с каждой стороны)
+        for coin in COINS:
+            m = D.coin == coin
+            lo, hi = D.loc[m, f].quantile([0.001, 0.999])
+            D.loc[m, f] = D.loc[m, f].clip(lo, hi)
     print('rows', len(D), flush=True)
     res = {'generated': datetime.now(timezone.utc).isoformat(timespec='seconds'), 'synthetic': a.synthetic,
            'split': SPLIT, 'period': {'from': int(D.t.min()), 'to': int(D.t.max())}, 'costs': {'taker': COST_TAKER, 'maker': COST_MAKER},
