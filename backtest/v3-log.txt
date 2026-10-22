@@ -1,0 +1,9 @@
+BTC 33160 2
+ETH 33160 4
+SOL 33160 5
+grid 192 7
+breakout Пробой консолидации на объёме (1.1); консолидация 2 дн. не шире 3.0 ATR; объём ≥3.0× среднего; по тренду EMA 4ч; лимит на 50% бара пробоя; одна цель 2R {'n': 34, 'avgR': 0.373, 'sumR': 12.7, 'win': 47.1, 'pf': 1.67, 'maxDD': -3.1, 'lossStreak': 3, 't': 1.42, 'perYear': 6.4, 'tradesPerMonth': 1.4} {'n': 29, 'avgR': -0.112, 'sumR': -3.3, 'win': 31.0, 'pf': 0.84, 'maxDD': -9.7, 'lossStreak': 9, 't': -0.43, 'perYear': -1.8, 'tradesPerMonth': 1.3} 88.0
+retest Тест уровня после пробоя (1.2 / V4); консолидация 2 дн. не шире 3.0 ATR; объём ≥2.0× среднего; по тренду EMA 4ч; вход по закрытию бара; выход по курсу: 40% на 1R, 30% на 2R, 30% на 3R, стоп в б/у после 1R {'n': 80, 'avgR': 0.092, 'sumR': 7.4, 'win': 53.8, 'pf': 1.19, 'maxDD': -7.8, 'lossStreak': 6, 't': 0.71, 'perYear': 3.7, 'tradesPerMonth': 3.4} {'n': 64, 'avgR': -0.222, 'sumR': -14.2, 'win': 39.1, 'pf': 0.65, 'maxDD': -18.6, 'lossStreak': 5, 't': -1.59, 'perYear': -7.9, 'tradesPerMonth': 3.0} 0.0
+false Ложный пробой с пин-баром (V1); консолидация 2 дн. не шире 3.0 ATR; объём ≥2.0× среднего; по тренду EMA 4ч; вход по закрытию бара; 50% на 1R, остаток трейлинг 2 ATR {'n': 31, 'avgR': 0.272, 'sumR': 8.4, 'win': 61.3, 'pf': 1.66, 'maxDD': -8.5, 'lossStreak': 8, 't': 1.22, 'perYear': 4.3, 'tradesPerMonth': 1.3} {'n': 20, 'avgR': -0.053, 'sumR': -1.1, 'win': 45.0, 'pf': 0.91, 'maxDD': -7.3, 'lossStreak': 4, 't': -0.15, 'perYear': -0.6, 'tradesPerMonth': 0.9} 44.0
+system {'train': {'n': 145, 'avgR': 0.196, 'sumR': 28.5, 'win': 53.8, 'pf': 1.41, 'maxDD': -9.8, 'lossStreak': 9, 't': 1.86, 'perYear': 14.4, 'tradesPerMonth': 6.1}, 'test': {'n': 113, 'avgR': -0.164, 'sumR': -18.5, 'win': 38.1, 'pf': 0.75, 'maxDD': -28.4, 'lossStreak': 7, 't': -1.36, 'perYear': -10.3, 'tradesPerMonth': 5.2}}
+saved backtest/v3.json 34667 7
