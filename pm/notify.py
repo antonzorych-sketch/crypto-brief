@@ -1,6 +1,6 @@
 """pm/notify: сводка прогона в Telegram.
-Токен бота — секрет TG_TOKEN. Чат — секрет TG_CHAT_ID; если его нет, берём чат из последних сообщений боту
-(достаточно написать боту /start — Telegram хранит сообщения 24 часа). Ничего не печатает в лог, кроме статуса."""
+Токен бота — секрет TG_TOKEN. Чат: секрет TG_CHAT_ID, иначе запомненный в кэше Actions (.tg/chat_id — кэш не публичный),
+иначе из последних сообщений боту (достаточно один раз написать /start). ID чата и токен в лог не пишутся."""
 import json, os, urllib.parse, urllib.request
 
 TOKEN = os.environ.get('TG_TOKEN', '').strip()
@@ -15,16 +15,25 @@ def api(method, **params):
     return json.loads(r.read())
 
 
+CACHE = '.tg/chat_id'
+
+
 def chat_id():
     if CHAT: return CHAT
     try:
         ups = api('getUpdates').get('result', [])
         for u in reversed(ups):
             m = u.get('message') or u.get('edited_message') or {}
-            if m.get('chat', {}).get('id'): return str(m['chat']['id'])
+            c = m.get('chat', {})
+            if c.get('id') and c.get('type') == 'private':
+                os.makedirs('.tg', exist_ok=True); open(CACHE, 'w').write(str(c['id']))
+                return str(c['id'])
     except Exception:
         pass
-    return None
+    try:
+        return open(CACHE).read().strip() or None
+    except Exception:
+        return None
 
 
 def usd(v): return ('+' if v >= 0 else '−') + f'${abs(v):.2f}'

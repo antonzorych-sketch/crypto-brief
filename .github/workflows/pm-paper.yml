@@ -42,6 +42,13 @@ jobs:
           python -u pm/spx.py --minutes "$M" > pm/paper/last-spx-log.txt 2>&1 &
           python -u pm/lag.py --minutes "$M" --coins "${{ github.event.inputs.coins || 'btc,eth,sol,xrp' }}" --edge "${{ github.event.inputs.edge || '0.04' }}" 2>&1 | tee pm/paper/last-log.txt
           wait
+      - name: Telegram chat (кэш, не публичный)
+        if: always()
+        uses: actions/cache@v4
+        with:
+          path: .tg
+          key: tg-chat-${{ github.run_id }}
+          restore-keys: tg-chat-
       - name: Report and save
         if: always()
         env:
