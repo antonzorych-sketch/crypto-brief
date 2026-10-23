@@ -34,12 +34,18 @@ def main():
     if st:
         pnl = sum(x['pnl'] for x in st); cost = sum(x['px'] * x['qty'] for x in st)
         wins = sum(x['side'] == x['result'] for x in st)
-        L.append(f'Закрыто {len(st)}, побед {wins} ({wins / len(st):.0%}), P&L ${pnl:+.2f} на оборот ${cost:.2f} ({pnl / cost:+.1%}), комиссии ${sum(x["fee"] for x in st):.2f}')
+        L.append(f'Закрыто {len(st)}, побед {wins} ({wins / len(st):.0%}), P&L ${pnl:+.2f} на оборот ${cost:.2f} ({pnl / cost:+.1%}), комиссии ${sum(x["fee"] + (x.get("exit") or {}).get("fee", 0) for x in st):.2f}')
         L += ['', '| Окно | Сделок | Побед | P&L $ | Ср. перевес |', '|---|---|---|---|---|']
         g = defaultdict(list)
         for x in st: g[x['tf']].append(x)
         for k, v in sorted(g.items()):
             L.append(f'| {k} | {len(v)} | {sum(x["side"] == x["result"] for x in v)} | {sum(x["pnl"] for x in v):+.2f} | {statistics.fmean(x["edge"] for x in v):.3f} |')
+        L += ['', '| Тип входа | Сделок | Побед % | P&L $ | Если держать до конца $ | Вышли досрочно |', '|---|---|---|---|---|---|']
+        g = defaultdict(list)
+        for x in st: g[x.get('reason', 'старая')].append(x)
+        for k, v in sorted(g.items()):
+            L.append(f'| {k} | {len(v)} | {sum(x["side"] == x["result"] for x in v) / len(v):.0%} | {sum(x["pnl"] for x in v):+.2f} | '
+                     f'{sum(x.get("pnl_hold", x["pnl"]) for x in v):+.2f} | {sum(bool(x.get("exit")) for x in v)} |')
         L += ['', '| Перевес | Сделок | Побед % | P&L $ |', '|---|---|---|---|']
         b = defaultdict(list)
         for x in st: b['0.04–0.07' if x['edge'] < 0.07 else '0.07–0.12' if x['edge'] < 0.12 else '0.12+'].append(x)

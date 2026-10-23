@@ -1,13 +1,19 @@
 """pm/lag: paper-трейдер «лага цены» на Polymarket US (рынки Up or Down 5m/15m/1h/1d).
 
 Идея: рынки рассчитываются по CF Benchmarks BRTI (среднее 60 секундных цен в последнюю минуту до начала и до конца окна).
-Мы строим свой прокси BRTI (медиана мидов Coinbase/Kraken/Bitstamp), считаем справедливую вероятность Up
-с учётом усреднения и волатильности и сравниваем с лучшими ценами в стакане Polymarket US.
-Если ask ниже справедливой цены на EDGE после тейкер-комиссии θ·p·(1-p), записываем виртуальную покупку.
+Мы строим свой прокси BRTI (медиана мидов Coinbase/Kraken/Bitstamp/Gemini/Crypto.com без выбросов), считаем
+справедливую вероятность Up с учётом усреднения и волатильности и сравниваем со стаканом Polymarket US.
+Входы трёх типов (поле reason):
+  lag   — справедливая цена резко сдвинулась за последние секунды, а стакан Polymarket стоит на месте;
+  last  — последняя минута окна: часть финального среднего уже известна, модель здесь точнее всего;
+  model — просто сильное расхождение с моделью (высокий порог, для сравнения).
+Выход: продаём, когда рынок догнал справедливую цену (иначе держим до расчёта). Для каждой сделки
+считаем и P&L «если бы держали» — чтобы видеть, помогает ли выход.
+Комиссия тейкера θ·p·(1-p) на вход и на выход.
 Исполнение — по следующему снимку стакана (имитация задержки ~1 с), объём ограничен тем, что стоит в стакане.
 Денег не трогает: только публичные данные, ключи не нужны.
 
-Запуск:  python pm/lag.py --minutes 350 --coins btc,eth --tfs 5m,15m,1h,1d
+Запуск:  python pm/lag.py --minutes 330 --coins btc --tfs 5m,15m,1h,1d
 Файлы:   pm/paper/<run>/trades.jsonl, snaps.jsonl.gz, lag.jsonl, summary.txt
 """
 import argparse, asyncio, gzip, json, math, os, statistics, time, urllib.request
@@ -20,14 +26,20 @@ import websockets
 G = 'https://gateway.polymarket.us'
 ET = ZoneInfo('America/New_York')
 TF = {'5m': 300, '15m': 900, '1h': 3600, '1d': 86400}
-SYM = {'btc': ('BTC-USD', 'BTC/USD', 'btcusd'), 'eth': ('ETH-USD', 'ETH/USD', 'ethusd'),
-       'sol': ('SOL-USD', 'SOL/USD', 'solusd'), 'xrp': ('XRP-USD', 'XRP/USD', 'xrpusd')}
+# coinbase, kraken, bitstamp, gemini, crypto.com — все входят в состав BRTI
+SYM = {'btc': ('BTC-USD', 'BTC/USD', 'btcusd', 'BTCUSD', 'BTC_USD'), 'eth': ('ETH-USD', 'ETH/USD', 'ethusd', 'ETHUSD', 'ETH_USD'),
+       'sol': ('SOL-USD', 'SOL/USD', 'solusd', 'SOLUSD', 'SOL_USD'), 'xrp': ('XRP-USD', 'XRP/USD', 'xrpusd', 'XRPUSD', 'XRP_USD')}
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--minutes', type=float, default=350)
 ap.add_argument('--coins', default='btc')
 ap.add_argument('--tfs', default='5m,15m,1h,1d')
-ap.add_argument('--edge', type=float, default=0.04, help='мин. перевес после комиссии, доли доллара')
+ap.add_argument('--edge', type=float, default=0.04, help='мин. перевес после комиссии для входа lag')
+ap.add_argument('--edge-last', type=float, default=0.03, help='мин. перевес в последней минуте')
+ap.add_argument('--edge-model', type=float, default=0.08, help='мин. перевес для входа без лага')
+ap.add_argument('--jump', type=float, default=0.04, help='на сколько должна сдвинуться fair за --look с')
+ap.add_argument('--look', type=float, default=5, help='окно поиска рывка, с')
+ap.add_argument('--no-exit', action='store_true', help='всегда держать до расчёта')
 ap.add_argument('--stake', type=float, default=5.0, help='$ на одну виртуальную сделку')
 ap.add_argument('--max-per-market', type=float, default=15.0, help='$ максимум в одном окне')
 ap.add_argument('--basis-bp', type=float, default=3.0, help='расхождение нашего индекса с BRTI, б.п.')
@@ -73,8 +85,13 @@ class Index:
         if mid and mid > 0: s.q[ex] = (time.time(), mid)
 
     def now(s):
+        """Медиана свежих мидов; биржу, ушедшую от медианы > 0.3%, выкидываем как выброс."""
         t = time.time(); v = [m for (tt, m) in s.q.values() if t - tt < 5]
-        return statistics.median(v) if v else None
+        if not v: return None
+        md = statistics.median(v); w = [x for x in v if abs(x / md - 1) < 0.003]
+        return statistics.median(w or v)
+
+    def fresh(s): t = time.time(); return sum(t - tt < 5 for tt, _ in s.q.values())
 
     def tick(s, sec):
         p = s.now()
@@ -150,6 +167,39 @@ async def feed_bitstamp():
             log('bitstamp reconnect', repr(e)[:120]); await asyncio.sleep(3)
 
 
+async def feed_gemini(c):
+    """Gemini v1, только лучший bid/ask (top_of_book) — одна монета на соединение."""
+    bb = {}
+    while True:
+        try:
+            async with websockets.connect(f'wss://api.gemini.com/v1/marketdata/{SYM[c][3]}?top_of_book=true&bids=true&offers=true&trades=false', ping_interval=20) as w:
+                async for m in w:
+                    for e in json.loads(m).get('events', []):
+                        if e.get('type') == 'change' and e.get('side') in ('bid', 'ask'): bb[e['side']] = float(e['price'])
+                    if 'bid' in bb and 'ask' in bb: IDX[c].put('gemini', (bb['bid'] + bb['ask']) / 2)
+        except Exception as e:
+            log('gemini reconnect', repr(e)[:120]); await asyncio.sleep(3)
+
+
+async def feed_cryptocom():
+    ins = {SYM[c][4]: c for c in COINS}
+    while True:
+        try:
+            async with websockets.connect('wss://stream.crypto.com/exchange/v1/market', ping_interval=None) as w:
+                await asyncio.sleep(1)
+                await w.send(json.dumps({'id': 1, 'method': 'subscribe', 'params': {'channels': [f'ticker.{i}' for i in ins]}}))
+                async for m in w:
+                    d = json.loads(m)
+                    if d.get('method') == 'public/heartbeat':
+                        await w.send(json.dumps({'id': d.get('id'), 'method': 'public/respond-heartbeat'})); continue
+                    r = d.get('result') or {}
+                    if r.get('instrument_name') in ins:
+                        for x in r.get('data', []):
+                            if x.get('b') and x.get('k'): IDX[ins[r['instrument_name']]].put('cryptocom', (float(x['b']) + float(x['k'])) / 2)
+        except Exception as e:
+            log('cryptocom reconnect', repr(e)[:120]); await asyncio.sleep(3)
+
+
 async def ticker():
     while True:
         sec = int(time.time())
@@ -178,6 +228,8 @@ class Mkt:
         s.meta = None; s.theta = 0.07; s.K = None; s.ksrc = None
         s.book = None; s.pending = []; s.pos = []; s.spent = 0.0; s.last_entry = {}
         s.gap = None  # (t, знак) когда fair ушла от mid > 0.05 — для замера лага
+        s.tape = deque(maxlen=60)  # (t, fair, mid) — для поиска рывков
+        s.exits = []  # заявки на продажу
         s.done = False; s.dead = False
 
     def t0(s): return s.start.timestamp()
@@ -186,6 +238,7 @@ class Mkt:
 
 
 MK = {}
+ERRS = {}
 STOP = float('inf')
 
 
@@ -197,7 +250,7 @@ def side_quotes(book):
     up = offs[0] if offs else None
     dn = (round(1 - bids[0][0], 4), bids[0][1]) if bids else None
     bb = bids[0][0] if bids else None
-    return up, dn, bb, md.get('state')
+    return up, dn, bb, md.get('state'), (bids[0] if bids else None)
 
 
 def fair_up(m, S, idx, now):
@@ -249,18 +302,64 @@ def set_strike(m, idx, now):
         m.ksrc = 'missed'
 
 
-def decide(m, up, dn, f, now, S):
+def jumped(m, f, mid, now, side):
+    """Рывок: fair сдвинулась в сторону side на --jump за --look с, а mid Polymarket — меньше чем на 1¢."""
+    old = [x for x in m.tape if now - A.look - 1.5 <= x[0] <= now - A.look + 0.5]
+    if not old or old[0][2] is None or mid is None: return False
+    sg = 1 if side == 'UP' else -1
+    return sg * (f - old[0][1]) >= A.jump and sg * (mid - old[0][2]) < 0.01
+
+
+def decide(m, up, dn, f, mid, now, S):
     tau = m.t1() - now
-    if f is None or tau < 15 or m.spent >= A.max_per_market: return
+    if f is None or tau < 5 or m.spent >= A.max_per_market: return
     if m.t1() > STOP + 300: return  # окно не закроется до конца прогона — не открываем
-    for side, q, p in (('UP', up, f), ('DOWN', dn, None if f is None else 1 - f)):
+    for side, q, p in (('UP', up, f), ('DOWN', dn, 1 - f)):
         if not q: continue
         ask, qty = q
-        if not (A.min_px <= ask <= 1 - A.min_px): continue  # хвосты модели ненадёжны, не покупаем лотерейные билеты
         edge = p - ask - fee(m.theta, ask)
-        if edge < A.edge or now - m.last_entry.get(side, 0) < 60: continue
+        if tau < 60:
+            reason, need, band = 'last', A.edge_last, 0.05
+        elif jumped(m, f, mid, now, side):
+            reason, need, band = 'lag', A.edge, A.min_px
+        else:
+            reason, need, band = 'model', A.edge_model, A.min_px
+        if not (band <= ask <= 1 - band): continue  # хвосты модели ненадёжны
+        if edge < need or now - m.last_entry.get(side, 0) < 30: continue
         m.last_entry[side] = now
-        m.pending.append({'side': side, 'limit': round(ask + 0.01, 2), 'fair': p, 'ask0': ask, 'edge': edge, 't': now, 'tau': tau, 'S': S})
+        m.pending.append({'side': side, 'reason': reason, 'limit': round(ask + 0.01, 2), 'fair': p, 'ask0': ask, 'edge': edge,
+                          't': now, 'tau': tau, 'S': S})
+
+
+def manage_exits(m, f, now, bb, bidq, up):
+    """Рынок догнал: можно продать нашу сторону не хуже справедливой цены — фиксируем.
+    UP продаём в bid, DOWN продаём по 1 - ask(Up)."""
+    if A.no_exit or f is None: return
+    for p in m.pos:
+        if p.get('exit') or p.get('exiting'): continue
+        if p['side'] == 'UP':
+            sell, q, fv = bb, (bidq[1] if bidq else 0), f
+        else:
+            sell, q, fv = (None if not up else round(1 - up[0], 4)), (up[1] if up else 0), 1 - f
+        if sell is None: continue
+        net = sell - fee(m.theta, sell)
+        if net >= fv - 0.005 and net > p['px']:  # продать сейчас не хуже, чем держать по модели, и в плюс
+            p['exiting'] = True
+            m.exits.append({'pos': p, 'limit': round(sell - 0.01, 2), 'fair_exit': fv, 't_sig': now})
+
+
+def fill_exits(m, bb, up, now):
+    for e in m.exits:
+        p = e['pos']; p.pop('exiting', None)
+        sell = bb if p['side'] == 'UP' else (None if not up else round(1 - up[0], 4))
+        if sell is not None and sell >= e['limit']:
+            fe = fee(m.theta, sell) * p['qty']
+            p['exit'] = {'px': sell, 't': now, 'tau': round(m.t1() - now), 'fee': round(fe, 4), 'fair': round(e['fair_exit'], 4)}
+            p['pnl_exit'] = round(p['qty'] * (sell - p['px']) - p['fee'] - fe, 4)
+            log(m.slug, p['side'], 'выход', p['px'], '->', sell, 'P&L', p['pnl_exit'])
+        else:
+            jw('exit_missed.jsonl', {'slug': m.slug, 'side': p['side'], 'limit': e['limit'], 'px_next': sell, 't': now})
+    m.exits = []
 
 
 def fill(m, up, dn, now):
@@ -306,7 +405,8 @@ async def settle(m):
     res = off or own
     for p in m.pos:
         win = (p['side'] == res)
-        p.update(F=F, own=own, official=off, result=res, pnl=round((1 if win else 0) * p['qty'] - p['px'] * p['qty'] - p['fee'], 4))
+        hold = round((1 if win else 0) * p['qty'] - p['px'] * p['qty'] - p['fee'], 4)
+        p.update(F=F, own=own, official=off, result=res, pnl_hold=hold, pnl=p.get('pnl_exit', hold))
         jw('settled.jsonl', p)
     jw('windows.jsonl', {'slug': m.slug, 'tf': m.tf, 'K': m.K, 'ksrc': m.ksrc, 'F': F, 'own': own, 'official': off, 'n_pos': len(m.pos)})
     log('итог', m.slug, 'K', m.K, 'F', F, 'own', own, 'official', off, 'сделок', len(m.pos))
@@ -317,9 +417,11 @@ async def poll(m):
         b = await asyncio.to_thread(http, f'{G}/v1/markets/{m.slug}/book')
         return side_quotes(b)
     except urllib.error.HTTPError as e:
+        ERRS[e.code] = ERRS.get(e.code, 0) + 1
         if e.code == 429: await asyncio.sleep(5)
         return None
-    except Exception:
+    except Exception as e:
+        k = type(e).__name__; ERRS[k] = ERRS.get(k, 0) + 1
         return None
 
 
@@ -337,7 +439,8 @@ async def engine(stop_at):
         hb['ok'] += sum(r is not None for r in res); hb['fail'] += sum(r is None for r in res)
         if now - hb['t'] >= 60:
             v = {c: (round(i.now() or 0, 2), None if i.sigma2() is None else round((i.sigma2() * 365 * 86400) ** .5, 2), len(i.q)) for c, i in IDX.items()}
-            log('пульс: рынков', len(live), 'с K', sum(m.K is not None for m in live), 'стакан ок/ошибок', hb['ok'], hb['fail'], 'индекс (цена, годовая vol, бирж)', v)
+            log('пульс: рынков', len(live), 'с K', sum(m.K is not None for m in live), 'стакан ок/ошибок', hb['ok'], hb['fail'], 'индекс (цена, годовая vol, бирж)', v, 'коды', dict(ERRS))
+            ERRS.clear()
             hb.update(t=now, ok=0, fail=0)
         for m, r in zip(live, res):
             idx = IDX[m.coin]; S = idx.now()
@@ -345,12 +448,16 @@ async def engine(stop_at):
                 m.done = True; m.pending = []; asyncio.create_task(settle(m)); continue
             set_strike(m, idx, now)
             if r is None or m.K is None: continue
-            up, dn, bb, state = r
+            up, dn, bb, state, bidq = r
             if state and 'OPEN' not in str(state): continue
             fill(m, up, dn, now)
+            fill_exits(m, bb, up, now)
             f = fair_up(m, S, idx, now)
+            mid = (bb + up[0]) / 2 if (bb is not None and up) else None
             lag_track(m, f, bb, up, now)
-            decide(m, up, dn, f, now, S)
+            decide(m, up, dn, f, mid, now, S)
+            manage_exits(m, f, now, bb, bidq, up)
+            if f is not None: m.tape.append((now, f, mid))
             if now - last_snap.get(m.slug, 0) >= 10:
                 last_snap[m.slug] = now
                 snap_f.write(json.dumps({'t': round(now, 1), 'slug': m.slug, 'S': S, 'K': m.K, 'fair': None if f is None else round(f, 4),
@@ -362,7 +469,8 @@ async def engine(stop_at):
 
 async def main():
     log('старт', RUN, 'монеты', COINS, 'окна', TFS, 'edge', A.edge, 'минут', A.minutes)
-    feeds = [asyncio.create_task(x()) for x in (feed_coinbase, feed_kraken, feed_bitstamp, ticker)]
+    feeds = [asyncio.create_task(x()) for x in (feed_coinbase, feed_kraken, feed_bitstamp, feed_cryptocom, ticker)]
+    feeds += [asyncio.create_task(feed_gemini(c)) for c in COINS]
     global STOP
     stop_at = STOP = time.time() + A.minutes * 60
     await asyncio.sleep(75)  # набираем минуту истории для K и волатильности
