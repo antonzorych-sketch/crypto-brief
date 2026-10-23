@@ -8,7 +8,7 @@
 Сделки виртуальные: исполнение по следующему снимку стакана, комиссия тейкера θ·p·(1−p) из поля `feeCoefficient` рынка.
 
 - Запуск локально или на VPS: `pip install websockets && python pm/lag.py --minutes 600`
-- GitHub Actions: workflow `pm-paper` каждые 6 часов, результаты и `REPORT.md` в ветке `pm-paper`
+- GitHub Actions: workflow `pm-paper` каждые 6 часов, результаты и `REPORT.md` в ветке `pm-results`
 - Сводка: `python pm/report.py`
 
 Живой режим (ордера через API Polymarket US, ключи Ed25519) — только после того, как paper покажет плюс после комиссий.
