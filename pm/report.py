@@ -121,6 +121,37 @@ def main():
             S['arb']['near'] = {k: {'minutes': len(v), 'median': round(statistics.median(v), 4), 'max': round(max(v), 4), 'pos': sum(x > 0 for x in v)} for k, v in near.items()}
         S['arb']['status'] = {k: dict(v) for k, v in by.items()}
     else: L.append('Данных пока нет.')
+    # --- Kalshi: погода и индексы ---
+    kres = json.load(open(os.path.join(R, 'k_results.json'))) if os.path.exists(os.path.join(R, 'k_results.json')) else {}
+    kst = [json.loads(l) for l in open(os.path.join(R, 'k_settled.jsonl')) if l.strip()] if os.path.exists(os.path.join(R, 'k_settled.jsonl')) else []
+    for bot, title in (('wx', 'Погода (Kalshi, максимум температуры дня)'), ('spx', 'Индексы S&P 500 / Nasdaq-100 (Kalshi)')):
+        L += ['', f'## {title}']
+        trk = rows(f'{bot}_trades.jsonl'); sn2 = rows(f'{bot}_snaps.jsonl'); stb = [x for x in kst if x.get('bot') == bot]
+        by = defaultdict(int)
+        for t in trk: by[t.get('status')] += 1
+        L.append('Сигналы: ' + (', '.join(f'{k} {v}' for k, v in by.items()) or 'пока нет'))
+        B = {'signals': dict(by)}
+        if stb:
+            pnl = sum(x['pnl'] for x in stb); w = sum(x['win'] for x in stb); cost = sum(x['px'] * x['qty'] for x in stb)
+            L.append(f'Рассчитано {len(stb)}, побед {w} ({w / len(stb):.0%}), P&L ${pnl:+.2f} на оборот ${cost:.2f}')
+            g = defaultdict(list)
+            for x in stb: g[x.get('series', '?')].append(x)
+            L += ['', '| Серия | Сделок | Побед | P&L $ |', '|---|---|---|---|'] + [f'| {k} | {len(v)} | {sum(x["win"] for x in v)} | {sum(x["pnl"] for x in v):+.2f} |' for k, v in sorted(g.items())]
+            cur = 0; curve = []
+            for x in sorted(stb, key=lambda x: x['t']): cur += x['pnl']; curve.append([round(x['t']), round(cur, 2), x.get('series')])
+            B.update(settled=len(stb), wins=w, pnl=round(pnl, 2), curve=curve, by_series={k: {'n': len(v), 'pnl': round(sum(x['pnl'] for x in v), 2)} for k, v in g.items()})
+        pending = sum(1 for t in trk if t.get('status') == 'filled') - len(stb)
+        if pending > 0: L.append(f'Ждут официального расчёта: {pending}')
+        bf, bm = [], []
+        for snp in sn2:
+            for m in snp.get('markets', []):
+                r = kres.get(m['ticker'])
+                if r is None or m.get('bid') is None or m.get('ask') is None: continue
+                y = 1 if r == 'yes' else 0; bf.append((m['fair'] - y) ** 2); bm.append(((m['bid'] + m['ask']) / 2 - y) ** 2)
+        if bf:
+            L.append(f'Точность (Brier): модель {statistics.fmean(bf):.4f}, рынок {statistics.fmean(bm):.4f} на {len(bf)} снимках')
+            B['brier'] = {'model': round(statistics.fmean(bf), 4), 'market': round(statistics.fmean(bm), 4), 'n': len(bf)}
+        S[bot] = B
     L += ['', '_Paper trading: реальные ордера не отправляются._']
     open(os.path.join(R, 'REPORT.md'), 'w').write('\n'.join(L) + '\n')
     json.dump(S, open(os.path.join(R, 'summary.json'), 'w'), default=str)

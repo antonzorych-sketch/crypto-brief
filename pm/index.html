@@ -29,6 +29,8 @@ svg{width:100%;height:140px;display:block}a{color:var(--acc)}
 <div class="card"><h2>По типу входа</h2><table id="reason"></table></div>
 <div class="card"><h2>По рынкам</h2><table id="mkts"></table></div>
 <div class="card"><h2>Арбитраж без риска</h2><div class="kpis" id="arbk"></div><table id="near"></table><div class="note">«Лучший перевес» — самая выгодная связка за минуту после комиссий обеих площадок. Больше нуля — была возможность.</div></div>
+<div class="card"><h2>Погода · Kalshi</h2><div class="kpis" id="wxk"></div><table id="wxs"></table><div class="note" id="wxn"></div></div>
+<div class="card"><h2>S&amp;P 500 / Nasdaq · Kalshi</h2><div class="kpis" id="spxk"></div><table id="spxs"></table><div class="note" id="spxn"></div></div>
 <div class="card"><h2>Ликвидность · доля времени со спредом &gt; 4¢</h2><table id="liq"></table></div>
 <div class="card"><h2>Модель</h2><div id="model"></div></div>
 <div class="note">Сделки виртуальные. Подробный отчёт: <a href="https://github.com/antonzorych-sketch/crypto-brief/blob/pm-results/pm/paper/REPORT.md">REPORT.md</a></div>
@@ -53,6 +55,10 @@ fetch(SRC+'?t='+Date.now()).then(r=>r.json()).then(S=>{
  const A=S.arb||{};$('arbk').innerHTML=kpi('P&L',usd(A.pnl||0),cls(A.pnl))+kpi('рассчитано связок',A.settled||0)+kpi('расхождений площадок',A.mismatch||0,A.mismatch?'neg':'');
  const nm={xv15:'PM ↔ Kalshi 15м',xvhr:'PM ↔ Kalshi час',mono:'лестница PM',box:'корзины PM'};
  $('near').innerHTML='<tr><th>Связка</th><th>Минут</th><th>Медиана</th><th>Лучший</th><th>&gt;0</th></tr>'+(rows(A.near,([k,v])=>`<tr><td>${nm[k]||k}</td><td>${v.minutes}</td><td class="${cls(v.median)}">${(v.median*100).toFixed(1)}¢</td><td class="${cls(v.max)}">${(v.max*100).toFixed(1)}¢</td><td>${v.pos}</td></tr>`)||'<tr><td colspan=5>сканер ещё не запускался</td></tr>');
+ for(const b of ['wx','spx']){const X=S[b]||{},sg=X.signals||{};
+  $(b+'k').innerHTML=kpi('P&L',usd(X.pnl||0),cls(X.pnl))+kpi('рассчитано',X.settled||0)+kpi('побед',X.settled?Math.round(X.wins/X.settled*100)+'%':'—')+kpi('сигналов',Object.values(sg).reduce((a,c)=>a+c,0));
+  $(b+'s').innerHTML=Object.keys(X.by_series||{}).length?'<tr><th>Серия</th><th>Сделок</th><th>P&L</th></tr>'+rows(X.by_series,([k,v])=>`<tr><td>${k}</td><td>${v.n}</td><td class="${cls(v.pnl)}">${usd(v.pnl)}</td></tr>`):'';
+  $(b+'n').textContent=X.brier?`Точность: модель ${X.brier.model}, рынок ${X.brier.market} (${X.brier.n} снимков, меньше — лучше)`:(b==='wx'?'Рынки погоды рассчитываются на следующий день — результаты появятся с задержкой.':'Торгует только в часы биржи (9:30–16:00 ET).');}
  $('liq').innerHTML=rows(S.liquidity,([k,v])=>`<tr><td>${k}</td><td style="width:55%"><div class="bar"><i style="width:${Math.round(v*100)}%"></i></div></td><td>${Math.round(v*100)}%</td></tr>`)||'<tr><td>нет данных</td></tr>';
  const B=S.brier,C=S.calibration;$('model').innerHTML=(B?`<p>Точность (Brier, меньше — лучше): модель <b>${B.model}</b>, рынок <b>${B.market}</b> на ${B.n} снимках.</p>`:'<p class="note">Нет данных.</p>')+(C?'<table><tr><th>Модель говорит</th><th>Снимков</th><th>Сбылось Up</th></tr>'+Object.entries(C).map(([k,v])=>`<tr><td>${k}–${+k+10}%</td><td>${v[0]}</td><td>${Math.round(v[1]*100)}%</td></tr>`).join('')+'</table>':'');
 }).catch(e=>{$('upd').textContent='не удалось загрузить данные: '+e});
