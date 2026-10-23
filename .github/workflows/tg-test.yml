@@ -1,0 +1,30 @@
+name: tg-test
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/tg-test.yml', 'pm/notify.py']
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: .tg
+          key: tg-chat-${{ github.run_id }}
+          restore-keys: tg-chat-
+      - name: Test message
+        env:
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        run: python pm/notify.py --test
+      - name: Save status (без секретов)
+        if: always()
+        run: |
+          git config user.name github-actions; git config user.email actions@github.com
+          git checkout -B tg-test
+          git add -f tg-status.txt; git commit -q -m "tg-test status [skip ci]" || true
+          git push -f origin tg-test
