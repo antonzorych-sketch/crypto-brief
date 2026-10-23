@@ -63,16 +63,30 @@ def build():
     return '\n'.join(L)
 
 
-def main():
-    if not TOKEN: print('notify: нет TG_TOKEN — пропускаем'); return
-    cid = chat_id()
-    if not cid: print('notify: чат не найден — напишите боту /start'); return
+def main(test=False):
+    """Возвращает статус: ok / no_token / bad_token / no_chat / send_error (без токена и ID)."""
+    if not TOKEN:
+        print('notify: нет TG_TOKEN — пропускаем'); return 'no_token'
     try:
-        api('sendMessage', chat_id=cid, text=build(), parse_mode='HTML', disable_web_page_preview='true')
-        print('notify: отправлено')
+        if not api('getMe').get('ok'): return 'bad_token'
+    except Exception:
+        print('notify: токен не принят Telegram'); return 'bad_token'
+    cid = chat_id()
+    if not cid:
+        print('notify: чат не найден — напишите боту /start'); return 'no_chat'
+    try:
+        if test:
+            text = '✅ Бот подключён. Сюда будут приходить сводки после каждого прогона paper-ботов.\n<a href="' + DASH + '">Дашборд</a>'
+        else:
+            text = build()
+        api('sendMessage', chat_id=cid, text=text, parse_mode='HTML', disable_web_page_preview='true')
+        print('notify: отправлено'); return 'ok'
     except Exception as e:
-        print('notify: ошибка отправки', type(e).__name__)
+        print('notify: ошибка отправки', type(e).__name__); return 'send_error'
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+    st = main(test='--test' in sys.argv)
+    if '--test' in sys.argv:
+        open('tg-status.txt', 'w').write(st + '\n')
