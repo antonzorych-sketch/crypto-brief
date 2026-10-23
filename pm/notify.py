@@ -41,7 +41,8 @@ def usd(v): return ('+' if v >= 0 else '−') + f'${abs(v):.2f}'
 
 def build():
     S = json.load(open(os.path.join(R, 'summary.json')))
-    L = ['<b>Paper-боты: итог прогона</b>']
+    import sys
+    L = ['<b>Paper-боты: промежуточная сводка</b>' if '--interim' in sys.argv else '<b>Paper-боты: итог прогона</b>']
     lag = S.get('lag') or {}
     if lag.get('trades'):
         L.append(f"Лаг Polymarket: {lag['trades']} сделок, P&L {usd(lag['pnl'])} (на WebSocket: {lag.get('ws_trades', 0)}, {usd(lag.get('ws_pnl', 0))})")
