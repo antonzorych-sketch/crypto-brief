@@ -333,9 +333,11 @@ async def settle(rec):
 
 
 async def main():
-    log('арбитраж-сканер', RUN, 'монеты', COINS, 'мин. перевес', A.min_edge, 'стакан PM:', 'WebSocket' if pmws.WS_ON else 'НЕТ КЛЮЧА — выходим')
-    if not pmws.WS_ON: return
-    tasks = [asyncio.create_task(x) for x in (FEED.run(), spot_loop(), ladder_loop(), k15_loop(), khr_loop(), confirm_loop())]
+    log('арбитраж-сканер', RUN, 'монеты', COINS, 'мин. перевес', A.min_edge,
+        'стакан PM:', 'WebSocket' if pmws.WS_ON else 'нет ключа — публичный REST, только связки с Kalshi 15m (лестницы пропускаем)')
+    pm_task = FEED.run() if pmws.WS_ON else FEED.run_rest(only=lambda x: '-updown-15m-' in x)
+    tasks = [asyncio.create_task(x) for x in (pm_task, spot_loop(), k15_loop(), khr_loop(), confirm_loop())]
+    if pmws.WS_ON: tasks.append(asyncio.create_task(ladder_loop()))
     stop = time.time() + A.minutes * 60; hb = time.time()
     while time.time() < stop:
         try: evaluate()

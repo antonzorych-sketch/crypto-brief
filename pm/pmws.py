@@ -42,6 +42,24 @@ class Feed:
         b = s.book.get(slug)
         return b[1] if b and time.time() - b[0] < max_age else None
 
+    async def run_rest(s, only=lambda slug: True, period=1.0):
+        """Запасной вариант без ключа: публичный REST (запаздывает, в начале окна отдаёт 404)."""
+        import urllib.request
+        def one(slug):
+            try:
+                r = urllib.request.urlopen(urllib.request.Request(f'{G}/v1/markets/{slug}/book', headers={'User-Agent': 'pm-arb'}), timeout=10)
+                return slug, parse_book(json.loads(r.read()))
+            except Exception:
+                return slug, None
+        while True:
+            t0 = time.time()
+            res = await asyncio.gather(*(asyncio.to_thread(one, x) for x in sorted(s.want) if only(x)))
+            for slug, b in res:
+                s.stat['msgs'] += 1
+                if b: s.book[slug] = (time.time(), b); s.stat['books'] += 1
+                else: s.stat['errors'] += 1
+            await asyncio.sleep(max(0.1, period - (time.time() - t0)))
+
     async def run(s):
         n = 0
         while True:
