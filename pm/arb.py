@@ -31,6 +31,7 @@ ap.add_argument('--min-usd', type=float, default=5.0, help='минимум $ в 
 ap.add_argument('--max-usd', type=float, default=50.0, help='максимум $ в одной связке')
 ap.add_argument('--band', type=float, default=0.02, help='страйки в пределах ±band от цены')
 ap.add_argument('--k-fee', type=float, default=0.07, help='коэффициент комиссии Kalshi')
+ap.add_argument('--maker-rebate', type=float, default=0.0125, help='скидка мейкера Polymarket US, коэффициент при p(1-p)')
 ap.add_argument('--out', default='pm/paper')
 A = ap.parse_args()
 COINS = [c for c in A.coins.split(',') if c]
@@ -220,6 +221,7 @@ def evaluate():
                                                              ('k', kc['ticker'], 'YES', kb['yes_ask'][0], kb['yes_ask'][1], k_fee(kb['yes_ask'][0]))])
         for legs in legs_sets:
             combo('xv15', f'xv15|{slug}|{legs[0][2]}', legs, 1.0, kc['close'], {'coin': c, 'pm_slug': slug, 'k_ticker': kc['ticker']})
+        maker_xv(c, slug, pb, kc, now)
     # лестницы
     for (c, kind, end), rows in list(LAD.items()):
         close = datetime.fromisoformat(end).timestamp()
@@ -267,6 +269,42 @@ def evaluate():
                     combo('box', f"box2|{r['slug']}", [('pm', r['slug'], 'NO', *br['no_ask'], pm_fee(r['theta'], br['no_ask'][0])),
                                                        ('pm', a2['slug'], 'NO', *b2['no_ask'], pm_fee(a2['theta'], b2['no_ask'][0])),
                                                        ('pm', a1['slug'], 'YES', *b1['yes_ask'], pm_fee(a1['theta'], b1['yes_ask'][0]))], 2.0, close, {'coin': c})
+
+
+# ---------- мейкерский вариант связки с Kalshi ----------
+# Две тейкерские ноги платят ~3.5¢ комиссий при цене около 50¢ — больше типичного расхождения площадок (1–3¢).
+# Поэтому оцениваем вариант, который используют на практике: на Polymarket стоит наша лимитная заявка
+# (комиссии нет, есть скидка мейкера), а Kalshi берём по рынку только когда заявку исполнили.
+# Модель исполнения консервативная: заявка считается исполненной, если лучший ask Polymarket опустился до нашей цены.
+RESTING = {}   # (slug, side) -> {'px', 't', 'k_ticker', 'close'}
+
+
+def maker_xv(c, slug, pb, kc, now):
+    kb = kc['book']
+    for side, pm_bid, k_hedge in (('YES', pb['yes_bid'], kb['no_ask']), ('NO', pb['no_bid'], kb['yes_ask'])):
+        key = (slug, side); rest = RESTING.get(key)
+        pm_ask = pb['yes_ask'] if side == 'YES' else pb['no_ask']
+        if rest:
+            if pm_ask and pm_ask[0] <= rest['px'] + 1e-9 and k_hedge:   # нашу заявку «съели» — хеджируемся на Kalshi по рынку
+                del RESTING[key]
+                kp = k_hedge[0]; edge = 1 - rest['px'] + A.maker_rebate * rest['px'] * (1 - rest['px']) - kp - k_fee(kp)
+                rec = {'kind': 'xv15m', 'key': f'xv15m|{slug}|{side}', 't': now, 'coin': c, 'pm_slug': slug, 'k_ticker': kc['ticker'], 'pm_side': side,
+                       'pm_px': rest['px'], 'k_px': kp, 'edge_planned': rest['edge'], 'edge_real': round(edge, 4), 'wait_s': round(now - rest['t'], 1), 'close': kc['close']}
+                note('xv15m', edge); jw('arb_maker.jsonl', rec)
+                q = 10.0; kside = 'NO' if side == 'YES' else 'YES'
+                sett = {**rec, 'legs_fill': [['pm', slug, side, rest['px'], q, 0], ['k', kc['ticker'], kside, kp, q, 0]], 'qty_fill': q, 'payoff': 1.0,
+                        'cost': round((rest['px'] + kp) * q, 4), 'fees': round(k_fee_order(kp, q) - A.maker_rebate * rest['px'] * (1 - rest['px']) * q, 4)}
+                asyncio.create_task(settle(sett))
+                log('МЕЙКЕР исполнен', slug, side, 'PM', rest['px'], 'Kalshi', kp, 'перевес факт %.3f' % edge)
+            elif now - rest['t'] > 60 or now > kc['close'] - 30:
+                del RESTING[key]
+            continue
+        if not pm_bid or not k_hedge or now > kc['close'] - 60: continue
+        px = round(pm_bid[0] + 0.01, 2)                    # встаём на шаг лучше лучшего bid
+        if pm_ask and px >= pm_ask[0]: continue             # иначе это уже не мейкер
+        edge = 1 - px + A.maker_rebate * px * (1 - px) - k_hedge[0] - k_fee(k_hedge[0])
+        note('xv15m_quote', edge)
+        if edge >= A.min_edge: RESTING[key] = {'px': px, 't': now, 'edge': round(edge, 4)}
 
 
 async def confirm_loop():

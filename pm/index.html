@@ -28,6 +28,7 @@ svg{width:100%;height:140px;display:block}a{color:var(--acc)}
 <div class="card"><h2>Лаг цены</h2><div class="kpis" id="lagk"></div><svg id="lagc" viewBox="0 0 600 140" preserveAspectRatio="none"></svg><div class="note" id="lagn"></div></div>
 <div class="card"><h2>По типу входа</h2><table id="reason"></table></div>
 <div class="card"><h2>По рынкам</h2><table id="mkts"></table></div>
+<div class="card"><h2>Пары · Up + Down дешевле $1</h2><div class="kpis" id="prk"></div><table id="prs"></table><div class="note">Покупаем подешевевшую сторону, потом вторую. Пара платит $1 при любом исходе; риск — только непарный остаток.</div></div>
 <div class="card"><h2>Арбитраж без риска</h2><div class="kpis" id="arbk"></div><table id="near"></table><div class="note">«Лучший перевес» — самая выгодная связка за минуту после комиссий обеих площадок. Больше нуля — была возможность.</div></div>
 <div class="card"><h2>Погода · Kalshi</h2><div class="kpis" id="wxk"></div><table id="wxs"></table><div class="note" id="wxn"></div></div>
 <div class="card"><h2>S&amp;P 500 / Nasdaq · Kalshi</h2><div class="kpis" id="spxk"></div><table id="spxs"></table><div class="note" id="spxn"></div></div>
@@ -53,7 +54,9 @@ fetch(SRC+'?t='+Date.now()).then(r=>r.json()).then(S=>{
  $('reason').innerHTML='<tr><th>Тип</th><th>Сделок</th><th>P&L</th><th>Если держать</th></tr>'+(rows(L.by_reason,([k,v])=>`<tr><td>${k}</td><td>${v.n}</td><td class="${cls(v.pnl)}">${usd(v.pnl)}</td><td class="${cls(v.hold)}">${usd(v.hold)}</td></tr>`)||'<tr><td colspan=4>нет данных</td></tr>');
  $('mkts').innerHTML='<tr><th>Рынок</th><th>Сделок</th><th>P&L</th></tr>'+(rows(L.by_market,([k,v])=>`<tr><td>${k}</td><td>${v.n}</td><td class="${cls(v.pnl)}">${usd(v.pnl)}</td></tr>`)||'<tr><td colspan=3>нет данных</td></tr>');
  const A=S.arb||{};$('arbk').innerHTML=kpi('P&L',usd(A.pnl||0),cls(A.pnl))+kpi('рассчитано связок',A.settled||0)+kpi('расхождений площадок',A.mismatch||0,A.mismatch?'neg':'');
- const nm={xv15:'PM ↔ Kalshi 15м',xvhr:'PM ↔ Kalshi час',mono:'лестница PM',box:'корзины PM'};
+ const nm={xv15:'PM ↔ Kalshi 15м',xvhr:'PM ↔ Kalshi час',mono:'лестница PM',box:'корзины PM',xv15m:'PM мейкер ↔ Kalshi (исполнено)',xv15m_quote:'PM мейкер ↔ Kalshi (котировка)'};
+ const PR=S.pair||{};$('prk').innerHTML=kpi('P&L',usd(PR.pnl||0),cls(PR.pnl))+kpi('окон',PR.windows||0)+kpi('гарантировано',usd(PR.guaranteed||0),cls(PR.guaranteed));
+ $('prs').innerHTML=Object.keys(PR.by_market||{}).length?'<tr><th>Рынок</th><th>Окон</th><th>P&L</th></tr>'+rows(PR.by_market,([k,v])=>`<tr><td>${k}</td><td>${v.n}</td><td class="${cls(v.pnl)}">${usd(v.pnl)}</td></tr>`):'<tr><td>нет данных</td></tr>';
  $('near').innerHTML='<tr><th>Связка</th><th>Минут</th><th>Медиана</th><th>Лучший</th><th>&gt;0</th></tr>'+(rows(A.near,([k,v])=>`<tr><td>${nm[k]||k}</td><td>${v.minutes}</td><td class="${cls(v.median)}">${(v.median*100).toFixed(1)}¢</td><td class="${cls(v.max)}">${(v.max*100).toFixed(1)}¢</td><td>${v.pos}</td></tr>`)||'<tr><td colspan=5>сканер ещё не запускался</td></tr>');
  for(const b of ['wx','spx']){const X=S[b]||{},sg=X.signals||{};
   $(b+'k').innerHTML=kpi('P&L',usd(X.pnl||0),cls(X.pnl))+kpi('рассчитано',X.settled||0)+kpi('побед',X.settled?Math.round(X.wins/X.settled*100)+'%':'—')+kpi('сигналов',Object.values(sg).reduce((a,c)=>a+c,0));

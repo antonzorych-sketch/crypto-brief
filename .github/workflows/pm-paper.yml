@@ -38,6 +38,7 @@ jobs:
           export RUN_ID=$(date -u +%Y%m%d-%H%M)
           python -u pm/arb.py --minutes "$M" > pm/paper/last-arb-log.txt 2>&1 &
           python -u pm/weather.py --minutes "$M" > pm/paper/last-wx-log.txt 2>&1 &
+          python -u pm/pair.py --minutes "$M" > pm/paper/last-pair-log.txt 2>&1 &
           python -u pm/spx.py --minutes "$M" > pm/paper/last-spx-log.txt 2>&1 &
           python -u pm/lag.py --minutes "$M" --coins "${{ github.event.inputs.coins || 'btc,eth,sol,xrp' }}" --edge "${{ github.event.inputs.edge || '0.04' }}" 2>&1 | tee pm/paper/last-log.txt
           wait

@@ -120,7 +120,27 @@ def main():
                 L.append(f'| {k} | {len(v)} | {statistics.median(v):+.3f} | {max(v):+.3f} | {sum(x > 0 for x in v)} |')
             S['arb']['near'] = {k: {'minutes': len(v), 'median': round(statistics.median(v), 4), 'max': round(max(v), 4), 'pos': sum(x > 0 for x in v)} for k, v in near.items()}
         S['arb']['status'] = {k: dict(v) for k, v in by.items()}
+        mk = rows('arb_maker.jsonl')
+        if mk:
+            ed = [x['edge_real'] for x in mk]
+            L.append(f'Мейкерский вариант с Kalshi (заявка на Polymarket, хедж на Kalshi): исполнений {len(mk)}, средний фактический перевес {statistics.fmean(ed) * 100:+.1f}¢, '
+                     f'в плюс {sum(e > 0 for e in ed)} из {len(mk)}, итого ≈ ${sum(ed) * 10:+.2f} на 10 контрактов в каждой')
+            S['arb']['maker'] = {'n': len(mk), 'avg_edge': round(statistics.fmean(ed), 4), 'pos': sum(e > 0 for e in ed)}
     else: L.append('Данных пока нет.')
+    pr = rows('pair_settled.jsonl')
+    if pr:
+        ok = [x for x in pr if x.get('pnl') is not None]
+        L += ['', '## Стратегия пар (Up + Down дешевле $1)']
+        if ok:
+            L.append(f'Окон с позициями: {len(ok)}, P&L ${sum(x["pnl"] for x in ok):+.2f}, гарантировано было ${sum(x["guaranteed"] for x in ok):+.2f}, '
+                     f'окон с непарным остатком {sum(1 for x in ok if x["unpaired_qty"] > 0.01)}, вложено ${sum(x["spent"] for x in ok):.2f}')
+            g = defaultdict(list)
+            for x in ok: g[f"{x['coin'].upper()} {x['tf']}"].append(x)
+            L += ['', '| Рынок | Окон | P&L $ | Гарантировано $ |', '|---|---|---|---|'] + [f'| {k} | {len(v)} | {sum(x["pnl"] for x in v):+.2f} | {sum(x["guaranteed"] for x in v):+.2f} |' for k, v in sorted(g.items())]
+            cur = 0; curve = []
+            for x in ok: cur += x['pnl']; curve.append([0, round(cur, 2), x['tf']])
+            S['pair'] = {'windows': len(ok), 'pnl': round(sum(x['pnl'] for x in ok), 2), 'guaranteed': round(sum(x['guaranteed'] for x in ok), 2),
+                         'by_market': {k: {'n': len(v), 'pnl': round(sum(x['pnl'] for x in v), 2)} for k, v in g.items()}, 'curve': curve}
     # --- Kalshi: погода и индексы ---
     kres = json.load(open(os.path.join(R, 'k_results.json'))) if os.path.exists(os.path.join(R, 'k_results.json')) else {}
     kst = [json.loads(l) for l in open(os.path.join(R, 'k_settled.jsonl')) if l.strip()] if os.path.exists(os.path.join(R, 'k_settled.jsonl')) else []
