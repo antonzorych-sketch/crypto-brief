@@ -37,7 +37,7 @@ def main():
         L.append(f'Закрыто {len(st)}, побед {wins} ({wins / len(st):.0%}), P&L ${pnl:+.2f} на оборот ${cost:.2f} ({pnl / cost:+.1%}), комиссии ${sum(x["fee"] + (x.get("exit") or {}).get("fee", 0) for x in st):.2f}')
         L += ['', '| Окно | Сделок | Побед | P&L $ | Ср. перевес |', '|---|---|---|---|---|']
         g = defaultdict(list)
-        for x in st: g[x['tf']].append(x)
+        for x in st: g[f"{x.get('coin', 'btc').upper()} {x['tf']}"].append(x)
         for k, v in sorted(g.items()):
             L.append(f'| {k} | {len(v)} | {sum(x["side"] == x["result"] for x in v)} | {sum(x["pnl"] for x in v):+.2f} | {statistics.fmean(x["edge"] for x in v):.3f} |')
         L += ['', '| Тип входа | Сделок | Побед % | P&L $ | Если держать до конца $ | Вышли досрочно |', '|---|---|---|---|---|---|']

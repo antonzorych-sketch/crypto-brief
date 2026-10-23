@@ -1,7 +1,7 @@
 """pm/lag: paper-трейдер «лага цены» на Polymarket US (рынки Up or Down 5m/15m/1h/1d).
 
 Идея: рынки рассчитываются по CF Benchmarks BRTI (среднее 60 секундных цен в последнюю минуту до начала и до конца окна).
-Мы строим свой прокси BRTI (медиана мидов Coinbase/Kraken/Bitstamp/Gemini/Crypto.com без выбросов), считаем
+Мы строим свой прокси индекса CF (BRTI, ETHUSD_RTI, SOLUSD_RTI, XRPUSD_RTI) (медиана мидов Coinbase/Kraken/Bitstamp/Gemini/Crypto.com без выбросов), считаем
 справедливую вероятность Up с учётом усреднения и волатильности и сравниваем со стаканом Polymarket US.
 Входы трёх типов (поле reason):
   lag   — справедливая цена резко сдвинулась за последние секунды, а стакан Polymarket стоит на месте;
@@ -13,7 +13,7 @@
 Исполнение — по следующему снимку стакана (имитация задержки ~1 с), объём ограничен тем, что стоит в стакане.
 Денег не трогает: только публичные данные, ключи не нужны.
 
-Запуск:  python pm/lag.py --minutes 330 --coins btc --tfs 5m,15m,1h,1d
+Запуск:  python pm/lag.py --minutes 330 --coins btc,eth,sol,xrp --tfs 5m,15m,1h,1d
 Файлы:   pm/paper/<run>/trades.jsonl, snaps.jsonl.gz, lag.jsonl, summary.txt
 """
 import argparse, asyncio, gzip, json, math, os, statistics, time, urllib.request
@@ -32,7 +32,7 @@ SYM = {'btc': ('BTC-USD', 'BTC/USD', 'btcusd', 'BTCUSD', 'BTC_USD'), 'eth': ('ET
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--minutes', type=float, default=350)
-ap.add_argument('--coins', default='btc')
+ap.add_argument('--coins', default='btc,eth,sol,xrp')
 ap.add_argument('--tfs', default='5m,15m,1h,1d')
 ap.add_argument('--edge', type=float, default=0.04, help='мин. перевес после комиссии для входа lag')
 ap.add_argument('--edge-last', type=float, default=0.03, help='мин. перевес в последней минуте')
@@ -217,7 +217,10 @@ def window(tf, now):
     return s.astimezone(timezone.utc)
 
 
-def slug(coin, tf, start): return f'cpc-{coin}-updown-{tf}-{start:%Y-%m-%d-%H%M}z'
+PFX = {'btc': 'cpc', 'eth': 'cpceth', 'sol': 'cpcsol', 'xrp': 'cpcxrp'}  # префиксы слагов Polymarket US
+
+
+def slug(coin, tf, start): return f'{PFX[coin]}-{coin}-updown-{tf}-{start:%Y-%m-%d-%H%M}z'
 
 
 class Mkt:
@@ -433,7 +436,8 @@ async def engine(stop_at):
         ensure_markets(now_dt)
         live = [m for m in MK.values() if not m.done and not m.dead]
         await asyncio.gather(*(load_meta(m) for m in live if m.meta is None))
-        live = [m for m in live if not m.dead]
+        for m in live: set_strike(m, IDX[m.coin], time.time())
+        live = [m for m in live if not m.dead and m.ksrc != 'missed']  # окна без K не опрашиваем — экономим лимит API
         res = await asyncio.gather(*(poll(m) for m in live))
         now = time.time()
         hb['ok'] += sum(r is not None for r in res); hb['fail'] += sum(r is None for r in res)
