@@ -31,6 +31,7 @@ ap.add_argument('--min-usd', type=float, default=5.0, help='минимум $ в 
 ap.add_argument('--max-usd', type=float, default=50.0, help='максимум $ в одной связке')
 ap.add_argument('--band', type=float, default=0.02, help='страйки в пределах ±band от цены')
 ap.add_argument('--k-fee', type=float, default=0.07, help='коэффициент комиссии Kalshi')
+ap.add_argument('--k-fresh', type=float, default=1.0, help='стакан Kalshi не старше, с')
 ap.add_argument('--maker-rebate', type=float, default=0.0125, help='скидка мейкера Polymarket US, коэффициент при p(1-p)')
 ap.add_argument('--out', default='pm/paper')
 A = ap.parse_args()
@@ -120,7 +121,7 @@ def near(c, row):
 
 # ---------- Kalshi ----------
 K15 = {}   # coin -> {'ticker','close','book':{yes_bid,yes_ask,no_bid,no_ask},'t'}
-KHR = {}   # (coin, close_iso) -> {strike: {'ticker','yes_bid','yes_ask'}}
+KHR = {}   # (coin, close_iso) -> {strike: {'ticker','list_bid','list_ask','book','t'}}
 KRULES = set()
 
 
@@ -135,28 +136,36 @@ def k_book(ob):
             'no_ask': (round(1 - yb[0], 4), yb[1]) if yb else None}
 
 
+async def k15_one(c):
+    ser = f'KX{NAME[c]}15M'
+    cur = K15.get(c)
+    if not cur or time.time() > cur['close'] - 1:
+        r = await aget(f'{K}/markets?' + urllib.parse.urlencode({'series_ticker': ser, 'status': 'open', 'limit': 5})); STAT['kreq'] += 1
+        ms = r.get('markets', []) if isinstance(r, dict) else []
+        if not ms: K15.pop(c, None); return
+        m = min(ms, key=lambda x: x['close_time'])
+        close = datetime.fromisoformat(m['close_time'].replace('Z', '+00:00')).timestamp()
+        K15[c] = cur = {'ticker': m['ticker'], 'close': close, 'strike': m.get('floor_strike'), 'book': None, 't': 0}
+        if ser not in KRULES: KRULES.add(ser); jw('arb_rules.jsonl', {'series': ser, 'rules': m.get('rules_primary')})
+    t_req = time.time()
+    ob = await aget(f'{K}/markets/{cur["ticker"]}/orderbook'); STAT['kreq'] += 1
+    if '_error' in ob: STAT['kerr'] += 1; return
+    cur['book'] = k_book(ob); cur['t'] = t_req   # время запроса, а не ответа: так честнее оценивается свежесть
+
+
 async def k15_loop():
+    """Все монеты параллельно, ~раз в 0.7 с. Первый прогон показал: стакан Kalshi старше 1–2 с даёт ложные сигналы."""
     while True:
-        for c in COINS:
-            ser = f'KX{NAME[c]}15M'
-            cur = K15.get(c)
-            if not cur or time.time() > cur['close'] - 1:
-                r = await aget(f'{K}/markets?' + urllib.parse.urlencode({'series_ticker': ser, 'status': 'open', 'limit': 5})); STAT['kreq'] += 1
-                ms = r.get('markets', []) if isinstance(r, dict) else []
-                if not ms: K15.pop(c, None); continue
-                m = min(ms, key=lambda x: x['close_time'])
-                close = datetime.fromisoformat(m['close_time'].replace('Z', '+00:00')).timestamp()
-                K15[c] = cur = {'ticker': m['ticker'], 'close': close, 'strike': m.get('floor_strike'), 'book': None, 't': 0}
-                if ser not in KRULES: KRULES.add(ser); jw('arb_rules.jsonl', {'series': ser, 'rules': m.get('rules_primary')})
-            ob = await aget(f'{K}/markets/{cur["ticker"]}/orderbook'); STAT['kreq'] += 1
-            if '_error' in ob: STAT['kerr'] += 1; continue
-            cur['book'] = k_book(ob); cur['t'] = time.time()
-        await asyncio.sleep(1.0)
+        t0 = time.time()
+        await asyncio.gather(*(k15_one(c) for c in COINS))
+        await asyncio.sleep(max(0.1, 0.7 - (time.time() - t0)))
 
 
 async def khr_loop():
+    n_cycle = 0
     while True:
-        for c in COINS:
+        n_cycle += 1
+        for c in (COINS if n_cycle % 15 == 1 else []):   # список событий и страйков — раз в ~30 с, стаканы кандидатов — каждые 2 с
             ser = f'KX{NAME[c]}D'
             r = await aget(f'{K}/events?' + urllib.parse.urlencode({'series_ticker': ser, 'status': 'open', 'limit': 5})); STAT['kreq'] += 1
             evs = r.get('events', []) if isinstance(r, dict) else []
@@ -166,14 +175,28 @@ async def khr_loop():
                 if not ms: continue
                 if ser not in KRULES: KRULES.add(ser); jw('arb_rules.jsonl', {'series': ser, 'rules': ms[0].get('rules_primary')})
                 close = datetime.fromisoformat(ms[0]['close_time'].replace('Z', '+00:00')).isoformat()
-                d = {}
+                d = KHR.get((c, close), {})
                 for m in ms:
                     st, fs = m.get('strike_type'), m.get('floor_strike')
                     if fs is None or st not in ('greater', 'greater_or_equal'): continue
                     strike = round(fs + 0.01, 2) if st == 'greater' else fs  # «> 90799.99» на центовой сетке = «≥ 90800»
-                    yb, ya = float(m.get('yes_bid_dollars') or 0), float(m.get('yes_ask_dollars') or 0)
-                    d[strike] = {'ticker': m['ticker'], 'yes_bid': yb, 'yes_ask': ya}
+                    prev = d.get(strike, {})
+                    d[strike] = {'ticker': m['ticker'], 'list_bid': float(m.get('yes_bid_dollars') or 0), 'list_ask': float(m.get('yes_ask_dollars') or 0),
+                                 'book': prev.get('book'), 't': prev.get('t', 0)}
                 KHR[(c, close)] = d
+        # Цены в списке рынков Kalshi запаздывают (первый прогон: все 66 сигналов по ним оказались ложными).
+        # Поэтому по кандидатам у цены (±0.5%) берём полный стакан — до 8 рынков за цикл, самые близкие к цене.
+        cands = []
+        for (c, close), d in KHR.items():
+            s0 = SPOT.get(c)
+            if not s0: continue
+            for strike, k in d.items():
+                if abs(strike / s0 - 1) <= 0.005: cands.append((abs(strike / s0 - 1), k))
+        cands.sort(key=lambda x: x[0])
+        async def fetch(k):
+            t_req = time.time(); ob = await aget(f'{K}/markets/{k["ticker"]}/orderbook'); STAT['kreq'] += 1
+            if '_error' not in ob: k['book'] = k_book(ob); k['t'] = t_req
+        await asyncio.gather(*(fetch(k) for _, k in cands[:8]))
         await asyncio.sleep(2.0)
 
 
@@ -208,7 +231,7 @@ def evaluate():
     # xv15: Polymarket 15m vs Kalshi 15m
     for c in COINS:
         kc = K15.get(c)
-        if not kc or not kc['book'] or now - kc['t'] > 5: continue
+        if not kc or not kc['book'] or now - kc['t'] > A.k_fresh: continue   # только свежий стакан Kalshi
         start = datetime.fromtimestamp(kc['close'] - 900, timezone.utc)
         slug = f'{PFX[c]}-{c}-updown-15m-{start:%Y-%m-%d-%H%M}z'; FEED.want.add(slug)
         pb = FEED.get(slug, 60)
@@ -243,14 +266,14 @@ def evaluate():
                 for r, b in ab:
                     k = kd.get(round(r['lo'], 2))
                     if not k: continue
-                    kya, kna = k['yes_ask'], (round(1 - k['yes_bid'], 4) if k['yes_bid'] else None)
-                    # размер Kalshi неизвестен из списка рынков — берём 50 конт. как оценку; подтверждаем стаканом при исполнении
-                    if b['yes_ask'] and kna and 0 < kna < 1:
+                    kb = k.get('book')
+                    if not kb or now - k.get('t', 0) > 2 * A.k_fresh + 1: continue   # только по свежему полному стакану
+                    if b['yes_ask'] and kb['no_ask']:
                         combo('xvhr', f"xvhr|{r['slug']}|YES", [('pm', r['slug'], 'YES', *b['yes_ask'], pm_fee(r['theta'], b['yes_ask'][0])),
-                                                                 ('k', k['ticker'], 'NO', kna, 50, k_fee(kna))], 1.0, close, {'coin': c, 'k_ticker': k['ticker']})
-                    if b['no_ask'] and kya and 0 < kya < 1:
+                                                                 ('k', k['ticker'], 'NO', *kb['no_ask'], k_fee(kb['no_ask'][0]))], 1.0, close, {'coin': c, 'k_ticker': k['ticker']})
+                    if b['no_ask'] and kb['yes_ask']:
                         combo('xvhr', f"xvhr|{r['slug']}|NO", [('pm', r['slug'], 'NO', *b['no_ask'], pm_fee(r['theta'], b['no_ask'][0])),
-                                                                ('k', k['ticker'], 'YES', kya, 50, k_fee(kya))], 1.0, close, {'coin': c, 'k_ticker': k['ticker']})
+                                                                ('k', k['ticker'], 'YES', *kb['yes_ask'], k_fee(kb['yes_ask'][0]))], 1.0, close, {'coin': c, 'k_ticker': k['ticker']})
         else:
             # box: Yes[X,X+w) + Yes(≥X+w) + No(≥X) = $1;  No[X,X+w) + No(≥X+w) + Yes(≥X) = $2
             above = {round(r['lo'], 6): r for r in LAD.get((c, 'above', end), []) if r['hi'] == math.inf}
