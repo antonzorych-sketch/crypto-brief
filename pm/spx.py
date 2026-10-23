@@ -38,10 +38,20 @@ def market_open(now=None):
     return e.weekday() < 5 and (e.hour, e.minute) >= (9, 30) and e.hour < 16
 
 
+YERR = {'n': 0, 'until': 0}
+
+
 async def yahoo(sym, rng='1d'):
-    d = await K.aget(f'https://query1.finance.yahoo.com/v8/finance/chart/{sym.replace("^", "%5E")}?interval=1m&range={rng}', YH)
-    try: return d['chart']['result'][0]
-    except Exception: return None
+    """Yahoo режет частые запросы (первый прогон: 85% ошибок). Чередуем хосты и делаем паузу после ошибок."""
+    if time.time() < YERR['until']: return None
+    host = 'query1' if int(time.time()) % 2 else 'query2'
+    d = await K.aget(f'https://{host}.finance.yahoo.com/v8/finance/chart/{sym.replace("^", "%5E")}?interval=1m&range={rng}', YH)
+    try:
+        r = d['chart']['result'][0]; YERR['n'] = 0; return r
+    except Exception:
+        YERR['n'] += 1
+        if YERR['n'] >= 3: YERR['until'] = time.time() + min(60, 5 * YERR['n'])
+        return None
 
 
 async def px_loop():
@@ -50,7 +60,7 @@ async def px_loop():
             r = await yahoo(sym)
             if r:
                 m = r['meta']; PX[sym] = (m.get('regularMarketTime') or 0, m.get('regularMarketPrice'))
-        await asyncio.sleep(3)
+        await asyncio.sleep(6)
 
 
 async def vol_loop():
@@ -64,11 +74,13 @@ async def vol_loop():
                 if len(c) > 20:
                     rets = [math.log(b / a) for a, b in zip(c, c[1:])]
                     VOLR[sym] = statistics.pvariance(rets) / 60
-        await asyncio.sleep(300)
+        await asyncio.sleep(300 if VOLI else 60)
 
 
 def var_per_sec(sym):
     vi = VOLI.get(sym)
+    if vi is None and sym in VOLR:   # VIX не пришёл — реализованная с запасом, не ниже 12% годовых
+        return max(VOLR[sym] * 1.3, 0.12 ** 2 / TRADE_SEC)
     if vi is None: return None
     v = vi ** 2 / TRADE_SEC
     return 0.5 * v + 0.5 * VOLR[sym] if sym in VOLR else v
