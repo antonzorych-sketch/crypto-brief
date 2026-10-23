@@ -4,7 +4,7 @@ on:
     - cron: '7 */6 * * *'
   workflow_dispatch:
     inputs:
-      minutes: {description: 'Сколько минут работать', default: '330'}
+      minutes: {description: 'Сколько минут работать', default: '320'}
       coins: {description: 'Монеты', default: 'btc,eth,sol,xrp'}
       edge: {description: 'Мин. перевес', default: '0.04'}
   push:
@@ -34,8 +34,11 @@ jobs:
         run: |
           set -o pipefail; mkdir -p pm/paper
           M="${{ github.event.inputs.minutes }}"
-          if [ -z "$M" ]; then if [ "${{ github.event_name }}" = "push" ]; then M=12; else M=330; fi; fi
+          if [ -z "$M" ]; then if [ "${{ github.event_name }}" = "push" ]; then M=12; else M=320; fi; fi
+          export RUN_ID=$(date -u +%Y%m%d-%H%M)
+          python -u pm/arb.py --minutes "$M" > pm/paper/last-arb-log.txt 2>&1 &
           python -u pm/lag.py --minutes "$M" --coins "${{ github.event.inputs.coins || 'btc,eth,sol,xrp' }}" --edge "${{ github.event.inputs.edge || '0.04' }}" 2>&1 | tee pm/paper/last-log.txt
+          wait
       - name: Report and save
         if: always()
         run: |

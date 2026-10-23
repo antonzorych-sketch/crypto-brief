@@ -53,7 +53,7 @@ ap.add_argument('--out', default='pm/paper')
 A = ap.parse_args()
 COINS = [c.strip() for c in A.coins.split(',') if c.strip()]
 TFS = [t.strip() for t in A.tfs.split(',') if t.strip()]
-RUN = datetime.now(timezone.utc).strftime('%Y%m%d-%H%M')
+RUN = os.environ.get('RUN_ID') or datetime.now(timezone.utc).strftime('%Y%m%d-%H%M')
 OUT = os.path.join(A.out, RUN); os.makedirs(OUT, exist_ok=True)
 
 
@@ -316,11 +316,30 @@ def side_quotes(book):
     return up, dn, bb, md.get('state'), (bids[0] if bids else None)
 
 
+DVOL = {}  # монета -> годовая подразумеваемая волатильность Deribit (только BTC, ETH)
+
+
+async def dvol_loop():
+    while True:
+        n = int(time.time() * 1000)
+        for c in ('btc', 'eth'):
+            if c not in COINS: continue
+            try:
+                d = await asyncio.to_thread(http, f'https://www.deribit.com/api/v2/public/get_volatility_index_data?currency={c.upper()}&resolution=60&start_timestamp={n - 900000}&end_timestamp={n}')
+                pts = d['result']['data']
+                if pts: DVOL[c] = pts[-1][4] / 100
+            except Exception: pass
+        await asyncio.sleep(300)
+
+
 def fair_up(m, S, idx, now):
-    """P(финальное среднее BRTI за последнюю минуту >= K)."""
+    """P(финальное среднее BRTI за последнюю минуту >= K).
+    Для окон длиннее 30 минут волатильность — среднее между реализованной и подразумеваемой Deribit DVOL:
+    реализованная за последние минуты плохо предсказывает час-день вперёд, особенно перед новостями."""
     v = idx.sigma2()
     if v is None or m.K is None or S is None: return None
     tau = m.t1() - now
+    if tau >= 1800 and m.coin in DVOL: v = 0.5 * v + 0.5 * DVOL[m.coin] ** 2 / (365 * 86400)
     b2 = (A.basis_bp * 1e-4) ** 2
     if tau >= 60:
         var = v * (tau - 60) + v * 60 * 61 * 121 / 6 / 3600 + b2
@@ -514,6 +533,7 @@ async def engine(stop_at):
         hb['ok'] += sum(r is not None for r in res); hb['fail'] += sum(r is None for r in res)
         if now - hb['t'] >= 60:
             v = {c: (round(i.now() or 0, 2), None if i.sigma2() is None else round((i.sigma2() * 365 * 86400) ** .5, 2), len(i.q)) for c, i in IDX.items()}
+            v['dvol'] = dict(DVOL)
             log('пульс: рынков', len(live), 'с K', sum(m.K is not None for m in live), 'стакан ок/ошибок', hb['ok'], hb['fail'], 'индекс (цена, годовая vol, бирж)', v, 'коды', dict(ERRS))
             ERRS.clear()
             if WS_ON: log('ws:', dict(WSSTAT), 'стаканов', len(BOOK)); WSSTAT.update(msgs=0, books=0, errors=0)
@@ -547,7 +567,7 @@ async def engine(stop_at):
 
 async def main():
     log('старт', RUN, 'монеты', COINS, 'окна', TFS, 'edge', A.edge, 'минут', A.minutes)
-    feeds = [asyncio.create_task(x()) for x in (feed_coinbase, feed_kraken, feed_bitstamp, feed_cryptocom, ticker)]
+    feeds = [asyncio.create_task(x()) for x in (feed_coinbase, feed_kraken, feed_bitstamp, feed_cryptocom, ticker, dvol_loop)]
     feeds += [asyncio.create_task(feed_gemini(c)) for c in COINS]
     if WS_ON: feeds.append(asyncio.create_task(feed_pm()))
     log('стакан Polymarket:', 'WebSocket (ключ задан)' if WS_ON else 'публичный REST (ключа нет)')

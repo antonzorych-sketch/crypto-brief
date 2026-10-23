@@ -1,14 +1,23 @@
-# Polymarket US — бот на лаге цены (paper)
+# Polymarket US — paper-боты
 
-Рынки `BTC/ETH Up or Down` 5m / 15m / 1h / 1d на Polymarket US рассчитываются по CF Benchmarks BRTI:
-среднее 60 секундных цен в последнюю минуту до начала и до конца окна.
+**Дашборд:** https://antonzorych-sketch.github.io/crypto-brief/pm/ · **Отчёт:** ветка `pm-results`, файл `pm/paper/REPORT.md`
 
-`pm/lag.py` строит прокси BRTI (медиана Coinbase, Kraken, Bitstamp), считает справедливую вероятность Up
-с учётом волатильности и минутного усреднения и ищет моменты, когда стакан Polymarket ещё не догнал движение цены.
-Сделки виртуальные: исполнение по следующему снимку стакана, комиссия тейкера θ·p·(1−p) из поля `feeCoefficient` рынка.
+Все сделки виртуальные. Работает в GitHub Actions (`pm-paper`, каждые 6 часов ~5.5 часа), результаты копятся в ветке `pm-results`.
+Стакан Polymarket берётся по WebSocket с ключом из секретов `PM_KEY_ID` / `PM_SECRET` (только чтение).
 
-- Запуск локально или на VPS: `pip install websockets && python pm/lag.py --minutes 600`
-- GitHub Actions: workflow `pm-paper` каждые 6 часов, результаты и `REPORT.md` в ветке `pm-results`
-- Сводка: `python pm/report.py`
+## pm/lag.py — лаг цены на рынках Up or Down (BTC, ETH, SOL, XRP; 5m / 15m / 1h / 1d)
+Рынки рассчитываются по индексам CF Benchmarks (среднее 60 секундных цен до начала и до конца окна).
+Бот строит прокси индекса по Coinbase, Kraken, Bitstamp, Gemini, Crypto.com, считает справедливую вероятность Up
+(для окон > 30 мин волатильность смешивается с Deribit DVOL) и входит:
+- `lag` — справедливая цена резко сдвинулась, стакан Polymarket стоит;
+- `last` — последняя минута окна;
+- `model` — сильное расхождение с моделью (для сравнения).
+Выход — когда рынок догнал. Фильтр ликвидности: спред ≤ 4¢ и ≥ $20 на лучшей цене.
 
-Живой режим (ордера через API Polymarket US, ключи Ed25519) — только после того, как paper покажет плюс после комиссий.
+## pm/arb.py — арбитраж без риска направления
+- `xv15` — Polymarket 15m Up/Down против Kalshi KX*15M (одинаковые контракты);
+- `xvhr` — Polymarket «≥ X в HH:00» против Kalshi KX*D с тем же страйком;
+- `mono`, `box` — несогласованность лестниц страйков и корзин внутри Polymarket.
+Связка считается, только если стоит дешевле гарантированной выплаты после комиссий обеих площадок.
+
+## pm/report.py — REPORT.md и summary.json для дашборда
