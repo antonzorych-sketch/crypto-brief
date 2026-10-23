@@ -25,12 +25,13 @@ SYM = {'btc': ('BTC-USD', 'BTC/USD', 'btcusd'), 'eth': ('ETH-USD', 'ETH/USD', 'e
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--minutes', type=float, default=350)
-ap.add_argument('--coins', default='btc,eth')
+ap.add_argument('--coins', default='btc')
 ap.add_argument('--tfs', default='5m,15m,1h,1d')
 ap.add_argument('--edge', type=float, default=0.04, help='мин. перевес после комиссии, доли доллара')
 ap.add_argument('--stake', type=float, default=5.0, help='$ на одну виртуальную сделку')
 ap.add_argument('--max-per-market', type=float, default=15.0, help='$ максимум в одном окне')
 ap.add_argument('--basis-bp', type=float, default=3.0, help='расхождение нашего индекса с BRTI, б.п.')
+ap.add_argument('--min-px', type=float, default=0.10, help='не покупать дешевле/дороже этого')
 ap.add_argument('--poll', type=float, default=1.0, help='с между опросами стакана')
 ap.add_argument('--out', default='pm/paper')
 A = ap.parse_args()
@@ -255,7 +256,7 @@ def decide(m, up, dn, f, now, S):
     for side, q, p in (('UP', up, f), ('DOWN', dn, None if f is None else 1 - f)):
         if not q: continue
         ask, qty = q
-        if not (0.03 <= ask <= 0.97): continue
+        if not (A.min_px <= ask <= 1 - A.min_px): continue  # хвосты модели ненадёжны, не покупаем лотерейные билеты
         edge = p - ask - fee(m.theta, ask)
         if edge < A.edge or now - m.last_entry.get(side, 0) < 60: continue
         m.last_entry[side] = now
