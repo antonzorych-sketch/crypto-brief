@@ -90,6 +90,10 @@ def model(ser, now):
     obs = [(t, f) for t, f, kind in OBS.get(st, []) if t0 < t <= t1 and (kind == 'obs' or t - 6 * 3600 >= t0 - 60)]
     if not obs or ser not in FC: return None
     mobs = max(f for _, f in obs)
+    # сутки могут считаться и по местному календарному времени — если максимум попадает в спорный час, не торгуем
+    z = ZoneInfo(tz); c0 = now.astimezone(z).replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
+    alt = [f for t, f, kind in OBS.get(st, []) if c0 < t <= c0 + 86400 and kind == 'obs']
+    if alt and abs(max(alt) - max(f for t, f in obs if t <= tn)) > 0.5 and abs(c0 - t0) > 60: return None
     last_t, last_f = max(obs)
     fc = [(t, f) for t, f in FC[ser] if tn + 1800 <= t < t1]  # только будущие часы: текущий уже виден в наблюдениях
     cur = min(FC[ser], key=lambda x: abs(x[0] - last_t)) if FC[ser] else None
@@ -103,7 +107,7 @@ def model(ser, now):
     dist = {}
     rnd = random.Random(int(tn) // 600)
     for _ in range(6000):
-        x = mobs + rnd.gauss(0, 0.45)                       # расхождение источников наблюдений
+        x = mobs + rnd.gauss(0.25, 0.5)                     # настоящий максимум бывает между замерами (смещение вверх) + расхождение источников
         if fp > -999: x = max(x, rnd.gauss(fp, sig))
         r = int(math.floor(x + 0.5)); dist[r] = dist.get(r, 0) + 1
     return mobs, {k: v / 6000 for k, v in dist.items()}, {'day': str(day), 'mobs': round(mobs, 1), 'fc_rest_max': None if fp == -999 else round(fp, 1),

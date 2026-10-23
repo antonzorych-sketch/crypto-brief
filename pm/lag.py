@@ -263,7 +263,9 @@ async def feed_pm():
                 finally:
                     t.cancel()
         except Exception as e:
-            log('ws Polymarket reconnect', repr(e)[:200]); await asyncio.sleep(3)
+            log('ws Polymarket reconnect', repr(e)[:200])
+        BOOK.clear()  # без соединения стаканы могли устареть — ждём свежие после переподключения
+        await asyncio.sleep(3)
 
 
 # ---------- рынки ----------
@@ -373,11 +375,25 @@ async def load_meta(m):
         log('нет рынка', m.slug, repr(e)[:100]); m.dead = True
 
 
+STRIKES_F = os.path.join(A.out, 'strikes.json')
+try:
+    STRIKES = json.load(open(STRIKES_F))   # слаг -> K, общий для всех прогонов (иначе дневные окна никогда не торгуются)
+except Exception:
+    STRIKES = {}
+
+
 def set_strike(m, idx, now):
-    """K = среднее нашего индекса за минуту до старта. Если бот стартовал позже — K неизвестен, окно пропускаем."""
+    """K = среднее нашего индекса за минуту до старта (сохраняется между прогонами).
+    Если ни этот, ни прошлый прогон не видел старта окна — K неизвестен, окно пропускаем."""
     if m.K is not None or now < m.t0() + 1: return
+    if m.slug in STRIKES: m.K, m.ksrc = STRIKES[m.slug], 'saved'; return
     k, n = idx.avg(m.t0() - 60, m.t0())
-    if n >= 45: m.K, m.ksrc = k, f'own{n}'
+    if n >= 45:
+        m.K, m.ksrc = k, f'own{n}'; STRIKES[m.slug] = k
+        try:
+            keep = {(datetime.now(timezone.utc) - timedelta(days=d)).strftime('%Y-%m-%d') for d in range(3)}
+            json.dump({sl: v for sl, v in STRIKES.items() if any(f'-{d}-' in sl for d in keep)}, open(STRIKES_F, 'w'))
+        except Exception: pass
     elif now - m.t0() < 5:
         return
     else:
@@ -427,13 +443,15 @@ def manage_exits(m, f, now, bb, bidq, up):
         else:
             sell, q, fv = (None if not up else round(1 - up[0], 4)), (up[1] if up else 0), 1 - f
         if sell is None: continue
+        if q < p['qty']: continue  # в стакане не хватает объёма, чтобы выйти целиком
         net = sell - fee(m.theta, sell)
-        if net >= fv - 0.005 and net > p['px']:  # продать сейчас не хуже, чем держать по модели, и в плюс
+        if net >= fv - 0.005 and net - p['px'] - p['fee'] / p['qty'] > 0:  # продать не хуже, чем держать по модели, и в плюс с учётом обеих комиссий
             p['exiting'] = True
             m.exits.append({'pos': p, 'limit': round(sell - 0.01, 2), 'fair_exit': fv, 't_sig': now})
 
 
 def fill_exits(m, bb, up, now):
+    if m.exits and now - min(e['t_sig'] for e in m.exits) < (A.latency if WS_ON else 0.5): return
     for e in m.exits:
         p = e['pos']; p.pop('exiting', None)
         sell = bb if p['side'] == 'UP' else (None if not up else round(1 - up[0], 4))
@@ -559,7 +577,7 @@ async def engine(stop_at):
                 last_snap[m.slug] = now
                 snap_f.write(json.dumps({'t': round(now, 1), 'slug': m.slug, 'S': S, 'K': m.K, 'fair': None if f is None else round(f, 4),
                                          'bid': bb, 'ask': up[0] if up else None, 'tau': round(m.t1() - now)}) + '\n')
-        for k in [k for k, m in MK.items() if m.done and now - m.t1() > 900]:
+        for k in [k for k, m in MK.items() if (m.done or m.ksrc == 'missed' or m.dead) and now - m.t1() > 900]:
             del MK[k]; WANT.discard(k); BOOK.pop(k, None)
         await asyncio.sleep(max(0.05, (0.25 if WS_ON else A.poll) - (time.time() - t_loop)))
     snap_f.close()
