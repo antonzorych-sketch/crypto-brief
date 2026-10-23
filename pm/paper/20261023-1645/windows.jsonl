@@ -1,0 +1,5 @@
+{"slug": "cpc-btc-updown-5m-2026-10-23-1650z", "coin": "btc", "tf": "5m", "K": 81641.49325, "ksrc": "own60", "F": 81602.63220833334, "own": "DOWN", "official": "DOWN", "n_pos": 1, "polls": 1192, "illiquid": 212}
+{"slug": "cpcxrp-xrp-updown-5m-2026-10-23-1650z", "coin": "xrp", "tf": "5m", "K": 1.3102476666666667, "ksrc": "own60", "F": 1.3081235416666668, "own": "DOWN", "official": "DOWN", "n_pos": 0, "polls": 1192, "illiquid": 1028}
+{"slug": "cpceth-eth-updown-5m-2026-10-23-1650z", "coin": "eth", "tf": "5m", "K": 2406.7217916666664, "ksrc": "own60", "F": 2404.2094166666666, "own": "DOWN", "official": "DOWN", "n_pos": 0, "polls": 1192, "illiquid": 928}
+{"slug": "cpcsol-sol-updown-5m-2026-10-23-1650z", "coin": "sol", "tf": "5m", "K": 104.68918749999999, "ksrc": "own60", "F": 104.51506666666667, "own": "DOWN", "official": "DOWN", "n_pos": 0, "polls": 1192, "illiquid": 1007}
+{"slug": "cpc-btc-updown-5m-2026-10-23-1655z", "coin": "btc", "tf": "5m", "K": 81602.63220833334, "ksrc": "own60", "F": 81600.79254166667, "own": "DOWN", "official": "UP", "n_pos": 2, "polls": 628, "illiquid": 10}
