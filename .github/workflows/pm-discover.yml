@@ -1,0 +1,26 @@
+name: pm-discover
+on:
+  workflow_dispatch:
+  push:
+    paths: ['pm/discover.py', '.github/workflows/pm-discover.yml']
+permissions:
+  contents: write
+concurrency: pm-discover
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -u pm/discover.py 2>&1 | tee pm/discover-log.txt
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name github-actions; git config user.email actions@github.com
+          git checkout -B pm-discover
+          git add -f pm/discover-log.txt pm/discover.json 2>/dev/null || git add -f pm/discover-log.txt
+          git commit -q -m "pm-discover results [skip ci]" || true
+          git push -f origin pm-discover
