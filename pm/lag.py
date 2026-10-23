@@ -42,6 +42,7 @@ ap.add_argument('--jump', type=float, default=0.03, help='на сколько д
 ap.add_argument('--look', type=float, default=2, help='окно поиска рывка, с (по WebSocket расхождения живут 0.5–2 с)')
 ap.add_argument('--max-spread', type=float, default=0.04, help='шире спред — рынок неликвиден, не торгуем')
 ap.add_argument('--min-depth', type=float, default=20.0, help='$ минимум на лучшей цене, иначе не торгуем')
+ap.add_argument('--exit-margin', type=float, default=0.01, help='продаём, если bid − комиссия выше справедливой цены на столько')
 ap.add_argument('--alt5m', action='store_true', help='торговать 5m по ETH/SOL/XRP')
 ap.add_argument('--no-exit', action='store_true', help='всегда держать до расчёта')
 ap.add_argument('--stake', type=float, default=5.0, help='$ на одну виртуальную сделку')
@@ -465,7 +466,11 @@ def decide(m, up, dn, bb, f, mid, now, S):
 
 
 def manage_exits(m, f, now, bb, bidq, up):
-    """Рынок догнал: можно продать нашу сторону не хуже справедливой цены — фиксируем.
+    """Держим, пока цена идёт в нашу сторону; продаём, только когда рынок ПЕРЕПЛАЧИВАЕТ за нашу позицию.
+    Логика: у позиции ожидаемая стоимость = наша справедливая цена f. Продажа по bid стоит ещё комиссию θ·p(1-p).
+    Если bid − комиссия ≤ f, держать выгоднее (та же ожидаемая стоимость без комиссии) — даже когда «уже в плюсе».
+    Если bid − комиссия > f + --exit-margin, рынок переоценил исход — продаём (это и фиксация прибыли при перегибе,
+    и выход из сделки, которую модель разлюбила). Пока цена и наша оценка растут вместе, бот просто держит.
     UP продаём в bid, DOWN продаём по 1 - ask(Up)."""
     if A.no_exit or f is None: return
     for p in m.pos:
@@ -477,7 +482,7 @@ def manage_exits(m, f, now, bb, bidq, up):
         if sell is None: continue
         if q < p['qty']: continue  # в стакане не хватает объёма, чтобы выйти целиком
         net = sell - fee(m.theta, sell)
-        if net >= fv - 0.005 and net - p['px'] - p['fee'] / p['qty'] > 0:  # продать не хуже, чем держать по модели, и в плюс с учётом обеих комиссий
+        if net > fv + A.exit_margin:  # рынок платит больше, чем позиция стоит по модели
             p['exiting'] = True
             m.exits.append({'pos': p, 'limit': round(sell - 0.01, 2), 'fair_exit': fv, 't_sig': now})
 
