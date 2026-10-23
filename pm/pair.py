@@ -27,10 +27,12 @@ ap = argparse.ArgumentParser()
 ap.add_argument('--minutes', type=float, default=320)
 ap.add_argument('--coins', default='btc,eth,sol,xrp')
 ap.add_argument('--tfs', default='5m,15m')
-ap.add_argument('--entry', type=float, default=0.35, help='цена первой ноги не выше')
+ap.add_argument('--entry', type=float, default=0.30, help='цена первой ноги не выше')
+ap.add_argument('--max-unpaired', type=float, default=5.0, help='$ максимум в непарных лотах одной стороны')
+ap.add_argument('--min-tau', type=float, default=120, help='первую ногу берём, только если до конца окна больше, с')
 ap.add_argument('--target', type=float, default=0.97, help='стоимость пары с комиссиями не выше')
 ap.add_argument('--clip', type=float, default=5.0, help='$ на одну покупку')
-ap.add_argument('--max-usd', type=float, default=30.0, help='$ максимум в одном окне')
+ap.add_argument('--max-usd', type=float, default=15.0, help='$ максимум в одном окне')
 ap.add_argument('--min-depth', type=float, default=10.0, help='$ минимум на лучшей цене')
 ap.add_argument('--latency', type=float, default=0.5)
 ap.add_argument('--theta', type=float, default=0.0695)
@@ -97,8 +99,9 @@ def plan(w, asks, now):
             if lot_unit + a[0] + fee(a[0]) <= A.target:
                 n = min(lot_q, a[1], (A.max_usd - w.spent) / a[0])
                 if n > 0.01: out.append((side, a[0], n, 'pair'))
-        elif a[0] <= A.entry and w.unpaired(side) * a[0] < 2 * A.clip and tau > 60:
-            # 1) первая нога (не копим больше двух непарных порций одной стороны)
+        elif a[0] <= A.entry and sum(l[0] * l[1] for l in w.open[side]) < A.max_unpaired and tau > A.min_tau:
+            # 1) первая нога. Риск считаем по ЗАПЛАЧЕННОЙ сумме непарных лотов: прошлый прогон показал, что лимит по текущей
+            #    цене позволял усреднять падающую сторону до $30 (−$158 на 16 окнах, все потери — непарный остаток)
             n = min(A.clip / a[0], a[1], (A.max_usd - w.spent) / a[0])
             if n * a[0] >= 1: out.append((side, a[0], n, 'entry'))
     return out[:1]

@@ -32,6 +32,7 @@ ap.add_argument('--max-usd', type=float, default=50.0, help='максимум $ 
 ap.add_argument('--band', type=float, default=0.02, help='страйки в пределах ±band от цены')
 ap.add_argument('--k-fee', type=float, default=0.07, help='коэффициент комиссии Kalshi')
 ap.add_argument('--k-fresh', type=float, default=1.0, help='стакан Kalshi не старше, с')
+ap.add_argument('--maker', action='store_true', help='включить мейкерский вариант связки с Kalshi')
 ap.add_argument('--maker-rebate', type=float, default=0.0125, help='скидка мейкера Polymarket US, коэффициент при p(1-p)')
 ap.add_argument('--out', default='pm/paper')
 A = ap.parse_args()
@@ -244,7 +245,7 @@ def evaluate():
                                                              ('k', kc['ticker'], 'YES', kb['yes_ask'][0], kb['yes_ask'][1], k_fee(kb['yes_ask'][0]))])
         for legs in legs_sets:
             combo('xv15', f'xv15|{slug}|{legs[0][2]}', legs, 1.0, kc['close'], {'coin': c, 'pm_slug': slug, 'k_ticker': kc['ticker']})
-        maker_xv(c, slug, pb, kc, now)
+        if A.maker: maker_xv(c, slug, pb, kc, now)   # выключено по умолчанию: 53 исполнения, в среднем −1.9¢ (неблагоприятный отбор)
     # лестницы
     for (c, kind, end), rows in list(LAD.items()):
         close = datetime.fromisoformat(end).timestamp()

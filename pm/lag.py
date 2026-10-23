@@ -38,10 +38,11 @@ ap.add_argument('--tfs', default='5m,15m,1h,1d')
 ap.add_argument('--edge', type=float, default=0.04, help='мин. перевес после комиссии для входа lag')
 ap.add_argument('--edge-last', type=float, default=0.03, help='мин. перевес в последней минуте')
 ap.add_argument('--edge-model', type=float, default=0.08, help='мин. перевес для входа без лага')
-ap.add_argument('--jump', type=float, default=0.04, help='на сколько должна сдвинуться fair за --look с')
-ap.add_argument('--look', type=float, default=5, help='окно поиска рывка, с')
+ap.add_argument('--jump', type=float, default=0.03, help='на сколько должна сдвинуться fair за --look с')
+ap.add_argument('--look', type=float, default=2, help='окно поиска рывка, с (по WebSocket расхождения живут 0.5–2 с)')
 ap.add_argument('--max-spread', type=float, default=0.04, help='шире спред — рынок неликвиден, не торгуем')
 ap.add_argument('--min-depth', type=float, default=20.0, help='$ минимум на лучшей цене, иначе не торгуем')
+ap.add_argument('--alt5m', action='store_true', help='торговать 5m по ETH/SOL/XRP')
 ap.add_argument('--no-exit', action='store_true', help='всегда держать до расчёта')
 ap.add_argument('--stake', type=float, default=5.0, help='$ на одну виртуальную сделку')
 ap.add_argument('--max-per-market', type=float, default=15.0, help='$ максимум в одном окне')
@@ -358,6 +359,7 @@ def fair_up(m, S, idx, now):
 def ensure_markets(now):
     for c in COINS:
         for tf in TFS:
+            if tf == '5m' and c != 'btc' and not A.alt5m: continue  # 5-минутки ETH/SOL/XRP неликвидны 70–98% времени, «расхождения» там — шум стакана
             st = window(tf, now); sl = slug(c, tf, st)
             if sl not in MK: MK[sl] = Mkt(c, tf, st)
 
@@ -382,6 +384,7 @@ except Exception:
     STRIKES = {}
 
 
+KERR = {}
 KOFF = {}  # (монета, начало окна в сек) -> официальная цена старта из Kalshi (floor_strike 15-минуток)
 
 
@@ -392,12 +395,14 @@ async def kalshi_k_loop():
     names = {'btc': 'BTC', 'eth': 'ETH', 'sol': 'SOL', 'xrp': 'XRP'}
     while True:
         for c in COINS:
-            try:
-                d = await asyncio.to_thread(http, 'https://api.elections.kalshi.com/trade-api/v2/markets?series_ticker=KX%s15M&min_close_ts=%d&limit=20' % (names[c], int(time.time()) - 4200))  # открытое окно + закрытые за последний час (для часовых окон)
-                for mk in d.get('markets', []):
-                    if mk.get('floor_strike') and mk.get('open_time'):
-                        KOFF[(c, int(datetime.fromisoformat(mk['open_time'].replace('Z', '+00:00')).timestamp()))] = float(mk['floor_strike'])
-            except Exception: pass
+            for q in ('status=open&limit=5', 'status=closed&limit=6'):   # текущее окно + закрытые недавно (для часовых окон)
+                try:
+                    d = await asyncio.to_thread(http, 'https://api.elections.kalshi.com/trade-api/v2/markets?series_ticker=KX%s15M&%s' % (names[c], q))
+                    for mk in d.get('markets', []):
+                        if mk.get('floor_strike') and mk.get('open_time'):
+                            KOFF[(c, int(datetime.fromisoformat(mk['open_time'].replace('Z', '+00:00')).timestamp()))] = float(mk['floor_strike'])
+                except Exception as e:
+                    KERR[type(e).__name__] = KERR.get(type(e).__name__, 0) + 1
         await asyncio.sleep(10)
 
 
@@ -579,7 +584,7 @@ async def engine(stop_at):
         hb['ok'] += sum(r is not None for r in res); hb['fail'] += sum(r is None for r in res)
         if now - hb['t'] >= 60:
             v = {c: (round(i.now() or 0, 2), None if i.sigma2() is None else round((i.sigma2() * 365 * 86400) ** .5, 2), len(i.q)) for c, i in IDX.items()}
-            v['dvol'] = dict(DVOL)
+            v['dvol'] = dict(DVOL); v['kalshi_K'] = len(KOFF); v['kalshi_err'] = dict(KERR)
             log('пульс: рынков', len(live), 'с K', sum(m.K is not None for m in live), 'стакан ок/ошибок', hb['ok'], hb['fail'], 'индекс (цена, годовая vol, бирж)', v, 'коды', dict(ERRS))
             ERRS.clear()
             if WS_ON: log('ws:', dict(WSSTAT), 'стаканов', len(BOOK)); WSSTAT.update(msgs=0, books=0, errors=0)
