@@ -60,6 +60,7 @@ def build():
         elif sig: L.append(f"{name}: сигналов {sig}, ждут расчёта")
     lp = S.get('lip') or {}
     if lp.get('periods'): L.append(f"Награды Kalshi (оценка): ${lp['reward']:.2f}, исполнений {lp['fills']}, итог по рассчитанному {usd(lp['net'])}")
+    for nm, r in (S.get('stats') or {}).items(): L.append(f"{nm}: {r['verdict']} (P(перевес>0) {r['p_pos']:.0%}, {r['n']} сделок)")
     if len(L) == 1: L.append('Сделок пока нет.')
     L.append(f'<a href="{DASH}">Дашборд</a>')
     return '\n'.join(L)

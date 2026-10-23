@@ -27,8 +27,12 @@ def sig(pnls, n_boot=4000, seed=7):
     if n < 5: return None
     m = statistics.fmean(pnls); sd = statistics.pstdev(pnls) or 1e-9
     rnd = random.Random(seed); bs = sorted(statistics.fmean(rnd.choices(pnls, k=n)) for _ in range(n_boot))
-    return {'n': n, 'mean': round(m, 4), 't': round(m / (sd / math.sqrt(n)), 2), 'ci': [round(bs[int(.025 * n_boot)], 4), round(bs[int(.975 * n_boot)], 4)],
-            'p_pos': round(sum(b > 0 for b in bs) / n_boot, 3)}
+    # Закон больших чисел: после N сделок итог ≈ N·μ ± 2·√N·σ (95%). Итог стабильно положителен, когда N·μ > 2√N·σ,
+    # то есть N > 4σ²/μ² — столько сделок нужно, чтобы плюс перестал зависеть от удачи (имеет смысл только при μ > 0).
+    need = math.ceil(4 * sd * sd / (m * m)) if m > 0 else None
+    return {'n': n, 'mean': round(m, 4), 'sd': round(sd, 4), 't': round(m / (sd / math.sqrt(n)), 2), 'ci': [round(bs[int(.025 * n_boot)], 4), round(bs[int(.975 * n_boot)], 4)],
+            'p_pos': round(sum(b > 0 for b in bs) / n_boot, 3), 'n_stable': need,
+            'verdict': 'работает' if m > 0 and bs[int(.025 * n_boot)] > 0 else ('убыточна' if bs[int(.975 * n_boot)] < 0 else 'не доказано')}
 
 
 def fit_lambda(pairs):
@@ -228,7 +232,9 @@ def main():
         r = sig(v)
         if r:
             S['stats'][nm] = r
-            L.append(f"{nm}: {r['n']} сделок, среднее ${r['mean']:+.3f}, t = {r['t']}, 95% интервал [{r['ci'][0]:+.3f}; {r['ci'][1]:+.3f}], P(перевес > 0) ≈ {r['p_pos']:.0%}")
+            L.append(f"{nm}: **{r['verdict']}** — {r['n']} сделок, среднее ${r['mean']:+.3f} (σ ${r['sd']:.2f}), t = {r['t']}, "
+                     f"95% интервал [{r['ci'][0]:+.3f}; {r['ci'][1]:+.3f}], P(перевес > 0) ≈ {r['p_pos']:.0%}"
+                     + (f", до стабильного плюса нужно ~{r['n_stable']} сделок" if r['n_stable'] else ''))
     if not S['stats']: L.append('Мало сделок (нужно хотя бы 5 на стратегию).')
     pairs = []
     for x in sn:
