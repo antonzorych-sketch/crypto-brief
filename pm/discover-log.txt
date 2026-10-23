@@ -1,0 +1,45 @@
+активных программ ликвидности: 7357
+пример: [{"discount_factor_bps": 5000, "end_date": "2026-10-23T18:59:00Z", "id": "fee7eeec-cf58-450a-9cdd-921e00f5750a", "incentive_description": "series_lip", "incentive_type": "liquidity", "market_id": "01a162d8-a498-7390-9e18-232c1232820a", "market_ticker": "KX30YRRATEH-23OCT2615-T539", "paid_out": false, "period_reward": 100000, "start_date": "2026-10-23T18:00:00Z", "target_size_fp": "1000.00"}, {"discount_factor_bps": 5000, "end_date": "2026-10-23T19:00:00Z", "id": "feb5fb15-0f2e-4695-8b6f-a548869955b8", "incentive_description": "series_lip", "incentive_type": "liquidity", "market_id": "01a169e2-c1b3-731e-9e5e-4cc3468447bc", "market_ticker": "KXTEMPMIAH-26OCT2315-T74.99", "paid_out": false, "period_reward": 1000000, "start_date": "2026-10-23T18:00:00Z", "target_size_fp": "1000.00"}]
+сумма наград в день: $373,665
+по сериям ($/день): [('KXTEMPMIAH', 24000, 10), ('KXRT', 20423, 237), ('KXWORLDNEWSMENTION', 7689, 17), ('KXLIGAPROMATCH', 7680, 24), ('KXAAAGASDIL', 6737, 37), ('KX7YRRATEH', 6480, 27), ('KX5YRRATEH', 6480, 27), ('KX2YRRATEH', 6480, 27), ('KXAAAGASDWI', 6293, 37), ('KX10YRRATEH', 6240, 26), ('KXSTREAMERAWARDS', 6008, 199), ('KXTRUMPAPPROVE', 5400, 9), ('KX30YRRATEH', 5280, 22), ('KXAAAGASDCO', 4210, 27), ('KXTRUMPMENTION', 4195, 138), ('KXAAAGASDOH', 4123, 27), ('KXAAAGASDDE', 4072, 27), ('KXYTVIEWSW', 2665, 211), ('KXAAAGASDWY', 2553, 17), ('KXAAAGASDWV', 2553, 17), ('KXAAAGASDWA', 2553, 17), ('KXAAAGASDVT', 2553, 17), ('KXAAAGASDVA', 2553, 17), ('KXAAAGASDUT', 2553, 17), ('KXAAAGASDTX', 2553, 17), ('KXAAAGASDTN', 2553, 17), ('KXAAAGASDSD', 2553, 17), ('KXAAAGASDSC', 2553, 17), ('KXAAAGASDRI', 2553, 17), ('KXAAAGASDPA', 2553, 17)]
+
+топ-25 рынков:
+  $  2400.0/день  всего $     100 за 0.0 дн  KXTEMPMIAH-26OCT2315-T79.99  target 1000.00 df 5000 cap None
+  $  2400.0/день  всего $     100 за 0.0 дн  KXTEMPMIAH-26OCT2315-T78.99  target 1000.00 df 5000 cap None
+  $  2400.0/день  всего $     100 за 0.0 дн  KXTEMPMIAH-26OCT2315-T77.99  target 1000.00 df 5000 cap None
+  $  2400.0/день  всего $     100 за 0.0 дн  KXTEMPMIAH-26OCT2315-T76.99  target 1000.00 df 5000 cap None
+  $  2400.0/день  всего $     100 за 0.0 дн  KXTEMPMIAH-26OCT2315-T75.99  target 1000.00 df 5000 cap None
+  $  2400.0/день  всего $     100 за 0.0 дн  KXTEMPMIAH-26OCT2315-T74.99  target 1000.00 df 5000 cap None
+  $  2400.0/день  всего $     100 за 0.0 дн  KXTEMPMIAH-26OCT2315-T73.99  target 1000.00 df 5000 cap None
+  $  2400.0/день  всего $     100 за 0.0 дн  KXTEMPMIAH-26OCT2315-T72.99  target 1000.00 df 5000 cap None
+  $  2400.0/день  всего $     100 за 0.0 дн  KXTEMPMIAH-26OCT2315-T71.99  target 1000.00 df 5000 cap None
+  $  2400.0/день  всего $     100 за 0.0 дн  KXTEMPMIAH-26OCT2315-T70.99  target 1000.00 df 5000 cap None
+  $  1200.0/день  всего $      50 за 0.0 дн  KXUSDJPY15M-26OCT231415-30  target 300.00 df 5000 cap None
+  $  1200.0/день  всего $      50 за 0.0 дн  KXUSDCAD15M-26OCT231415-30  target 300.00 df 5000 cap None
+  $  1200.0/день  всего $      50 за 0.0 дн  KXGBPUSD15M-26OCT231415-30  target 300.00 df 5000 cap None
+  $  1200.0/день  всего $      50 за 0.0 дн  KXEURUSD15M-26OCT231415-30  target 300.00 df 5000 cap None
+  $  1200.0/день  всего $      50 за 0.0 дн  KXBRENT15M-26OCT231415-15  target 300.00 df 5000 cap None
+  $  1200.0/день  всего $      50 за 0.0 дн  KXAUDUSD15M-26OCT231415-30  target 300.00 df 5000 cap None
+  $  1200.0/день  всего $      50 за 0.0 дн  KX5YRRATE15M-26OCT231415-15  target 300.00 df 5000 cap None
+  $  1200.0/день  всего $      50 за 0.0 дн  KX30YRRATE15M-26OCT231415-15  target 300.00 df 5000 cap None
+  $  1200.0/день  всего $      50 за 0.0 дн  KX2YRRATE15M-26OCT231415-15  target 300.00 df 5000 cap None
+  $  1200.0/день  всего $      50 за 0.0 дн  KX10YRRATE15M-26OCT231415-15  target 300.00 df 5000 cap None
+  $   600.0/день  всего $     600 за 1.0 дн  KXTRUMPAPPROVE-26OCT24-U38.4  target 1000.00 df 5000 cap None
+  $   600.0/день  всего $     600 за 1.0 дн  KXTRUMPAPPROVE-26OCT24-E39.0  target 1000.00 df 5000 cap None
+  $   600.0/день  всего $     600 за 1.0 дн  KXTRUMPAPPROVE-26OCT24-E38.9  target 1000.00 df 5000 cap None
+  $   600.0/день  всего $     600 за 1.0 дн  KXTRUMPAPPROVE-26OCT24-E38.8  target 1000.00 df 5000 cap None
+  $   600.0/день  всего $     600 за 1.0 дн  KXTRUMPAPPROVE-26OCT24-E38.7  target 1000.00 df 5000 cap None
+
+распределение $/день: [0, 89, 4652, 1103, 1513]
+
+ KXTEMPMIAH-26OCT2315-T79.99 Will the temp in Miami be above 79.99° on Oct 23, 2026 at 3pm EDT? active vol24 0.00 close 2026-10-23T19:00:00Z
+  стакан: {"orderbook_fp": {"no_dollars": [["0.0100", "1940.00"], ["0.0200", "515.00"], ["0.0300", "10.00"], ["0.0400", "3.00"], ["0.0500", "208.00"], ["0.0600", "126.00"], ["0.0800", "1.00"], ["0.1000", "2.00"], ["0.1100", "4.00"], ["0.1500", "1.00"], ["0.1600", "1.00"], ["0.2000", "86.00"], ["0.2100", "1.00"], ["0.2500", "1.00"], ["0.2600", "1.00"], ["0.3000", "1.00"], ["0.3100", "23.00"], ["0.3500", "1.00"], ["0.4000", "1.00"], ["0.4500", "1.00"], ["0.5000", "16.00"], ["0.5100", "1.00"], ["0.6600", "53
+  сделки: {"cursor": "", "trades": [{"count_fp": "1.00", "created_time": "2026-10-23T18:00:45.073385Z", "is_block_trade": false, "no_price_dollars": "0.9900", "taker_book_side": "ask", "taker_outcome_side": "no", "taker_side": "no", "ticker": "KXTEMPMIAH-26OCT2315-T79.99", "trade_id": "0724ce5c-8e61-8a83-1699-8b342fcc25f1", "yes_price_dollars": "0.0100"}, {"count_fp": "100.00", "created_time": "2026-10-23T18:00:45.073385Z", "is_block_trade": false, "no_price_dollars": "0.9900", "taker_book_side": "ask", "taker_outcome_side": "no", "taker_side": "no", "ticker": "KXTEMPMIAH-26OCT2315-T79.99", "trade_id": 
+
+ KXTEMPMIAH-26OCT2315-T78.99 Will the temp in Miami be above 78.99° on Oct 23, 2026 at 3pm EDT? active vol24 0.00 close 2026-10-23T19:00:00Z
+  стакан: {"orderbook_fp": {"no_dollars": [["0.0100", "1941.00"], ["0.0200", "715.00"], ["0.0300", "10.00"], ["0.0400", "3.00"], ["0.0500", "8.00"], ["0.0600", "10.00"], ["0.0700", "100.00"], ["0.0800", "1.00"], ["0.1000", "2.00"], ["0.1100", "4.00"], ["0.1500", "1.00"], ["0.1600", "1.00"], ["0.2000", "36.00"], ["0.2100", "1.00"], ["0.2500", "1.00"], ["0.2600", "1.00"], ["0.3000", "1.00"], ["0.3100", "23.00"], ["0.3500", "1.00"], ["0.4000", "1.00"], ["0.4500", "1.00"], ["0.5000", "1.00"], ["0.5100", "1.00
+  сделки: {"cursor": "", "trades": []}
+
+ KXTEMPMIAH-26OCT2315-T77.99 Will the temp in Miami be above 77.99° on Oct 23, 2026 at 3pm EDT? active vol24 0.00 close 2026-10-23T19:00:00Z
+  стакан: {"orderbook_fp": {"no_dollars": [["0.0100", "941.00"], ["0.0200", "65.00"], ["0.0300", "10.00"], ["0.0400", "3.00"], ["0.0500", "8.00"], ["0.0600", "10.00"], ["0.0700", "100.00"], ["0.0800", "1.00"], ["0.1000", "2.00"], ["0.1100", "4.00"], ["0.1500", "1.00"], ["0.1600", "1.00"], ["0.2000", "36.00"], ["0.2100", "1.00"], ["0.2500", "1.00"], ["0.2600", "1.00"], ["0.3000", "1.00"], ["0.3100", "23.00"], ["0.3500", "1.00"], ["0.4000", "1.00"], ["0.4500", "1.00"], ["0.5000", "1.00"], ["0.5100", "1.00"]
+  сделки: {"cursor": "", "trades": [{"count_fp": "6.00", "created_time": "2026-10-23T18:01:04.461858Z", "is_block_trade": false, "no_price_dollars": "0.9800", "taker_book_side": "ask", "taker_outcome_side": "no", "taker_side": "no", "ticker": "KXTEMPMIAH-26OCT2315-T77.99", "trade_id": "0724ce5a-66d9-8c49-bffb-b448090f6644", "yes_price_dollars": "0.0200"}, {"count_fp": "5.00", "created_time": "2026-10-23T18:01:04.461858Z", "is_block_trade": false, "no_price_dollars": "0.9800", "taker_book_side": "ask", "taker_outcome_side": "no", "taker_side": "no", "ticker": "KXTEMPMIAH-26OCT2315-T77.99", "trade_id": "0
