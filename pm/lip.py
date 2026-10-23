@@ -26,6 +26,7 @@ ap.add_argument('--minutes', type=float, default=320)
 ap.add_argument('--top', type=int, default=20, help='сколько рынков отслеживать одновременно')
 ap.add_argument('--usd-per-side', type=float, default=50.0, help='$ в заявке на каждой стороне рынка')
 ap.add_argument('--max-contracts', type=float, default=2000)
+ap.add_argument('--stop-before', type=float, default=600, help='за сколько секунд до конца периода снимаем заявки (под конец торгуют осведомлённые)')
 ap.add_argument('--cycle', type=float, default=20.0, help='с между снимками одного рынка')
 A = ap.parse_args()
 J = K.Journal('lip')
@@ -101,7 +102,7 @@ async def watch(ticker):
         lv = side_levels(ob, side)
         q = st['quote'].get(side)
         best = lv[0][0] if lv else None
-        if best is None or best <= 0.0 or st['filled'][side] >= qty_for(best) * 0.999:
+        if best is None or best <= 0.0 or st['filled'][side] >= qty_for(best) * 0.999 or p['end'] - now < A.stop_before:
             ours = 0.0
         else:
             ours = max(0.0, qty_for(best) - st['filled'][side])
