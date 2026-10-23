@@ -1,0 +1,43 @@
+name: pm-paper
+on:
+  schedule:
+    - cron: '7 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      minutes: {description: 'Сколько минут работать', default: '350'}
+      coins: {description: 'Монеты', default: 'btc,eth'}
+      edge: {description: 'Мин. перевес', default: '0.04'}
+  push:
+    paths: ['pm/lag.py', 'pm/report.py', '.github/workflows/pm-paper.yml']
+permissions:
+  contents: write
+concurrency:
+  group: pm-paper
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q websockets
+      - name: Restore earlier results
+        run: |
+          git fetch -q origin pm-paper && git checkout FETCH_HEAD -- pm/paper || echo "first run"
+      - name: Paper trading
+        run: |
+          M="${{ github.event.inputs.minutes }}"
+          if [ -z "$M" ]; then if [ "${{ github.event_name }}" = "push" ]; then M=12; else M=350; fi; fi
+          python -u pm/lag.py --minutes "$M" --coins "${{ github.event.inputs.coins || 'btc,eth' }}" --edge "${{ github.event.inputs.edge || '0.04' }}" 2>&1 | tee pm/paper/last-log.txt
+      - name: Report and save
+        if: always()
+        run: |
+          python pm/report.py || true
+          git config user.name github-actions; git config user.email actions@github.com
+          git checkout -B pm-paper
+          git add -f pm/paper
+          git commit -q -m "pm-paper results [skip ci]" || true
+          git push -f origin pm-paper
