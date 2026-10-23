@@ -251,7 +251,7 @@ def set_strike(m, idx, now):
 def decide(m, up, dn, f, now, S):
     tau = m.t1() - now
     if f is None or tau < 15 or m.spent >= A.max_per_market: return
-    if m.t1() > STOP + 600: return  # окно не закроется до конца прогона — не открываем
+    if m.t1() > STOP + 300: return  # окно не закроется до конца прогона — не открываем
     for side, q, p in (('UP', up, f), ('DOWN', dn, None if f is None else 1 - f)):
         if not q: continue
         ask, qty = q
@@ -324,7 +324,7 @@ async def poll(m):
 
 async def engine(stop_at):
     snap_f = gzip.open(os.path.join(OUT, 'snaps.jsonl.gz'), 'at')
-    last_snap = {}
+    last_snap = {}; hb = {'t': time.time(), 'ok': 0, 'fail': 0}
     while time.time() < stop_at:
         t_loop = time.time(); now_dt = datetime.now(timezone.utc)
         ensure_markets(now_dt)
@@ -333,6 +333,11 @@ async def engine(stop_at):
         live = [m for m in live if not m.dead]
         res = await asyncio.gather(*(poll(m) for m in live))
         now = time.time()
+        hb['ok'] += sum(r is not None for r in res); hb['fail'] += sum(r is None for r in res)
+        if now - hb['t'] >= 60:
+            v = {c: (round(i.now() or 0, 2), None if i.sigma2() is None else round((i.sigma2() * 365 * 86400) ** .5, 2), len(i.q)) for c, i in IDX.items()}
+            log('пульс: рынков', len(live), 'с K', sum(m.K is not None for m in live), 'стакан ок/ошибок', hb['ok'], hb['fail'], 'индекс (цена, годовая vol, бирж)', v)
+            hb.update(t=now, ok=0, fail=0)
         for m, r in zip(live, res):
             idx = IDX[m.coin]; S = idx.now()
             if now >= m.t1():
@@ -367,7 +372,7 @@ async def main():
         for m in MK.values():
             if not m.done and m.pos: m.done = True; asyncio.create_task(settle(m))
         pend = [t for t in asyncio.all_tasks() if t is not asyncio.current_task() and t not in feeds]
-        if pend: await asyncio.wait(pend, timeout=660)
+        if pend: await asyncio.wait(pend, timeout=1200)
         for t in feeds: t.cancel()
         log('стоп')
 
