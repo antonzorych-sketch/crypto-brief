@@ -47,6 +47,7 @@ ap.add_argument('--shrink', type=float, default=0.75, help='вес модели 
 ap.add_argument('--shrink-last', type=float, default=0.85, help='вес модели в последнюю минуту (там она точнее)')
 ap.add_argument('--bankroll', type=float, default=100.0, help='виртуальный банк для Келли')
 ap.add_argument('--kelly', type=float, default=0.25, help='доля Келли')
+ap.add_argument('--max-edge', type=float, default=0.12, help='не входить, если «перевес» подозрительно большой')
 ap.add_argument('--alt5m', action='store_true', help='торговать 5m по ETH/SOL/XRP')
 ap.add_argument('--no-exit', action='store_true', help='всегда держать до расчёта')
 ap.add_argument('--stake', type=float, default=10.0, help='$ максимум на одну виртуальную сделку (размер — по Келли)')
@@ -483,6 +484,7 @@ def decide(m, up, dn, bb, f, mid, now, S):
             reason, need, band = 'model', A.edge_model, A.min_px
         if not (band <= ask <= 1 - band): continue  # хвосты модели ненадёжны
         if edge < need or now - m.last_entry.get(side, 0) < 30: continue
+        if edge > A.max_edge and reason != 'last': continue  # данные: при перевесе > 0.12 — 0 побед из 3, 0.07–0.12 — 24%: огромный «перевес» чаще ошибка модели, чем подарок рынка
         m.last_entry[side] = now
         m.pending.append({'side': side, 'reason': reason, 'limit': round(ask + 0.01, 2), 'fair': p, 'fair_model': f if side == 'UP' else 1 - f,
                           'ask0': ask, 'edge': edge, 't': now, 'tau': tau, 'S': S, 'stake': round(kelly_stake(p, ask), 2)})
