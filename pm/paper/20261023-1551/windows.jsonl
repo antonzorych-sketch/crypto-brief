@@ -1,0 +1,5 @@
+{"slug": "cpcxrp-xrp-updown-5m-2026-10-23-1555z", "coin": "xrp", "tf": "5m", "K": 1.309638625, "ksrc": "own60", "F": 1.3119502083333332, "own": "UP", "official": "UP", "n_pos": 0, "polls": 57, "illiquid": 52}
+{"slug": "cpceth-eth-updown-5m-2026-10-23-1555z", "coin": "eth", "tf": "5m", "K": 2402.2140833333333, "ksrc": "own60", "F": 2405.126166666667, "own": "UP", "official": "UP", "n_pos": 0, "polls": 58, "illiquid": 53}
+{"slug": "cpc-btc-updown-5m-2026-10-23-1555z", "coin": "btc", "tf": "5m", "K": 81488.31145833334, "ksrc": "own60", "F": 81590.13241666667, "own": "UP", "official": "UP", "n_pos": 0, "polls": 116, "illiquid": 81}
+{"slug": "cpcsol-sol-updown-5m-2026-10-23-1555z", "coin": "sol", "tf": "5m", "K": 104.46162916666667, "ksrc": "own60", "F": 104.66759583333332, "own": "UP", "official": "UP", "n_pos": 0, "polls": 58, "illiquid": 53}
+{"slug": "cpc-btc-updown-5m-2026-10-23-1600z", "coin": "btc", "tf": "5m", "K": 81590.13241666667, "ksrc": "own60", "F": 81605.4255, "own": "UP", "official": "UP", "n_pos": 3, "polls": 220, "illiquid": 0}
