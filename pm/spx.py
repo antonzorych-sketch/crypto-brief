@@ -88,7 +88,8 @@ def var_per_sec(sym):
 
 def fair(m, S, v, tau):
     b2 = (A.basis_bp * 1e-4) ** 2; sd = math.sqrt(v * max(tau, 0) + b2)
-    P = lambda k: 0.5 * (1 + math.erf(math.log(S / k) / sd / math.sqrt(2)))   # P(итог > k)
+    # смесь двух нормальных (85% σ·0.8, 15% σ·1.84): толстые хвосты внутри дня (новости, скачки)
+    P = lambda k: sum(w * 0.5 * (1 + math.erf(math.log(S / k) / (sd * m) / math.sqrt(2))) for w, m in ((0.85, 0.8), (0.15, 1.84)))   # P(итог > k)
     st, lo, hi = m.get('strike_type'), m.get('floor_strike'), m.get('cap_strike')
     if st in ('greater', 'greater_or_equal'): return P(lo)
     if st in ('less', 'less_or_equal'): return 1 - P(hi)

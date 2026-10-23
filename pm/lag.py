@@ -37,15 +37,19 @@ ap.add_argument('--coins', default='btc,eth,sol,xrp')
 ap.add_argument('--tfs', default='5m,15m,1h,1d')
 ap.add_argument('--edge', type=float, default=0.04, help='мин. перевес после комиссии для входа lag')
 ap.add_argument('--edge-last', type=float, default=0.03, help='мин. перевес в последней минуте')
-ap.add_argument('--edge-model', type=float, default=0.08, help='мин. перевес для входа без лага')
+ap.add_argument('--edge-model', type=float, default=0.06, help='мин. перевес для входа без лага')
 ap.add_argument('--jump', type=float, default=0.03, help='на сколько должна сдвинуться fair за --look с')
 ap.add_argument('--look', type=float, default=2, help='окно поиска рывка, с (по WebSocket расхождения живут 0.5–2 с)')
 ap.add_argument('--max-spread', type=float, default=0.04, help='шире спред — рынок неликвиден, не торгуем')
 ap.add_argument('--min-depth', type=float, default=20.0, help='$ минимум на лучшей цене, иначе не торгуем')
 ap.add_argument('--exit-margin', type=float, default=0.01, help='продаём, если bid − комиссия выше справедливой цены на столько')
+ap.add_argument('--shrink', type=float, default=0.75, help='вес модели против цены рынка (байесовское сжатие): p = λ·модель + (1−λ)·mid')
+ap.add_argument('--shrink-last', type=float, default=0.85, help='вес модели в последнюю минуту (там она точнее)')
+ap.add_argument('--bankroll', type=float, default=100.0, help='виртуальный банк для Келли')
+ap.add_argument('--kelly', type=float, default=0.25, help='доля Келли')
 ap.add_argument('--alt5m', action='store_true', help='торговать 5m по ETH/SOL/XRP')
 ap.add_argument('--no-exit', action='store_true', help='всегда держать до расчёта')
-ap.add_argument('--stake', type=float, default=5.0, help='$ на одну виртуальную сделку')
+ap.add_argument('--stake', type=float, default=10.0, help='$ максимум на одну виртуальную сделку (размер — по Келли)')
 ap.add_argument('--max-per-market', type=float, default=15.0, help='$ максимум в одном окне')
 ap.add_argument('--basis-bp', type=float, default=3.0, help='расхождение нашего индекса с BRTI, б.п.')
 ap.add_argument('--min-px', type=float, default=0.10, help='не покупать дешевле/дороже этого')
@@ -76,6 +80,23 @@ def ncdf(x): return 0.5 * (1 + math.erf(x / math.sqrt(2)))
 
 
 def fee(theta, p): return theta * p * (1 - p)
+
+
+# Хвосты: доходности крипты на минутах — с «толстыми хвостами» (скачки, смена режима), нормальное распределение
+# переоценивает уверенность далеко от страйка. Берём смесь двух нормальных с той же общей дисперсией:
+# 85% «спокойный» режим (σ·0.8) и 15% «бурный» (σ·1.84) — эксцесс ≈ 3.4, близко к эмпирике.
+MIX = ((0.85, 0.8), (0.15, 1.84))
+
+
+def mix_cdf(x, sd):
+    return sum(w * ncdf(x / (sd * k)) for w, k in MIX) if sd > 0 else (1.0 if x > 0 else 0.0)
+
+
+def kelly_stake(p, c):
+    """Доля Келли для бинарного контракта по цене c при вероятности p: f* = (p − c)/(1 − c).
+    Берём --kelly долю (дробный Келли снижает риск разорения при ошибке модели), в пределах [$1, --stake]."""
+    f = (p - c) / (1 - c) if c < 1 else 0
+    return max(1.0, min(A.stake, A.bankroll * A.kelly * f))
 
 
 # ---------- индекс (прокси BRTI) ----------
@@ -348,7 +369,7 @@ def fair_up(m, S, idx, now):
     if tau >= 60:
         var = v * (tau - 60) + v * 60 * 61 * 121 / 6 / 3600 + b2
         mu = math.log(S / m.K)
-        return ncdf(mu / math.sqrt(var))
+        return mix_cdf(mu, math.sqrt(var))
     t1 = int(m.t1()); got, n = idx.avg(t1 - 60, int(now))
     k = max(0, 60 - n)  # секунд ещё впереди
     if got is None: got, n, k = S, 0, 60
@@ -447,7 +468,9 @@ def decide(m, up, dn, bb, f, mid, now, S):
     if bb is None or not up or up[0] - bb > A.max_spread + 1e-9:  # ликвидность: узкий спред обязателен
         m.illiquid += 1; return
     if m.t1() > STOP + 300: return  # окно не закроется до конца прогона — не открываем
-    for side, q, p in (('UP', up, f), ('DOWN', dn, 1 - f)):
+    lam = A.shrink_last if tau < 60 else A.shrink
+    fs = lam * f + (1 - lam) * mid if mid is not None else f   # рынок тоже знает что-то: сжимаем модель к его цене
+    for side, q, p in (('UP', up, fs), ('DOWN', dn, 1 - fs)):
         if not q: continue
         ask, qty = q
         if ask * qty < A.min_depth: continue  # на лучшей цене слишком мало
@@ -461,8 +484,8 @@ def decide(m, up, dn, bb, f, mid, now, S):
         if not (band <= ask <= 1 - band): continue  # хвосты модели ненадёжны
         if edge < need or now - m.last_entry.get(side, 0) < 30: continue
         m.last_entry[side] = now
-        m.pending.append({'side': side, 'reason': reason, 'limit': round(ask + 0.01, 2), 'fair': p, 'ask0': ask, 'edge': edge,
-                          't': now, 'tau': tau, 'S': S})
+        m.pending.append({'side': side, 'reason': reason, 'limit': round(ask + 0.01, 2), 'fair': p, 'fair_model': f if side == 'UP' else 1 - f,
+                          'ask0': ask, 'edge': edge, 't': now, 'tau': tau, 'S': S, 'stake': round(kelly_stake(p, ask), 2)})
 
 
 def manage_exits(m, f, now, bb, bidq, up):
@@ -510,7 +533,7 @@ def fill(m, up, dn, now):
         q = up if o['side'] == 'UP' else dn
         rec = {'slug': m.slug, 'coin': m.coin, 'tf': m.tf, **o, 'K': m.K, 'ksrc': m.ksrc, 't_fill': now, 'src': 'ws' if WS_ON else 'rest'}
         if q and q[0] <= o['limit']:
-            px = q[0]; n = min(A.stake / px, q[1], (A.max_per_market - m.spent) / px)
+            px = q[0]; n = min(o.get('stake', A.stake) / px, q[1], (A.max_per_market - m.spent) / px)
             if n * px < 0.5: rec['status'] = 'thin'
             else:
                 fe = fee(m.theta, px) * n

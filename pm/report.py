@@ -19,6 +19,30 @@ def rows(pat):
     return out
 
 
+def sig(pnls, n_boot=4000, seed=7):
+    """Статистика по сделкам: среднее, t-статистика, 95% бутстрап-интервал среднего и доля бутстрап-выборок со средним > 0.
+    t > 2 и интервал целиком выше нуля — перевес вряд ли случаен."""
+    import random
+    n = len(pnls)
+    if n < 5: return None
+    m = statistics.fmean(pnls); sd = statistics.pstdev(pnls) or 1e-9
+    rnd = random.Random(seed); bs = sorted(statistics.fmean(rnd.choices(pnls, k=n)) for _ in range(n_boot))
+    return {'n': n, 'mean': round(m, 4), 't': round(m / (sd / math.sqrt(n)), 2), 'ci': [round(bs[int(.025 * n_boot)], 4), round(bs[int(.975 * n_boot)], 4)],
+            'p_pos': round(sum(b > 0 for b in bs) / n_boot, 3)}
+
+
+def fit_lambda(pairs):
+    """Подбор веса модели λ в смеси p = λ·модель + (1−λ)·рынок по минимуму log-loss на рассчитанных снимках."""
+    if len(pairs) < 100: return None
+    def ll(lam):
+        t = 0.0
+        for f, mid, y in pairs:
+            p = min(max(lam * f + (1 - lam) * mid, 1e-4), 1 - 1e-4); t -= math.log(p if y else 1 - p)
+        return t / len(pairs)
+    grid = [i / 20 for i in range(21)]; best = min(grid, key=ll)
+    return {'lambda': best, 'logloss_model': round(ll(1.0), 4), 'logloss_market': round(ll(0.0), 4), 'logloss_best': round(ll(best), 4), 'n': len(pairs)}
+
+
 def main():
     st, tr, lg, wn, sn = rows('settled.jsonl'), rows('trades.jsonl'), rows('lag.jsonl'), rows('windows.jsonl'), rows('snaps.jsonl.gz')
     ast, atr, anr = rows('arb_settled.jsonl'), rows('arb_trades.jsonl'), rows('arb_near.jsonl')
@@ -194,6 +218,27 @@ def main():
         S['lip'] = {'periods': len(per), 'reward': round(rew, 2), 'fills': len(fl), 'settled_pnl': round(loss, 2), 'net': round(rew + loss, 2),
                     'by_series': {k: {'n': n, 'reward': round(r, 2), 'pnl': round(pl, 2)} for k, (r, n, pl) in g.items()}}
     else: L.append('Данных пока нет.')
+    # --- статистическая значимость и вес модели ---
+    L += ['', '## Значимость (бутстрап) и вес модели против рынка']
+    groups = {'лаг (все)': [x['pnl'] for x in st], 'лаг WebSocket': [x['pnl'] for x in st if x.get('src') == 'ws'],
+              'пары': [x['pnl'] for x in rows('pair_settled.jsonl') if x.get('pnl') is not None]}
+    for bot, nm in (('wx', 'погода'), ('spx', 'S&P'), ('lip', 'LIP исполнения')): groups[nm] = [x['pnl'] for x in kst if x.get('bot') == bot]
+    S['stats'] = {}
+    for nm, v in groups.items():
+        r = sig(v)
+        if r:
+            S['stats'][nm] = r
+            L.append(f"{nm}: {r['n']} сделок, среднее ${r['mean']:+.3f}, t = {r['t']}, 95% интервал [{r['ci'][0]:+.3f}; {r['ci'][1]:+.3f}], P(перевес > 0) ≈ {r['p_pos']:.0%}")
+    if not S['stats']: L.append('Мало сделок (нужно хотя бы 5 на стратегию).')
+    pairs = []
+    for x in sn:
+        y = res.get(x['slug'])
+        if y is not None and x.get('fair') is not None and x.get('bid') is not None and x.get('ask') is not None: pairs.append((x['fair'], (x['bid'] + x['ask']) / 2, y))
+    fl = fit_lambda(pairs)
+    if fl:
+        S['lambda'] = fl
+        L.append(f"Лучший вес модели λ = {fl['lambda']} (log-loss: модель {fl['logloss_model']}, рынок {fl['logloss_market']}, смесь {fl['logloss_best']}, {fl['n']} снимков). "
+                 f"Сейчас в боте λ = 0.75 — если оценка устойчиво другая, поправим.")
     L += ['', '_Paper trading: реальные ордера не отправляются._']
     open(os.path.join(R, 'REPORT.md'), 'w').write('\n'.join(L) + '\n')
     json.dump(S, open(os.path.join(R, 'summary.json'), 'w'), default=str)
