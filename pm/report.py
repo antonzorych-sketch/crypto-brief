@@ -177,6 +177,23 @@ def main():
             L.append(f'Точность (Brier): модель {statistics.fmean(bf):.4f}, рынок {statistics.fmean(bm):.4f} на {len(bf)} снимках')
             B['brier'] = {'model': round(statistics.fmean(bf), 4), 'market': round(statistics.fmean(bm), 4), 'n': len(bf)}
         S[bot] = B
+    # --- LIP: награды за ликвидность Kalshi ---
+    per = rows('lip_periods.jsonl'); lst = [x for x in kst if x.get('bot') == 'lip']
+    L += ['', '## Награды за ликвидность Kalshi (оценка)']
+    if per:
+        rew = sum(x['reward_est'] for x in per); fl = rows('lip_trades.jsonl')
+        loss = sum(x['pnl'] for x in lst)
+        L.append(f'Периодов: {len(per)}, ожидаемые награды ${rew:.2f}, исполнений {len(fl)}, рассчитано {len(lst)} с P&L ${loss:+.2f}, '
+                 f'нерассчитанных {len(fl) - len(lst)}. Чистый результат по рассчитанному: ${rew + loss:+.2f}')
+        g = defaultdict(lambda: [0.0, 0, 0.0])
+        for x in per: g[x['series']][0] += x['reward_est']; g[x['series']][1] += 1
+        for x in lst: g[x.get('series', '?')][2] += x['pnl']
+        L += ['', '| Серия | Периодов | Награды $ | P&L исполнений $ | Итого $ |', '|---|---|---|---|---|']
+        for k, (r, n, pl) in sorted(g.items(), key=lambda kv: -(kv[1][0] + kv[1][2]))[:15]:
+            L.append(f'| {k} | {n} | {r:.2f} | {pl:+.2f} | {r + pl:+.2f} |')
+        S['lip'] = {'periods': len(per), 'reward': round(rew, 2), 'fills': len(fl), 'settled_pnl': round(loss, 2), 'net': round(rew + loss, 2),
+                    'by_series': {k: {'n': n, 'reward': round(r, 2), 'pnl': round(pl, 2)} for k, (r, n, pl) in g.items()}}
+    else: L.append('Данных пока нет.')
     L += ['', '_Paper trading: реальные ордера не отправляются._']
     open(os.path.join(R, 'REPORT.md'), 'w').write('\n'.join(L) + '\n')
     json.dump(S, open(os.path.join(R, 'summary.json'), 'w'), default=str)

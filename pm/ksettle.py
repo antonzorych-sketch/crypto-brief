@@ -22,7 +22,7 @@ def main():
         for l in open(done_f):
             if l.strip(): x = json.loads(l); done.add((x['run'], x['t'], x['ticker']))
     trades, tickers = [], set()
-    for pfx in ('wx', 'spx'):
+    for pfx in ('wx', 'spx', 'lip'):
         for f in sorted(glob.glob(os.path.join(R, '*', f'{pfx}_trades.jsonl'))):
             run = os.path.basename(os.path.dirname(f))
             for l in open(f):
