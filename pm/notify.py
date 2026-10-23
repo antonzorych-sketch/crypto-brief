@@ -68,12 +68,16 @@ def main(test=False):
     if not TOKEN:
         print('notify: нет TG_TOKEN — пропускаем'); return 'no_token'
     try:
-        if not api('getMe').get('ok'): return 'bad_token'
+        me = api('getMe')
+        if not me.get('ok'): return 'bad_token'
     except Exception:
         print('notify: токен не принят Telegram'); return 'bad_token'
     cid = chat_id()
     if not cid:
-        print('notify: чат не найден — напишите боту /start'); return 'no_chat'
+        n = -1
+        try: n = len(api('getUpdates').get('result', []))
+        except Exception: pass
+        print('notify: чат не найден — напишите боту /start'); return f"no_chat bot=@{me['result'].get('username')} updates={n}"
     try:
         if test:
             text = '✅ Бот подключён. Сюда будут приходить сводки после каждого прогона paper-ботов.\n<a href="' + DASH + '">Дашборд</a>'
