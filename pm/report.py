@@ -28,6 +28,11 @@ def main():
                   {os.path.basename(os.path.dirname(f)) for f in glob.glob(os.path.join(R, '*', 'windows.jsonl'))})
     L.append(f'Прогонов: {len(runs)} ({runs[0] if runs else "-"} … {runs[-1] if runs else "-"}), окон рассчитано: {len(wn)}')
     agree = [w for w in wn if w.get('own') and w.get('official')]
+    kerr = [abs(w['K_err_bp']) for w in wn if w.get('K_err_bp') is not None]
+    if kerr: L.append(f'Точность нашего индекса против официальной цены старта (Kalshi): медиана {statistics.median(kerr):.1f} б.п., 90% — {sorted(kerr)[int(len(kerr) * .9)]:.1f} б.п. ({len(kerr)} окон)')
+    ksrc = defaultdict(int)
+    for w in wn: ksrc[w.get('ksrc') or '—'] += 1
+    if ksrc: L.append('Источник цены старта: ' + ', '.join(f'{k} {v}' for k, v in sorted(ksrc.items())))
     if agree:
         L.append(f'Наш прокси BRTI совпал с официальным исходом: {sum(w["own"] == w["official"] for w in agree)}/{len(agree)}')
     L += ['', '## Сделки']

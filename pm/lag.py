@@ -295,7 +295,7 @@ class Mkt:
         s.tape = deque(maxlen=60)  # (t, fair, mid) — для поиска рывков
         s.exits = []  # заявки на продажу
         s.polls = 0; s.illiquid = 0  # доля времени, когда рынок был неликвиден
-        s.done = False; s.dead = False
+        s.done = False; s.dead = False; s.k_own = None
 
     def t0(s): return s.start.timestamp()
 
@@ -382,18 +382,45 @@ except Exception:
     STRIKES = {}
 
 
+KOFF = {}  # (монета, начало окна в сек) -> официальная цена старта из Kalshi (floor_strike 15-минуток)
+
+
+async def kalshi_k_loop():
+    """Kalshi публикует floor_strike своих 15-минуток — это то же самое среднее CF RTI за минуту до начала окна,
+    по которому считается и Polymarket. Окна Polymarket, начинающиеся в :00/:15/:30/:45 (все 15m и 1h, треть 5m),
+    получают точную цену старта вместо нашей оценки."""
+    names = {'btc': 'BTC', 'eth': 'ETH', 'sol': 'SOL', 'xrp': 'XRP'}
+    while True:
+        for c in COINS:
+            try:
+                d = await asyncio.to_thread(http, 'https://api.elections.kalshi.com/trade-api/v2/markets?series_ticker=KX%s15M&min_close_ts=%d&limit=20' % (names[c], int(time.time()) - 4200))  # открытое окно + закрытые за последний час (для часовых окон)
+                for mk in d.get('markets', []):
+                    if mk.get('floor_strike') and mk.get('open_time'):
+                        KOFF[(c, int(datetime.fromisoformat(mk['open_time'].replace('Z', '+00:00')).timestamp()))] = float(mk['floor_strike'])
+            except Exception: pass
+        await asyncio.sleep(10)
+
+
+def save_strikes():
+    try:
+        keep = {(datetime.now(timezone.utc) - timedelta(days=d)).strftime('%Y-%m-%d') for d in range(3)}
+        json.dump({sl: v for sl, v in STRIKES.items() if any(f'-{d}-' in sl for d in keep)}, open(STRIKES_F, 'w'))
+    except Exception: pass
+
+
 def set_strike(m, idx, now):
-    """K = среднее нашего индекса за минуту до старта (сохраняется между прогонами).
-    Если ни этот, ни прошлый прогон не видел старта окна — K неизвестен, окно пропускаем."""
-    if m.K is not None or now < m.t0() + 1: return
+    """K: официальная цена старта (Kalshi) > сохранённая из прошлого прогона > наша оценка по индексу.
+    Если ни один источник не знает старта окна — окно пропускаем."""
+    if now < m.t0() + 1: return
+    off = KOFF.get((m.coin, int(m.t0())))
+    if off is not None and m.ksrc != 'kalshi':
+        if m.K is not None: m.k_own = m.K       # наша оценка остаётся для замера точности индекса
+        m.K, m.ksrc = off, 'kalshi'; STRIKES[m.slug] = off; save_strikes(); return
+    if m.K is not None: return
     if m.slug in STRIKES: m.K, m.ksrc = STRIKES[m.slug], 'saved'; return
     k, n = idx.avg(m.t0() - 60, m.t0())
     if n >= 45:
-        m.K, m.ksrc = k, f'own{n}'; STRIKES[m.slug] = k
-        try:
-            keep = {(datetime.now(timezone.utc) - timedelta(days=d)).strftime('%Y-%m-%d') for d in range(3)}
-            json.dump({sl: v for sl, v in STRIKES.items() if any(f'-{d}-' in sl for d in keep)}, open(STRIKES_F, 'w'))
-        except Exception: pass
+        m.K, m.ksrc = k, f'own{n}'; STRIKES[m.slug] = k; save_strikes()
     elif now - m.t0() < 5:
         return
     else:
@@ -514,7 +541,8 @@ async def settle(m):
         hold = round((1 if win else 0) * p['qty'] - p['px'] * p['qty'] - p['fee'], 4)
         p.update(F=F, own=own, official=off, result=res, pnl_hold=hold, pnl=p.get('pnl_exit', hold))
         jw('settled.jsonl', p)
-    jw('windows.jsonl', {'slug': m.slug, 'coin': m.coin, 'tf': m.tf, 'K': m.K, 'ksrc': m.ksrc, 'F': F, 'own': own, 'official': off, 'n_pos': len(m.pos),
+    jw('windows.jsonl', {'slug': m.slug, 'coin': m.coin, 'tf': m.tf, 'K': m.K, 'ksrc': m.ksrc, 'K_own': m.k_own,
+                         'K_err_bp': None if m.k_own is None or not m.K else round((m.k_own / m.K - 1) * 1e4, 2), 'F': F, 'own': own, 'official': off, 'n_pos': len(m.pos),
                          'polls': m.polls, 'illiquid': m.illiquid})
     log('итог', m.slug, 'K', m.K, 'F', F, 'own', own, 'official', off, 'сделок', len(m.pos))
 
@@ -585,7 +613,7 @@ async def engine(stop_at):
 
 async def main():
     log('старт', RUN, 'монеты', COINS, 'окна', TFS, 'edge', A.edge, 'минут', A.minutes)
-    feeds = [asyncio.create_task(x()) for x in (feed_coinbase, feed_kraken, feed_bitstamp, feed_cryptocom, ticker, dvol_loop)]
+    feeds = [asyncio.create_task(x()) for x in (feed_coinbase, feed_kraken, feed_bitstamp, feed_cryptocom, ticker, dvol_loop, kalshi_k_loop)]
     feeds += [asyncio.create_task(feed_gemini(c)) for c in COINS]
     if WS_ON: feeds.append(asyncio.create_task(feed_pm()))
     log('стакан Polymarket:', 'WebSocket (ключ задан)' if WS_ON else 'публичный REST (ключа нет)', '| длина KEY_ID', len(KEY_ID), 'SECRET', len(SECRET))
