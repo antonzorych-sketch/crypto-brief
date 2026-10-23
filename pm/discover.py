@@ -31,9 +31,9 @@ for s, (a, b, c) in sorted(seen.items()):
 print('\n--- предыдущие (закрытые) окна: сколько наторговали за окно ---')
 for s in sorted(seen):
     if '-5m-' in s or '-15m-' in s:
-        st = datetime.strptime(s[-15:], '%Y-%m-%d-%H%Mz').replace(tzinfo=timezone.utc); n = 300 if '-5m-' in s else 900
+        st = datetime.strptime(s[-16:], '%Y-%m-%d-%H%Mz').replace(tzinfo=timezone.utc); n = 300 if '-5m-' in s else 900
         for k in (1, 2, 3):
-            p = s[:-15] + (st - timedelta(seconds=n * k)).strftime('%Y-%m-%d-%H%Mz')
+            p = s[:-16] + (st - timedelta(seconds=n * k)).strftime('%Y-%m-%d-%H%Mz')
             b = get(f'{G}/v1/markets/{p}/book'); print(p, (b.get('marketData', {}).get('stats') or {}).get('sharesTraded') if isinstance(b, dict) else b)
 print('\n--- источники цены золота/серебра ---')
 hl = get('https://api.hyperliquid.xyz/info', {'type': 'allMids'})

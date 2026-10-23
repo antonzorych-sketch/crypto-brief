@@ -39,6 +39,8 @@ ap.add_argument('--edge-last', type=float, default=0.03, help='мин. пере�
 ap.add_argument('--edge-model', type=float, default=0.08, help='мин. перевес для входа без лага')
 ap.add_argument('--jump', type=float, default=0.04, help='на сколько должна сдвинуться fair за --look с')
 ap.add_argument('--look', type=float, default=5, help='окно поиска рывка, с')
+ap.add_argument('--max-spread', type=float, default=0.04, help='шире спред — рынок неликвиден, не торгуем')
+ap.add_argument('--min-depth', type=float, default=20.0, help='$ минимум на лучшей цене, иначе не торгуем')
 ap.add_argument('--no-exit', action='store_true', help='всегда держать до расчёта')
 ap.add_argument('--stake', type=float, default=5.0, help='$ на одну виртуальную сделку')
 ap.add_argument('--max-per-market', type=float, default=15.0, help='$ максимум в одном окне')
@@ -233,6 +235,7 @@ class Mkt:
         s.gap = None  # (t, знак) когда fair ушла от mid > 0.05 — для замера лага
         s.tape = deque(maxlen=60)  # (t, fair, mid) — для поиска рывков
         s.exits = []  # заявки на продажу
+        s.polls = 0; s.illiquid = 0  # доля времени, когда рынок был неликвиден
         s.done = False; s.dead = False
 
     def t0(s): return s.start.timestamp()
@@ -313,13 +316,16 @@ def jumped(m, f, mid, now, side):
     return sg * (f - old[0][1]) >= A.jump and sg * (mid - old[0][2]) < 0.01
 
 
-def decide(m, up, dn, f, mid, now, S):
+def decide(m, up, dn, bb, f, mid, now, S):
     tau = m.t1() - now
     if f is None or tau < 5 or m.spent >= A.max_per_market: return
+    if bb is None or not up or up[0] - bb > A.max_spread + 1e-9:  # ликвидность: узкий спред обязателен
+        m.illiquid += 1; return
     if m.t1() > STOP + 300: return  # окно не закроется до конца прогона — не открываем
     for side, q, p in (('UP', up, f), ('DOWN', dn, 1 - f)):
         if not q: continue
         ask, qty = q
+        if ask * qty < A.min_depth: continue  # на лучшей цене слишком мало
         edge = p - ask - fee(m.theta, ask)
         if tau < 60:
             reason, need, band = 'last', A.edge_last, 0.05
@@ -411,7 +417,8 @@ async def settle(m):
         hold = round((1 if win else 0) * p['qty'] - p['px'] * p['qty'] - p['fee'], 4)
         p.update(F=F, own=own, official=off, result=res, pnl_hold=hold, pnl=p.get('pnl_exit', hold))
         jw('settled.jsonl', p)
-    jw('windows.jsonl', {'slug': m.slug, 'tf': m.tf, 'K': m.K, 'ksrc': m.ksrc, 'F': F, 'own': own, 'official': off, 'n_pos': len(m.pos)})
+    jw('windows.jsonl', {'slug': m.slug, 'coin': m.coin, 'tf': m.tf, 'K': m.K, 'ksrc': m.ksrc, 'F': F, 'own': own, 'official': off, 'n_pos': len(m.pos),
+                         'polls': m.polls, 'illiquid': m.illiquid})
     log('итог', m.slug, 'K', m.K, 'F', F, 'own', own, 'official', off, 'сделок', len(m.pos))
 
 
@@ -459,7 +466,8 @@ async def engine(stop_at):
             f = fair_up(m, S, idx, now)
             mid = (bb + up[0]) / 2 if (bb is not None and up) else None
             lag_track(m, f, bb, up, now)
-            decide(m, up, dn, f, mid, now, S)
+            m.polls += 1
+            decide(m, up, dn, bb, f, mid, now, S)
             manage_exits(m, f, now, bb, bidq, up)
             if f is not None: m.tape.append((now, f, mid))
             if now - last_snap.get(m.slug, 0) >= 10:

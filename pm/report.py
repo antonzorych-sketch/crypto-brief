@@ -51,6 +51,11 @@ def main():
         for x in st: b['0.04–0.07' if x['edge'] < 0.07 else '0.07–0.12' if x['edge'] < 0.12 else '0.12+'].append(x)
         for k in ('0.04–0.07', '0.07–0.12', '0.12+'):
             if b[k]: L.append(f'| {k} | {len(b[k])} | {sum(x["side"] == x["result"] for x in b[k]) / len(b[k]):.0%} | {sum(x["pnl"] for x in b[k]):+.2f} |')
+    L += ['', '## Ликвидность (доля времени, когда спред > 4¢ — бот не торгует)']
+    g = defaultdict(lambda: [0, 0])
+    for w in wn:
+        if w.get('polls'): k = f"{w.get('coin', 'btc').upper()} {w['tf']}"; g[k][0] += w['illiquid']; g[k][1] += w['polls']
+    L.append(', '.join(f'{k}: {a / b:.0%}' for k, (a, b) in sorted(g.items())) if g else 'Данных пока нет.')
     L += ['', '## Лаг']
     if lg:
         s = sorted(x['secs'] for x in lg)
