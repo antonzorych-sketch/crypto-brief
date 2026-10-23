@@ -1,0 +1,3 @@
+{"slug": "cpc-btc-updown-5m-2026-10-23-1340z", "tf": "5m", "K": null, "ksrc": "missed", "F": 81887.84675, "own": null, "official": "UP", "n_pos": 0}
+{"slug": "cpc-btc-updown-15m-2026-10-23-1330z", "tf": "15m", "K": null, "ksrc": "missed", "F": 81887.84675, "own": null, "official": "UP", "n_pos": 0}
+{"slug": "cpc-btc-updown-5m-2026-10-23-1345z", "tf": "5m", "K": 81887.84675, "ksrc": "own60", "F": 81888.10233333333, "own": "UP", "official": "DOWN", "n_pos": 0}
