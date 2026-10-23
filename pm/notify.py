@@ -53,14 +53,16 @@ def build():
     near = a.get('near') or {}
     if near:
         best = max(near.items(), key=lambda kv: kv[1]['max'])
-        L.append(f"Арбитраж, лучшая связка: {best[0]} {best[1]['max'] * 100:+.1f}¢ (минут с перевесом > 0: {sum(v['pos'] for v in near.values())})")
+        L.append(f"Арбитраж: лучшая связка по снимку {best[0]} {best[1]['max'] * 100:+.1f}¢ (до перепроверки — часто артефакт пустого стакана)")
     for b, name in (('wx', 'Погода'), ('spx', 'S&P/Nasdaq')):
         x = S.get(b) or {}
         sig = sum((x.get('signals') or {}).values())
         if x.get('settled'): L.append(f"{name}: {x['settled']} рассчитано, P&L {usd(x['pnl'])}, сигналов {sig}")
         elif sig: L.append(f"{name}: сигналов {sig}, ждут расчёта")
     lp = S.get('lip') or {}
-    if lp.get('periods'): L.append(f"Награды Kalshi (оценка): ${lp['reward']:.2f}, исполнений {lp['fills']}, итог по рассчитанному {usd(lp['net'])}")
+    if lp.get('periods'):
+        L.append(f"Награды Kalshi (оценка): ${lp['reward']:.2f}, исполнений {lp['fills']}; P&L рассчитанных исполнений {usd(lp.get('settled_pnl', 0))}"
+                 + (f", итог {usd(lp['net'])}" if lp.get('settled_n') else ' (исполнения ещё не рассчитаны — итог позже)'))
     for nm, r in (S.get('stats') or {}).items(): L.append(f"{nm}: {r['verdict']} (P(перевес>0) {r['p_pos']:.0%}, {r['n']} сделок)")
     if len(L) == 1: L.append('Сделок пока нет.')
     L.append(f'<a href="{DASH}">Дашборд</a>')

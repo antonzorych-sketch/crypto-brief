@@ -219,7 +219,7 @@ def main():
         L += ['', '| Серия | Периодов | Награды $ | P&L исполнений $ | Итого $ |', '|---|---|---|---|---|']
         for k, (r, n, pl) in sorted(g.items(), key=lambda kv: -(kv[1][0] + kv[1][2]))[:15]:
             L.append(f'| {k} | {n} | {r:.2f} | {pl:+.2f} | {r + pl:+.2f} |')
-        S['lip'] = {'periods': len(per), 'reward': round(rew, 2), 'fills': len(fl), 'settled_pnl': round(loss, 2), 'net': round(rew + loss, 2),
+        S['lip'] = {'periods': len(per), 'reward': round(rew, 2), 'fills': len(fl), 'settled_pnl': round(loss, 2), 'net': round(rew + loss, 2), 'settled_n': len(lst),
                     'by_series': {k: {'n': n, 'reward': round(r, 2), 'pnl': round(pl, 2)} for k, (r, n, pl) in g.items()}}
     else: L.append('Данных пока нет.')
     # --- статистическая значимость и вес модели ---
