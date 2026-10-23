@@ -1,43 +1,55 @@
-"""pm/discover: Kalshi 15m/часовые крипто-рынки (поля, стакан), лестницы цен на Polymarket US, Deribit DVOL."""
-import json, urllib.request, urllib.parse
-G = 'https://gateway.polymarket.us'; K = 'https://api.elections.kalshi.com/trade-api/v2'
-def get(u):
+"""pm/discover: Kalshi — индексы акций и погода: серии, правила, ликвидность; источники данных из Actions."""
+import json, time, urllib.request, urllib.parse
+K = 'https://api.elections.kalshi.com/trade-api/v2'
+def get(u, h=None):
     try:
-        r = urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': 'pm-discover'}), timeout=20); return json.loads(r.read())
-    except urllib.error.HTTPError as e: return {'_error': f'{e.code} {e.read()[:200]}'}
-    except Exception as e: return {'_error': repr(e)[:200]}
-print('=== KALSHI')
-for ser in ('KXBTC15M', 'KXETH15M', 'KXSOL15M', 'KXXRP15M', 'KXBTCD', 'KXBTC', 'KXETHD'):
-    r = get(f'{K}/markets?' + urllib.parse.urlencode({'series_ticker': ser, 'status': 'open', 'limit': 5}))
+        r = urllib.request.urlopen(urllib.request.Request(u, headers=h or {'User-Agent': 'pm-discover (antonzorych@gmail.com)', 'Accept': 'application/json'}), timeout=20); return json.loads(r.read())
+    except urllib.error.HTTPError as e: return {'_error': f'{e.code} {e.read()[:150]}'}
+    except Exception as e: return {'_error': repr(e)[:150]}
+# все серии по категориям
+for cat in ('Financials', 'Climate and Weather', 'Economics'):
+    r = get(f'{K}/series?' + urllib.parse.urlencode({'category': cat}))
+    ss = r.get('series', []) if isinstance(r, dict) else []
+    print(f'\n=== {cat}: серий {len(ss)}', r.get('_error', ''))
+    for s in ss:
+        t = s.get('ticker', '')
+        if cat == 'Financials' and not any(x in t for x in ('INX', 'NASDAQ', 'SPX', 'NDX', 'DOW', 'WTI', 'EUR', 'USDJPY', 'GOLD')): continue
+        if cat == 'Climate and Weather' and 'HIGH' not in t and 'LOW' not in t: continue
+        if cat == 'Economics': continue
+        print(t, '|', s.get('title'), '|', s.get('frequency'), '| fee', s.get('fee_type'), s.get('fee_multiplier'))
+def series_detail(ser, n=40):
+    r = get(f'{K}/markets?' + urllib.parse.urlencode({'series_ticker': ser, 'status': 'open', 'limit': 200}))
     ms = r.get('markets', []) if isinstance(r, dict) else []
-    print(ser, 'открытых', len(ms), r.get('_error', ''))
-    for m in ms[:2]:
-        print('  ', json.dumps({k: m.get(k) for k in ('ticker', 'event_ticker', 'title', 'subtitle', 'open_time', 'close_time', 'expected_expiration_time', 'floor_strike', 'cap_strike', 'strike_type',
-              'yes_bid', 'yes_ask', 'no_bid', 'no_ask', 'yes_bid_dollars', 'yes_ask_dollars', 'volume', 'volume_24h', 'liquidity', 'open_interest', 'status', 'price_level_structure')})[:900])
-    if ms and ser.endswith('15M'):
-        t = ms[0]['ticker']
-        print('   правила:', (ms[0].get('rules_primary') or '')[:500], '|', (ms[0].get('rules_secondary') or '')[:300])
-        print('   стакан:', json.dumps(get(f'{K}/markets/{t}/orderbook?depth=5'))[:600])
-s = get(f'{K}/series/KXBTC15M'); print('серия:', json.dumps(s)[:700])
-print('\n=== POLYMARKET US лестницы')
-seen = {}
-for q in ['bitcoin price at', 'BTC price', 'bitcoin above', 'ethereum price at', 'bitcoin price range', 'price at 5pm', 'BTC weekly', 'bitcoin weekly']:
-    r = get(f'{G}/v1/search?' + urllib.parse.urlencode({'query': q}))
-    for e in r.get('events', []) if isinstance(r, dict) else []:
-        if 'updown' in e.get('slug', ''): continue
-        seen[e['slug']] = (e.get('title'), e.get('seriesSlug'), e.get('endDate'), e.get('closed'), [(m['slug'], m.get('question'), m.get('title')) for m in e.get('markets', [])])
-for k, (ti, ser, end, cl, ms) in seen.items():
-    print(k, '|', ti, '|', ser, '|', end, 'closed' if cl else '', '| рынков', len(ms))
-    for m in ms[:3]: print('    ', m)
-op = [k for k, v in seen.items() if not v[3]]
-for k in op[:3]:
-    ms = seen[k][4]
-    for m in ms[:2]:
-        b = get(f'{G}/v1/markets/{m[0]}/book'); print('  book', m[0], json.dumps(b)[:300])
-    d = get(f'{G}/v1/market/slug/{ms[0][0]}'); print('  descr', ((d.get('market') or d).get('description') or '')[:500])
-print('\n=== DERIBIT')
-print(json.dumps(get('https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&resolution=60&start_timestamp=%d&end_timestamp=%d' % (0, 0)))[:200])
-import time; n = int(time.time() * 1000)
-for c in ('BTC', 'ETH'):
-    r = get(f'https://www.deribit.com/api/v2/public/get_volatility_index_data?currency={c}&resolution=60&start_timestamp={n - 600000}&end_timestamp={n}')
-    print(c, 'DVOL', json.dumps(r.get('result', r))[:300])
+    if not ms: print(ser, 'нет открытых', r.get('_error', '')); return
+    ev = {}
+    for m in ms: ev.setdefault(m['event_ticker'], []).append(m)
+    print(f'\n--- {ser}: событий {len(ev)}, рынков {len(ms)}')
+    for e, mm in list(ev.items())[:2]:
+        v = sum(float(m.get('volume_fp') or m.get('volume') or 0) for m in mm); oi = sum(float(m.get('open_interest_fp') or m.get('open_interest') or 0) for m in mm)
+        print(' событие', e, 'рынков', len(mm), 'объём', v, 'OI', oi, 'закрытие', mm[0].get('close_time'))
+        for m in sorted(mm, key=lambda m: m.get('floor_strike') or m.get('cap_strike') or 0)[:n]:
+            print('   ', m['ticker'], '|', m.get('subtitle') or m.get('yes_sub_title'), '| bid/ask', m.get('yes_bid_dollars'), m.get('yes_ask_dollars'), '| vol', m.get('volume_fp') or m.get('volume'), '| liq', m.get('liquidity_dollars'))
+        print('  правила:', (mm[0].get('rules_primary') or '')[:700]); print('  доп:', (mm[0].get('rules_secondary') or '')[:500])
+for ser in ('KXINX', 'KXINXU', 'KXNASDAQ100', 'KXNASDAQ100U', 'KXHIGHNY', 'KXHIGHCHI', 'KXHIGHMIA', 'KXHIGHAUS', 'KXHIGHLAX', 'KXHIGHDEN', 'KXHIGHPHIL'):
+    series_detail(ser, 12)
+print('\n=== источники')
+for name, u in [('hyperliquid xyz', None), ('yahoo ES=F', 'https://query1.finance.yahoo.com/v8/finance/chart/ES=F?interval=1m&range=1d'),
+                ('yahoo ^GSPC', 'https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?interval=1m&range=1d'),
+                ('nws KNYC obs', 'https://api.weather.gov/stations/KNYC/observations/latest'),
+                ('nws KNYC 5min list', 'https://api.weather.gov/stations/KNYC/observations?limit=3'),
+                ('awc metar', 'https://aviationweather.gov/api/data/metar?ids=KNYC,KMDW,KMIA&format=json&hours=1'),
+                ('iem asos 1min', 'https://mesonet.agron.iastate.edu/cgi-bin/request/asos1min.py?station=NYC&vars=tmpf&sts=2026-10-23T12:00Z&ets=2026-10-23T13:00Z&sample=1min&what=view'),
+                ('nws CLI NYC', 'https://api.weather.gov/products/types/CLI/locations/NYC'),
+                ('nws forecast hourly NYC', 'https://api.weather.gov/gridpoints/OKX/33,37/forecast/hourly')]:
+    if u is None:
+        try:
+            req = urllib.request.Request('https://api.hyperliquid.xyz/info', data=json.dumps({'type': 'allMids', 'dex': 'xyz'}).encode(), headers={'Content-Type': 'application/json'})
+            d = json.loads(urllib.request.urlopen(req, timeout=15).read()); print(name, {k: v for k, v in d.items() if any(x in k.upper() for x in ('SP500', 'SPX', 'NDX', 'NASDAQ', 'XYZ100', 'US500', 'NQ', 'ES'))} or list(d)[:30])
+        except Exception as e: print(name, repr(e)[:150])
+        continue
+    d = get(u, {'User-Agent': 'pm-discover (antonzorych@gmail.com)', 'Accept': 'application/geo+json,application/json'}) if 'weather.gov' in u else get(u)
+    s = json.dumps(d)
+    if 'yahoo' in name and isinstance(d, dict) and 'chart' in d:
+        m = d['chart']['result'][0]['meta']; ts = d['chart']['result'][0].get('timestamp') or [0]
+        s = f"цена {m.get('regularMarketPrice')} время {m.get('regularMarketTime')} (сейчас {int(time.time())}, отставание {int(time.time()) - (m.get('regularMarketTime') or 0)} с) последняя свеча {ts[-1]}"
+    print(name, s[:500])
