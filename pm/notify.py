@@ -92,5 +92,5 @@ def main(test=False):
 if __name__ == '__main__':
     import sys
     st = main(test='--test' in sys.argv)
-    if '--test' in sys.argv:
+    if '--test' in sys.argv or '--sample' in sys.argv:
         open('tg-status.txt', 'w').write(st + '\n')

@@ -1,6 +1,8 @@
 name: tg-test
 on:
   workflow_dispatch:
+    inputs:
+      mode: {description: 'test или sample', default: 'test'}
   push:
     paths: ['.github/workflows/tg-test.yml', 'pm/notify.py']
 permissions:
@@ -20,7 +22,13 @@ jobs:
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
-        run: python pm/notify.py --test
+        run: |
+          if [ "${{ github.event.inputs.mode }}" = "sample" ]; then
+            git fetch -q origin pm-results && git checkout FETCH_HEAD -- pm/paper/summary.json && git reset -q
+            python pm/notify.py --sample
+          else
+            python pm/notify.py --test
+          fi
       - name: Save status (без секретов)
         if: always()
         run: |
