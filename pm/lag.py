@@ -570,7 +570,7 @@ async def main():
     feeds = [asyncio.create_task(x()) for x in (feed_coinbase, feed_kraken, feed_bitstamp, feed_cryptocom, ticker, dvol_loop)]
     feeds += [asyncio.create_task(feed_gemini(c)) for c in COINS]
     if WS_ON: feeds.append(asyncio.create_task(feed_pm()))
-    log('стакан Polymarket:', 'WebSocket (ключ задан)' if WS_ON else 'публичный REST (ключа нет)')
+    log('стакан Polymarket:', 'WebSocket (ключ задан)' if WS_ON else 'публичный REST (ключа нет)', '| длина KEY_ID', len(KEY_ID), 'SECRET', len(SECRET))
     global STOP
     stop_at = STOP = time.time() + A.minutes * 60
     await asyncio.sleep(75)  # набираем минуту истории для K и волатильности

@@ -29,8 +29,8 @@ jobs:
           git fetch -q origin pm-results && git checkout FETCH_HEAD -- pm/paper && git reset -q || echo "first run"
       - name: Paper trading
         env:
-          PM_KEY_ID: ${{ secrets.PM_KEY_ID }}
-          PM_SECRET: ${{ secrets.PM_SECRET }}
+          PM_KEY_ID: ${{ secrets.PM_KEY_ID || vars.PM_KEY_ID }}
+          PM_SECRET: ${{ secrets.PM_SECRET || vars.PM_SECRET }}
         run: |
           set -o pipefail; mkdir -p pm/paper
           M="${{ github.event.inputs.minutes }}"
