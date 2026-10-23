@@ -27,6 +27,13 @@ jobs:
       - name: Restore earlier results
         run: |
           git fetch -q origin pm-results && git checkout FETCH_HEAD -- pm/paper && git reset -q || echo "first run"
+      - name: Telegram chat (кэш, не публичный)
+        if: always()
+        uses: actions/cache@v4
+        with:
+          path: .tg
+          key: tg-chat-${{ github.run_id }}
+          restore-keys: tg-chat-
       - name: Paper trading
         env:
           PM_KEY_ID: ${{ secrets.PM_KEY_ID || vars.PM_KEY_ID }}
@@ -48,13 +55,6 @@ jobs:
           python -u pm/lag.py --minutes "$M" --coins "${{ github.event.inputs.coins || 'btc,eth,sol,xrp' }}" --edge "${{ github.event.inputs.edge || '0.04' }}" 2>&1 | tee pm/paper/last-log.txt
           wait $P1 $P2 $P3 $P4 $P5
           kill $PN 2>/dev/null || true
-      - name: Telegram chat (кэш, не публичный)
-        if: always()
-        uses: actions/cache@v4
-        with:
-          path: .tg
-          key: tg-chat-${{ github.run_id }}
-          restore-keys: tg-chat-
       - name: Report and save
         if: always()
         env:
