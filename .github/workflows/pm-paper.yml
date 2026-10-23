@@ -51,7 +51,8 @@ jobs:
           python -u pm/lip.py --minutes "$M" > pm/paper/last-lip-log.txt 2>&1 & P4=$!
           python -u pm/spx.py --minutes "$M" > pm/paper/last-spx-log.txt 2>&1 & P5=$!
           # промежуточная сводка в Telegram каждые 45 минут, пока идёт прогон
-          ( while sleep 2700; do python pm/report.py > /dev/null 2>&1; python pm/notify.py --interim > /dev/null 2>&1; done ) & PN=$!
+          # каждые 45 минут: отчёт, сохранение в pm-results (дашборд обновляется) и промежуточная сводка в Telegram
+          ( while sleep 2700; do python pm/ksettle.py > /dev/null 2>&1; python pm/report.py > /dev/null 2>&1; bash pm/save.sh interim > /dev/null 2>&1; python pm/notify.py --interim > /dev/null 2>&1; done ) & PN=$!
           python -u pm/lag.py --minutes "$M" --coins "${{ github.event.inputs.coins || 'btc,eth,sol,xrp' }}" --edge "${{ github.event.inputs.edge || '0.04' }}" 2>&1 | tee pm/paper/last-log.txt
           wait $P1 $P2 $P3 $P4 $P5
           kill $PN 2>/dev/null || true
@@ -64,13 +65,4 @@ jobs:
           python pm/ksettle.py || true
           python pm/report.py || true
           python pm/notify.py || true
-          git config --global user.name github-actions; git config --global user.email actions@github.com
-          # результаты живут в отдельной ветке pm-results только с данными (без кода и workflow)
-          for i in 1 2 3; do
-            rm -rf /tmp/res
-            if git fetch -q origin pm-results; then git worktree add -q --detach /tmp/res FETCH_HEAD
-            else git worktree add -q --detach /tmp/res && (cd /tmp/res && git checkout -q --orphan r && git rm -rqf .); fi
-            mkdir -p /tmp/res/pm && cp -r pm/paper /tmp/res/pm/
-            (cd /tmp/res && git add -A pm/paper && (git commit -q -m "pm-results $(date -u +%F-%H%M) [skip ci]" || true) && git push origin HEAD:pm-results) && break
-            echo "push не прошёл, попытка $i"; git worktree remove --force /tmp/res; sleep 10
-          done
+          bash pm/save.sh final
