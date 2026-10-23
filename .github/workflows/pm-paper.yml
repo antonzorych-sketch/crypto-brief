@@ -23,11 +23,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install -q websockets
+      - run: pip install -q websockets cryptography
       - name: Restore earlier results
         run: |
           git fetch -q origin pm-results && git checkout FETCH_HEAD -- pm/paper && git reset -q || echo "first run"
       - name: Paper trading
+        env:
+          PM_KEY_ID: ${{ secrets.PM_KEY_ID }}
+          PM_SECRET: ${{ secrets.PM_SECRET }}
         run: |
           set -o pipefail; mkdir -p pm/paper
           M="${{ github.event.inputs.minutes }}"

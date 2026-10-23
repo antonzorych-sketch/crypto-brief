@@ -11,7 +11,8 @@
 считаем и P&L «если бы держали» — чтобы видеть, помогает ли выход.
 Комиссия тейкера θ·p·(1-p) на вход и на выход.
 Исполнение — по следующему снимку стакана (имитация задержки ~1 с), объём ограничен тем, что стоит в стакане.
-Денег не трогает: только публичные данные, ключи не нужны.
+Денег не трогает. Стакан Polymarket: WebSocket wss://api.polymarket.us/v1/ws/markets, если заданы PM_KEY_ID/PM_SECRET
+(ключ используется только для чтения данных); иначе — публичный REST (он отстаёт и в начале окна отдаёт 404).
 
 Запуск:  python pm/lag.py --minutes 330 --coins btc,eth,sol,xrp --tfs 5m,15m,1h,1d
 Файлы:   pm/paper/<run>/trades.jsonl, snaps.jsonl.gz, lag.jsonl, summary.txt
@@ -47,6 +48,7 @@ ap.add_argument('--max-per-market', type=float, default=15.0, help='$ макси
 ap.add_argument('--basis-bp', type=float, default=3.0, help='расхождение нашего индекса с BRTI, б.п.')
 ap.add_argument('--min-px', type=float, default=0.10, help='не покупать дешевле/дороже этого')
 ap.add_argument('--poll', type=float, default=1.0, help='с между опросами стакана')
+ap.add_argument('--latency', type=float, default=0.3, help='имитация задержки ордера, с (при WebSocket)')
 ap.add_argument('--out', default='pm/paper')
 A = ap.parse_args()
 COINS = [c.strip() for c in A.coins.split(',') if c.strip()]
@@ -207,6 +209,61 @@ async def ticker():
         sec = int(time.time())
         for i in IDX.values(): i.tick(sec)
         await asyncio.sleep(1 - (time.time() % 1) + 0.01)
+
+
+# ---------- стакан Polymarket US по WebSocket ----------
+KEY_ID, SECRET = os.environ.get('PM_KEY_ID', '').strip(), os.environ.get('PM_SECRET', '').strip()
+WS_ON = bool(KEY_ID and SECRET)
+BOOK = {}      # slug -> (время получения, side_quotes(...))
+WSSTAT = {'msgs': 0, 'books': 0, 'errors': 0, 'raw': 0}
+WANT = set()   # слаги, на которые нужно быть подписанным
+
+
+def pm_headers(path):
+    import base64
+    from cryptography.hazmat.primitives.asymmetric import ed25519
+    key = ed25519.Ed25519PrivateKey.from_private_bytes(base64.b64decode(SECRET)[:32])
+    ts = str(int(time.time() * 1000))
+    sig = base64.b64encode(key.sign(f'{ts}GET{path}'.encode())).decode()
+    return {'X-PM-Access-Key': KEY_ID, 'X-PM-Timestamp': ts, 'X-PM-Signature': sig}
+
+
+def on_pm(d):
+    WSSTAT['msgs'] += 1
+    if WSSTAT['raw'] < 4 and 'heartbeat' not in d:
+        WSSTAT['raw'] += 1; log('ws сообщение:', json.dumps(d)[:400])
+    if 'error' in d: WSSTAT['errors'] += 1; log('ws ошибка', json.dumps(d)[:300]); return
+    md = d.get('marketData')
+    if md and md.get('marketSlug'):
+        BOOK[md['marketSlug']] = (time.time(), side_quotes(md)); WSSTAT['books'] += 1
+
+
+async def feed_pm():
+    """Подписка на полный стакан всех нужных рынков; при появлении новых окон — новая подписка."""
+    n = 0
+    while True:
+        try:
+            async with websockets.connect('wss://api.polymarket.us/v1/ws/markets', additional_headers=pm_headers('/v1/ws/markets'),
+                                          ping_interval=20, max_size=2**23) as w:
+                log('ws Polymarket подключён'); subbed = set()
+
+                async def sub_loop():
+                    nonlocal n
+                    while True:
+                        new = sorted(WANT - subbed)
+                        for i in range(0, len(new), 90):
+                            n += 1; part = new[i:i + 90]
+                            await w.send(json.dumps({'subscribe': {'requestId': f'md-{n}', 'subscriptionType': 'SUBSCRIPTION_TYPE_MARKET_DATA', 'marketSlugs': part}}))
+                            subbed.update(part)
+                        if len(subbed - WANT) > 150: await w.close(); return  # переподключаемся, чтобы сбросить старые подписки
+                        await asyncio.sleep(0.5)
+                t = asyncio.create_task(sub_loop())
+                try:
+                    async for m in w: on_pm(json.loads(m))
+                finally:
+                    t.cancel()
+        except Exception as e:
+            log('ws Polymarket reconnect', repr(e)[:200]); await asyncio.sleep(3)
 
 
 # ---------- рынки ----------
@@ -372,9 +429,12 @@ def fill_exits(m, bb, up, now):
 
 
 def fill(m, up, dn, now):
+    if WS_ON and m.pending:
+        bt = BOOK.get(m.slug, (0,))[0]
+        if bt < min(o['t'] for o in m.pending) + A.latency and now - min(o['t'] for o in m.pending) < A.latency + 1: return
     for o in m.pending:
         q = up if o['side'] == 'UP' else dn
-        rec = {'slug': m.slug, 'coin': m.coin, 'tf': m.tf, **o, 'K': m.K, 'ksrc': m.ksrc, 't_fill': now}
+        rec = {'slug': m.slug, 'coin': m.coin, 'tf': m.tf, **o, 'K': m.K, 'ksrc': m.ksrc, 't_fill': now, 'src': 'ws' if WS_ON else 'rest'}
         if q and q[0] <= o['limit']:
             px = q[0]; n = min(A.stake / px, q[1], (A.max_per_market - m.spent) / px)
             if n * px < 0.5: rec['status'] = 'thin'
@@ -423,6 +483,10 @@ async def settle(m):
 
 
 async def poll(m):
+    if WS_ON:
+        WANT.add(m.slug)
+        b = BOOK.get(m.slug)
+        return b[1] if b and time.time() - b[0] < 120 else None  # стакан шлётся при изменениях; тишина = без изменений
     try:
         b = await asyncio.to_thread(http, f'{G}/v1/markets/{m.slug}/book')
         return side_quotes(b)
@@ -452,6 +516,7 @@ async def engine(stop_at):
             v = {c: (round(i.now() or 0, 2), None if i.sigma2() is None else round((i.sigma2() * 365 * 86400) ** .5, 2), len(i.q)) for c, i in IDX.items()}
             log('пульс: рынков', len(live), 'с K', sum(m.K is not None for m in live), 'стакан ок/ошибок', hb['ok'], hb['fail'], 'индекс (цена, годовая vol, бирж)', v, 'коды', dict(ERRS))
             ERRS.clear()
+            if WS_ON: log('ws:', dict(WSSTAT), 'стаканов', len(BOOK)); WSSTAT.update(msgs=0, books=0, errors=0)
             hb.update(t=now, ok=0, fail=0)
         for m, r in zip(live, res):
             idx = IDX[m.coin]; S = idx.now()
@@ -474,8 +539,9 @@ async def engine(stop_at):
                 last_snap[m.slug] = now
                 snap_f.write(json.dumps({'t': round(now, 1), 'slug': m.slug, 'S': S, 'K': m.K, 'fair': None if f is None else round(f, 4),
                                          'bid': bb, 'ask': up[0] if up else None, 'tau': round(m.t1() - now)}) + '\n')
-        for k in [k for k, m in MK.items() if m.done and now - m.t1() > 900]: del MK[k]
-        await asyncio.sleep(max(0.05, A.poll - (time.time() - t_loop)))
+        for k in [k for k, m in MK.items() if m.done and now - m.t1() > 900]:
+            del MK[k]; WANT.discard(k); BOOK.pop(k, None)
+        await asyncio.sleep(max(0.05, (0.25 if WS_ON else A.poll) - (time.time() - t_loop)))
     snap_f.close()
 
 
@@ -483,6 +549,8 @@ async def main():
     log('старт', RUN, 'монеты', COINS, 'окна', TFS, 'edge', A.edge, 'минут', A.minutes)
     feeds = [asyncio.create_task(x()) for x in (feed_coinbase, feed_kraken, feed_bitstamp, feed_cryptocom, ticker)]
     feeds += [asyncio.create_task(feed_gemini(c)) for c in COINS]
+    if WS_ON: feeds.append(asyncio.create_task(feed_pm()))
+    log('стакан Polymarket:', 'WebSocket (ключ задан)' if WS_ON else 'публичный REST (ключа нет)')
     global STOP
     stop_at = STOP = time.time() + A.minutes * 60
     await asyncio.sleep(75)  # набираем минуту истории для K и волатильности
