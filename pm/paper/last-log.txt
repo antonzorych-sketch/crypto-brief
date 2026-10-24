@@ -1,113 +1,236 @@
-00:03:45 старт 20261024-0003 монеты ['btc', 'eth', 'sol', 'xrp'] окна ['5m', '15m', '1h', '1d'] edge 0.04 минут 320.0
-00:03:45 стакан Polymarket: WebSocket (ключ задан) | длина KEY_ID 36 SECRET 88
-00:03:45 ws Polymarket подключён
-00:05:00 рынок cpc-btc-updown-15m-2026-10-24-0000z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:00 рынок cpc-btc-updown-1h-2026-10-24-0000z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:00 рынок cpcsol-sol-updown-15m-2026-10-24-0000z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:00 рынок cpceth-eth-updown-1h-2026-10-24-0000z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:00 рынок cpceth-eth-updown-1d-2026-10-23-2100z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:00 рынок cpc-btc-updown-1d-2026-10-23-2100z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:00 рынок cpc-btc-updown-5m-2026-10-24-0005z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:00 рынок cpceth-eth-updown-15m-2026-10-24-0000z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:00 рынок cpcsol-sol-updown-1d-2026-10-23-2100z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:00 рынок cpcxrp-xrp-updown-15m-2026-10-24-0000z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:00 рынок cpcxrp-xrp-updown-1h-2026-10-24-0000z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:00 рынок cpcsol-sol-updown-1h-2026-10-24-0000z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:00 рынок cpcxrp-xrp-updown-1d-2026-10-23-2100z θ 0.0695 [('Yes', True), ('No', False)]
-00:05:01 ws сообщение: {"requestId": "md-1", "subscriptionType": "SUBSCRIPTION_TYPE_MARKET_DATA", "marketData": {"marketSlug": "cpc-btc-updown-15m-2026-10-24-0000z", "bids": [{"px": {"value": "0.3400", "currency": "USD"}, "qty": "70.0000"}, {"px": {"value": "0.3200", "currency": "USD"}, "qty": "100.0000"}, {"px": {"value": "0.3100", "currency": "USD"}, "qty": "1100.0000"}, {"px": {"value": "0.3000", "currency": "USD"}, 
-00:05:01 ws сообщение: {"requestId": "md-1", "subscriptionType": "SUBSCRIPTION_TYPE_MARKET_DATA", "marketData": {"marketSlug": "cpc-btc-updown-1d-2026-10-23-2100z", "bids": [{"px": {"value": "0.3500", "currency": "USD"}, "qty": "526.5000"}, {"px": {"value": "0.3400", "currency": "USD"}, "qty": "100.0000"}, {"px": {"value": "0.3200", "currency": "USD"}, "qty": "126.9100"}, {"px": {"value": "0.3100", "currency": "USD"}, "
-00:05:01 ws сообщение: {"requestId": "md-1", "subscriptionType": "SUBSCRIPTION_TYPE_MARKET_DATA", "marketData": {"marketSlug": "cpc-btc-updown-1h-2026-10-24-0000z", "bids": [{"px": {"value": "0.4300", "currency": "USD"}, "qty": "953.0000"}, {"px": {"value": "0.4200", "currency": "USD"}, "qty": "531.0000"}, {"px": {"value": "0.4100", "currency": "USD"}, "qty": "500.0000"}, {"px": {"value": "0.4000", "currency": "USD"}, "
-00:05:01 ws сообщение: {"requestId": "md-1", "subscriptionType": "SUBSCRIPTION_TYPE_MARKET_DATA", "marketData": {"marketSlug": "cpc-btc-updown-5m-2026-10-24-0005z", "bids": [{"px": {"value": "0.4400", "currency": "USD"}, "qty": "46.0000"}, {"px": {"value": "0.4300", "currency": "USD"}, "qty": "92.0000"}, {"px": {"value": "0.1000", "currency": "USD"}, "qty": "100.0000"}, {"px": {"value": "0.0500", "currency": "USD"}, "qt
-00:06:00 пульс: рынков 13 с K 13 стакан ок/ошибок 3094 39 индекс (цена, годовая vol, бирж) {'btc': (81029.71, 0.18, 5), 'eth': (2383.18, 0.25, 5), 'sol': (102.63, 0.35, 5), 'xrp': (1.29, 0.39, 5), 'dvol': {'btc': 0.3737, 'eth': 0.5197999999999999}, 'kalshi_K': 4, 'kalshi_err': {}} коды {}
-00:06:00 ws: {'msgs': 3472, 'books': 3472, 'errors': 0, 'raw': 4} стаканов 13
-00:06:18 cpceth-eth-updown-15m-2026-10-24-0000z DOWN filled ask 0.59 fair 0.671 edge 0.064
-00:06:19 cpc-btc-updown-5m-2026-10-24-0005z DOWN filled ask 0.51 fair 0.595 edge 0.067
-00:06:30 cpc-btc-updown-5m-2026-10-24-0005z DOWN выход 0.48 -> 0.51 P&L -0.0424
-00:07:00 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (81044.35, 0.18, 5), 'eth': (2383.8, 0.23, 5), 'sol': (102.65, 0.3, 5), 'xrp': (1.29, 0.4, 5), 'dvol': {'btc': 0.3737, 'eth': 0.5197999999999999}, 'kalshi_K': 4, 'kalshi_err': {'HTTPError': 3}} коды {}
-00:07:00 ws: {'msgs': 3108, 'books': 3108, 'errors': 0, 'raw': 4} стаканов 13
-00:07:17 cpc-btc-updown-5m-2026-10-24-0005z DOWN filled ask 0.83 fair 0.904 edge 0.064
-00:07:17 cpceth-eth-updown-15m-2026-10-24-0000z DOWN filled ask 0.78 fair 0.853 edge 0.061
-00:07:44 cpc-btc-updown-5m-2026-10-24-0005z DOWN выход 0.83 -> 0.94 P&L 1.1601
-00:08:00 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (81009.25, 0.3, 5), 'eth': (2383.07, 0.27, 5), 'sol': (102.67, 0.36, 5), 'xrp': (1.29, 0.45, 5), 'dvol': {'btc': 0.3737, 'eth': 0.5197999999999999}, 'kalshi_K': 4, 'kalshi_err': {'HTTPError': 3}} коды {}
-00:08:00 ws: {'msgs': 3212, 'books': 3212, 'errors': 0, 'raw': 4} стаканов 13
-00:08:10 cpc-btc-updown-5m-2026-10-24-0005z UP filled ask 0.12 fair 0.188 edge 0.061
-00:08:34 cpc-btc-updown-5m-2026-10-24-0005z UP выход 0.12 -> 0.11 P&L -0.1369
-00:08:45 cpceth-eth-updown-15m-2026-10-24-0000z DOWN missed ask 0.78 fair 0.844 edge 0.052
-00:09:01 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80959.99, 0.29, 5), 'eth': (2381.62, 0.26, 5), 'sol': (102.59, 0.35, 5), 'xrp': (1.29, 0.43, 5), 'dvol': {'btc': 0.3738, 'eth': 0.5196000000000001}, 'kalshi_K': 4, 'kalshi_err': {'HTTPError': 3}} коды {}
-00:09:01 ws: {'msgs': 3132, 'books': 3132, 'errors': 0, 'raw': 4} стаканов 13
-00:10:00 рынок cpc-btc-updown-5m-2026-10-24-0010z θ 0.0695 [('Yes', True), ('No', False)]
-00:10:01 пульс: рынков 13 с K 13 стакан ок/ошибок 3119 2 индекс (цена, годовая vol, бирж) {'btc': (80938.99, 0.28, 5), 'eth': (2380.47, 0.27, 5), 'sol': (102.55, 0.34, 5), 'xrp': (1.29, 0.42, 5), 'dvol': {'btc': 0.3738, 'eth': 0.5196000000000001}, 'kalshi_K': 4, 'kalshi_err': {'HTTPError': 3}} коды {}
-00:10:01 ws: {'msgs': 3182, 'books': 3182, 'errors': 0, 'raw': 4} стаканов 14
-00:11:01 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80938.82, 0.27, 5), 'eth': (2381.01, 0.27, 5), 'sol': (102.55, 0.33, 5), 'xrp': (1.29, 0.42, 5), 'dvol': {'btc': 0.3738, 'eth': 0.5196000000000001}, 'kalshi_K': 4, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:11:01 ws: {'msgs': 3328, 'books': 3328, 'errors': 0, 'raw': 4} стаканов 14
-00:11:19 cpc-btc-updown-5m-2026-10-24-0010z UP filled ask 0.43 fair 0.487 edge 0.040
-00:12:00 cpc-btc-updown-5m-2026-10-24-0010z UP filled ask 0.16 fair 0.238 edge 0.069
-00:12:01 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80915.85, 0.26, 5), 'eth': (2380.12, 0.26, 5), 'sol': (102.51, 0.32, 5), 'xrp': (1.29, 0.41, 5), 'dvol': {'btc': 0.3738, 'eth': 0.5196000000000001}, 'kalshi_K': 4, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:12:01 ws: {'msgs': 2919, 'books': 2919, 'errors': 0, 'raw': 4} стаканов 14
-00:12:30 cpc-btc-updown-5m-2026-10-24-0010z UP filled ask 0.23 fair 0.303 edge 0.061
-00:13:01 cpc-btc-updown-5m-2026-10-24-0010z UP filled ask 0.22 fair 0.296 edge 0.064
-00:13:01 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80928.75, 0.25, 5), 'eth': (2381.16, 0.26, 5), 'sol': (102.53, 0.32, 5), 'xrp': (1.29, 0.42, 5), 'dvol': {'btc': 0.3738, 'eth': 0.5196000000000001}, 'kalshi_K': 4, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:13:01 ws: {'msgs': 1896, 'books': 1896, 'errors': 0, 'raw': 4} стаканов 14
-00:14:01 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80890.45, 0.25, 5), 'eth': (2379.82, 0.26, 5), 'sol': (102.49, 0.32, 5), 'xrp': (1.29, 0.41, 5), 'dvol': {'btc': 0.374, 'eth': 0.5191}, 'kalshi_K': 4, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:14:01 ws: {'msgs': 2611, 'books': 2611, 'errors': 0, 'raw': 4} стаканов 14
-00:15:00 рынок cpceth-eth-updown-15m-2026-10-24-0015z θ 0.0695 [('Yes', True), ('No', False)]
-00:15:00 рынок cpc-btc-updown-5m-2026-10-24-0015z θ 0.0695 [('Yes', True), ('No', False)]
-00:15:00 рынок cpcsol-sol-updown-15m-2026-10-24-0015z θ 0.0695 [('Yes', True), ('No', False)]
-00:15:00 рынок cpcxrp-xrp-updown-15m-2026-10-24-0015z θ 0.0695 [('Yes', True), ('No', False)]
-00:15:00 рынок cpc-btc-updown-15m-2026-10-24-0015z θ 0.0695 [('Yes', True), ('No', False)]
-00:15:02 пульс: рынков 13 с K 13 стакан ок/ошибок 3080 45 индекс (цена, годовая vol, бирж) {'btc': (80849.25, 0.24, 5), 'eth': (2378.5, 0.26, 5), 'sol': (102.46, 0.32, 5), 'xrp': (1.29, 0.4, 5), 'dvol': {'btc': 0.374, 'eth': 0.5191}, 'kalshi_K': 4, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:15:02 ws: {'msgs': 1905, 'books': 1905, 'errors': 0, 'raw': 4} стаканов 14
-00:15:05 итог cpc-btc-updown-5m-2026-10-24-0005z K 81047.38641666666 F 80944.55704166667 own DOWN official DOWN сделок 3
-00:15:35 итог cpcxrp-xrp-updown-15m-2026-10-24-0000z K 1.2937 F 1.2906579583333333 own DOWN official DOWN сделок 0
-00:15:44 cpc-btc-updown-5m-2026-10-24-0015z UP filled ask 0.37 fair 0.454 edge 0.068
-00:16:02 пульс: рынков 13 с K 13 стакан ок/ошибок 2956 164 индекс (цена, годовая vol, бирж) {'btc': (80841.24, 0.25, 5), 'eth': (2378.31, 0.27, 5), 'sol': (102.43, 0.32, 5), 'xrp': (1.29, 0.4, 5), 'dvol': {'btc': 0.374, 'eth': 0.5191}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:16:02 ws: {'msgs': 3209, 'books': 3209, 'errors': 0, 'raw': 4} стаканов 19
-00:16:19 cpc-btc-updown-5m-2026-10-24-0015z UP missed ask 0.18 fair 0.254 edge 0.064
-00:17:02 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80823.25, 0.24, 5), 'eth': (2378.47, 0.27, 5), 'sol': (102.42, 0.32, 5), 'xrp': (1.29, 0.4, 5), 'dvol': {'btc': 0.374, 'eth': 0.5191}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:17:02 ws: {'msgs': 3274, 'books': 3274, 'errors': 0, 'raw': 4} стаканов 19
-00:17:22 cpcsol-sol-updown-15m-2026-10-24-0015z DOWN filled ask 0.67 fair 0.726 edge 0.041
-00:17:46 cpceth-eth-updown-15m-2026-10-24-0015z DOWN filled ask 0.71 fair 0.787 edge 0.063
-00:18:02 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80826.32, 0.24, 5), 'eth': (2377.56, 0.28, 5), 'sol': (102.4, 0.31, 5), 'xrp': (1.29, 0.4, 5), 'dvol': {'btc': 0.374, 'eth': 0.5191}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:18:02 ws: {'msgs': 3442, 'books': 3442, 'errors': 0, 'raw': 4} стаканов 19
-00:19:02 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80785.77, 0.24, 5), 'eth': (2375.23, 0.29, 5), 'sol': (102.31, 0.32, 5), 'xrp': (1.29, 0.4, 5), 'dvol': {'btc': 0.37479999999999997, 'eth': 0.5188}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:19:02 ws: {'msgs': 3018, 'books': 3018, 'errors': 0, 'raw': 4} стаканов 19
-00:20:00 рынок cpc-btc-updown-5m-2026-10-24-0020z θ 0.0695 [('Yes', True), ('No', False)]
-00:20:02 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 1 индекс (цена, годовая vol, бирж) {'btc': (80748.2, 0.24, 5), 'eth': (2373.69, 0.29, 5), 'sol': (102.22, 0.32, 5), 'xrp': (1.29, 0.4, 5), 'dvol': {'btc': 0.37479999999999997, 'eth': 0.5188}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:20:02 ws: {'msgs': 2818, 'books': 2818, 'errors': 0, 'raw': 4} стаканов 20
-00:20:05 итог cpc-btc-updown-5m-2026-10-24-0010z K 80944.55704166667 F 80871.34916666667 own DOWN official DOWN сделок 4
-00:20:05 итог cpc-btc-updown-15m-2026-10-24-0000z K 81075.75 F 80871.34916666667 own DOWN official DOWN сделок 0
-00:20:05 итог cpcsol-sol-updown-15m-2026-10-24-0000z K 102.7192 F 102.46153333333334 own DOWN official DOWN сделок 0
-00:20:05 итог cpceth-eth-updown-15m-2026-10-24-0000z K 2384.49 F 2379.1666666666665 own DOWN official DOWN сделок 2
-00:20:19 cpc-btc-updown-5m-2026-10-24-0020z UP filled ask 0.18 fair 0.262 edge 0.072
-00:21:03 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80732.71, 0.24, 5), 'eth': (2372.49, 0.3, 5), 'sol': (102.21, 0.32, 5), 'xrp': (1.29, 0.41, 5), 'dvol': {'btc': 0.37479999999999997, 'eth': 0.5188}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:21:03 ws: {'msgs': 3201, 'books': 3201, 'errors': 0, 'raw': 4} стаканов 20
-00:21:58 ws Polymarket подключён
-00:22:03 пульс: рынков 13 с K 13 стакан ок/ошибок 2964 156 индекс (цена, годовая vol, бирж) {'btc': (80649.58, 0.25, 5), 'eth': (2370.24, 0.31, 5), 'sol': (102.06, 0.34, 5), 'xrp': (1.29, 0.41, 5), 'dvol': {'btc': 0.37479999999999997, 'eth': 0.5188}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:22:03 ws: {'msgs': 3455, 'books': 3455, 'errors': 0, 'raw': 4} стаканов 20
-00:22:17 cpc-btc-updown-5m-2026-10-24-0020z UP выход 0.18 -> 0.03 P&L -2.2622
-00:22:44 cpcxrp-xrp-updown-1h-2026-10-24-0000z DOWN filled ask 0.84 fair 0.916 edge 0.067
-00:23:03 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80684.57, 0.25, 5), 'eth': (2372.18, 0.33, 5), 'sol': (102.17, 0.36, 5), 'xrp': (1.29, 0.43, 5), 'dvol': {'btc': 0.37479999999999997, 'eth': 0.5188}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:23:03 ws: {'msgs': 3361, 'books': 3361, 'errors': 0, 'raw': 4} стаканов 20
-00:24:03 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80637.52, 0.26, 5), 'eth': (2370.97, 0.32, 5), 'sol': (102.09, 0.36, 5), 'xrp': (1.29, 0.42, 5), 'dvol': {'btc': 0.3775, 'eth': 0.5192}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:24:03 ws: {'msgs': 2304, 'books': 2304, 'errors': 0, 'raw': 4} стаканов 20
-00:25:00 рынок cpc-btc-updown-5m-2026-10-24-0025z θ 0.0695 [('Yes', True), ('No', False)]
-00:25:03 пульс: рынков 13 с K 13 стакан ок/ошибок 3118 3 индекс (цена, годовая vol, бирж) {'btc': (80639.42, 0.25, 5), 'eth': (2371.44, 0.31, 5), 'sol': (102.16, 0.36, 5), 'xrp': (1.29, 0.41, 5), 'dvol': {'btc': 0.3775, 'eth': 0.5192}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:25:03 ws: {'msgs': 1944, 'books': 1944, 'errors': 0, 'raw': 4} стаканов 20
-00:25:05 итог cpc-btc-updown-5m-2026-10-24-0015z K 80869.39 F 80766.71325 own DOWN official DOWN сделок 1
-00:25:48 cpc-btc-updown-5m-2026-10-24-0025z UP missed ask 0.8 fair 0.882 edge 0.070
-00:26:03 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80754.96, 0.28, 5), 'eth': (2374.84, 0.33, 5), 'sol': (102.27, 0.38, 5), 'xrp': (1.29, 0.44, 5), 'dvol': {'btc': 0.3775, 'eth': 0.5192}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:26:03 ws: {'msgs': 3620, 'books': 3620, 'errors': 0, 'raw': 4} стаканов 20
-00:27:04 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80767.67, 0.28, 5), 'eth': (2375.39, 0.35, 5), 'sol': (102.34, 0.38, 5), 'xrp': (1.29, 0.47, 5), 'dvol': {'btc': 0.3775, 'eth': 0.5192}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:27:04 ws: {'msgs': 3635, 'books': 3635, 'errors': 0, 'raw': 4} стаканов 20
-00:28:04 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80764.55, 0.28, 5), 'eth': (2374.72, 0.35, 5), 'sol': (102.29, 0.38, 5), 'xrp': (1.29, 0.47, 5), 'dvol': {'btc': 0.3775, 'eth': 0.5192}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:28:04 ws: {'msgs': 3581, 'books': 3581, 'errors': 0, 'raw': 4} стаканов 20
-00:29:04 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80731.65, 0.27, 5), 'eth': (2373.88, 0.34, 5), 'sol': (102.27, 0.37, 5), 'xrp': (1.29, 0.46, 5), 'dvol': {'btc': 0.37729999999999997, 'eth': 0.5197999999999999}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:29:04 ws: {'msgs': 1894, 'books': 1894, 'errors': 0, 'raw': 4} стаканов 20
-00:30:00 рынок cpcsol-sol-updown-15m-2026-10-24-0030z θ 0.0695 [('Yes', True), ('No', False)]
-00:30:00 рынок cpc-btc-updown-5m-2026-10-24-0030z θ 0.0695 [('Yes', True), ('No', False)]
-00:30:00 рынок cpcxrp-xrp-updown-15m-2026-10-24-0030z θ 0.0695 [('Yes', True), ('No', False)]
-00:30:00 рынок cpceth-eth-updown-15m-2026-10-24-0030z θ 0.0695 [('Yes', True), ('No', False)]
-00:30:00 рынок cpc-btc-updown-15m-2026-10-24-0030z θ 0.0695 [('Yes', True), ('No', False)]
-00:30:04 пульс: рынков 13 с K 13 стакан ок/ошибок 3115 10 индекс (цена, годовая vol, бирж) {'btc': (80701.24, 0.29, 5), 'eth': (2373.05, 0.35, 5), 'sol': (102.19, 0.38, 5), 'xrp': (1.29, 0.45, 5), 'dvol': {'btc': 0.37729999999999997, 'eth': 0.5197999999999999}, 'kalshi_K': 8, 'kalshi_err': {'HTTPError': 5}} коды {}
-00:30:04 ws: {'msgs': 1803, 'books': 1803, 'errors': 0, 'raw': 4} стаканов 20
-00:30:05 итог cpc-btc-updown-5m-2026-10-24-0020z K 80766.71325 F 80629.75391666667 own DOWN official DOWN сделок 1
+00:30:29 старт 20261024-0030 монеты ['btc', 'eth', 'sol', 'xrp'] окна ['5m', '15m', '1h', '1d'] edge 0.04 минут 340.0
+00:30:29 стакан Polymarket: WebSocket (ключ задан) | длина KEY_ID 36 SECRET 88
+00:30:30 ws Polymarket подключён
+00:31:45 рынок cpceth-eth-updown-1d-2026-10-23-2100z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 рынок cpc-btc-updown-1d-2026-10-23-2100z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 рынок cpceth-eth-updown-1h-2026-10-24-0000z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 рынок cpcsol-sol-updown-15m-2026-10-24-0030z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 рынок cpceth-eth-updown-15m-2026-10-24-0030z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 рынок cpc-btc-updown-5m-2026-10-24-0030z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 рынок cpc-btc-updown-15m-2026-10-24-0030z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 рынок cpc-btc-updown-1h-2026-10-24-0000z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 рынок cpcsol-sol-updown-1d-2026-10-23-2100z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 рынок cpcxrp-xrp-updown-15m-2026-10-24-0030z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 рынок cpcxrp-xrp-updown-1h-2026-10-24-0000z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 рынок cpcsol-sol-updown-1h-2026-10-24-0000z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 рынок cpcxrp-xrp-updown-1d-2026-10-23-2100z θ 0.0695 [('Yes', True), ('No', False)]
+00:31:45 ws сообщение: {"requestId": "md-1", "subscriptionType": "SUBSCRIPTION_TYPE_MARKET_DATA", "marketData": {"marketSlug": "cpc-btc-updown-15m-2026-10-24-0030z", "bids": [{"px": {"value": "0.4600", "currency": "USD"}, "qty": "740.0000"}, {"px": {"value": "0.4500", "currency": "USD"}, "qty": "902.0000"}, {"px": {"value": "0.4400", "currency": "USD"}, "qty": "459.0300"}, {"px": {"value": "0.4300", "currency": "USD"}, 
+00:31:45 ws сообщение: {"requestId": "md-1", "subscriptionType": "SUBSCRIPTION_TYPE_MARKET_DATA", "marketData": {"marketSlug": "cpc-btc-updown-1d-2026-10-23-2100z", "bids": [{"px": {"value": "0.2200", "currency": "USD"}, "qty": "400.0000"}, {"px": {"value": "0.2100", "currency": "USD"}, "qty": "120.0000"}, {"px": {"value": "0.2000", "currency": "USD"}, "qty": "396.2100"}, {"px": {"value": "0.1900", "currency": "USD"}, "
+00:31:45 ws сообщение: {"requestId": "md-1", "subscriptionType": "SUBSCRIPTION_TYPE_MARKET_DATA", "marketData": {"marketSlug": "cpc-btc-updown-1h-2026-10-24-0000z", "bids": [{"px": {"value": "0.0200", "currency": "USD"}, "qty": "1079.9900"}, {"px": {"value": "0.0100", "currency": "USD"}, "qty": "1249.0000"}], "offers": [{"px": {"value": "0.0300", "currency": "USD"}, "qty": "810.6700"}, {"px": {"value": "0.0500", "curren
+00:31:45 ws сообщение: {"requestId": "md-1", "subscriptionType": "SUBSCRIPTION_TYPE_MARKET_DATA", "marketData": {"marketSlug": "cpc-btc-updown-5m-2026-10-24-0030z", "bids": [{"px": {"value": "0.4100", "currency": "USD"}, "qty": "10.0000"}, {"px": {"value": "0.4000", "currency": "USD"}, "qty": "1.2600"}, {"px": {"value": "0.3900", "currency": "USD"}, "qty": "1000.0000"}, {"px": {"value": "0.3700", "currency": "USD"}, "qt
+00:32:39 cpc-btc-updown-5m-2026-10-24-0030z UP filled ask 0.27 fair 0.400 edge 0.117
+00:32:45 пульс: рынков 13 с K 13 стакан ок/ошибок 3107 26 индекс (цена, годовая vol, бирж) {'btc': (80683.49, 0.51, 5), 'eth': (2372.9, 0.35, 5), 'sol': (102.21, 0.42, 5), 'xrp': (1.29, 0.51, 5), 'dvol': {'btc': 0.3775, 'eth': 0.5196999999999999}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:32:45 ws: {'msgs': 3559, 'books': 3559, 'errors': 0, 'raw': 4} стаканов 13
+00:33:20 cpcsol-sol-updown-15m-2026-10-24-0030z DOWN thin ask 0.69 fair 0.750 edge 0.045
+00:33:23 cpceth-eth-updown-15m-2026-10-24-0030z DOWN filled ask 0.66 fair 0.738 edge 0.062
+00:33:45 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80639.7, 0.48, 5), 'eth': (2370.43, 0.35, 5), 'sol': (102.07, 0.42, 5), 'xrp': (1.28, 0.52, 5), 'dvol': {'btc': 0.3775, 'eth': 0.5196999999999999}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:33:45 ws: {'msgs': 3360, 'books': 3360, 'errors': 0, 'raw': 4} стаканов 13
+00:34:15 cpceth-eth-updown-15m-2026-10-24-0030z DOWN filled ask 0.69 fair 0.770 edge 0.065
+00:34:17 cpcsol-sol-updown-15m-2026-10-24-0030z DOWN filled ask 0.66 fair 0.738 edge 0.063
+00:34:45 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80699.88, 0.47, 5), 'eth': (2372.61, 0.37, 5), 'sol': (102.16, 0.48, 5), 'xrp': (1.29, 0.51, 5), 'dvol': {'btc': 0.3775, 'eth': 0.5196999999999999}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:34:45 ws: {'msgs': 3419, 'books': 3419, 'errors': 0, 'raw': 4} стаканов 13
+00:34:50 cpcxrp-xrp-updown-15m-2026-10-24-0030z DOWN missed ask 0.58 fair 0.638 edge 0.041
+00:35:00 рынок cpc-btc-updown-5m-2026-10-24-0035z θ 0.0695 [('Yes', True), ('No', False)]
+00:35:13 cpceth-eth-updown-15m-2026-10-24-0030z DOWN filled ask 0.72 fair 0.795 edge 0.061
+00:35:33 cpc-btc-updown-5m-2026-10-24-0035z UP missed ask 0.21 fair 0.283 edge 0.062
+00:35:45 пульс: рынков 13 с K 13 стакан ок/ошибок 3118 3 индекс (цена, годовая vol, бирж) {'btc': (80624.95, 0.44, 5), 'eth': (2369.32, 0.37, 5), 'sol': (102.03, 0.46, 5), 'xrp': (1.28, 0.51, 5), 'dvol': {'btc': 0.38, 'eth': 0.5194}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:35:45 ws: {'msgs': 3297, 'books': 3297, 'errors': 0, 'raw': 4} стаканов 14
+00:36:30 cpc-btc-updown-15m-2026-10-24-0030z UP filled ask 0.21 fair 0.282 edge 0.060
+00:36:30 cpc-btc-updown-5m-2026-10-24-0035z UP filled ask 0.15 fair 0.221 edge 0.062
+00:36:45 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80608.26, 0.42, 5), 'eth': (2369.85, 0.36, 5), 'sol': (102.03, 0.46, 5), 'xrp': (1.28, 0.5, 5), 'dvol': {'btc': 0.38, 'eth': 0.5194}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:36:45 ws: {'msgs': 3107, 'books': 3107, 'errors': 0, 'raw': 4} стаканов 14
+00:37:39 cpc-btc-updown-5m-2026-10-24-0035z UP missed ask 0.1 fair 0.191 edge 0.085
+00:37:45 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80633.08, 0.41, 5), 'eth': (2371.43, 0.38, 5), 'sol': (102.12, 0.45, 5), 'xrp': (1.29, 0.49, 5), 'dvol': {'btc': 0.38, 'eth': 0.5194}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:37:45 ws: {'msgs': 3309, 'books': 3309, 'errors': 0, 'raw': 4} стаканов 14
+00:37:56 cpc-btc-updown-15m-2026-10-24-0030z UP filled ask 0.18 fair 0.252 edge 0.061
+00:38:46 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80601.8, 0.39, 5), 'eth': (2370.57, 0.37, 5), 'sol': (102.05, 0.45, 5), 'xrp': (1.28, 0.49, 5), 'dvol': {'btc': 0.38, 'eth': 0.5194}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:38:46 ws: {'msgs': 3188, 'books': 3188, 'errors': 0, 'raw': 4} стаканов 14
+00:39:46 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80573.76, 0.37, 5), 'eth': (2369.34, 0.36, 5), 'sol': (101.97, 0.43, 5), 'xrp': (1.28, 0.47, 5), 'dvol': {'btc': 0.38, 'eth': 0.5194}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:39:46 ws: {'msgs': 2368, 'books': 2368, 'errors': 0, 'raw': 4} стаканов 14
+00:40:00 рынок cpc-btc-updown-5m-2026-10-24-0040z θ 0.0695 [('Yes', True), ('No', False)]
+00:40:05 итог cpc-btc-updown-5m-2026-10-24-0030z K 80693.88 F 80677.03583333334 own DOWN official DOWN сделок 1
+00:40:18 cpc-btc-updown-5m-2026-10-24-0040z UP filled ask 0.26 fair 0.337 edge 0.063
+00:40:46 пульс: рынков 13 с K 13 стакан ок/ошибок 3119 2 индекс (цена, годовая vol, бирж) {'btc': (80542.05, 0.35, 5), 'eth': (2368.64, 0.35, 5), 'sol': (101.93, 0.42, 5), 'xrp': (1.28, 0.46, 5), 'dvol': {'btc': 0.381, 'eth': 0.5194}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:40:46 ws: {'msgs': 2791, 'books': 2791, 'errors': 0, 'raw': 4} стаканов 15
+00:40:49 cpc-btc-updown-5m-2026-10-24-0040z UP filled ask 0.16 fair 0.235 edge 0.065
+00:41:22 cpc-btc-updown-5m-2026-10-24-0040z UP filled ask 0.13 fair 0.231 edge 0.093
+00:41:46 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80547.95, 0.34, 5), 'eth': (2368.9, 0.35, 5), 'sol': (101.93, 0.42, 5), 'xrp': (1.28, 0.45, 5), 'dvol': {'btc': 0.381, 'eth': 0.5194}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:41:46 ws: {'msgs': 2446, 'books': 2446, 'errors': 0, 'raw': 4} стаканов 15
+00:41:58 cpc-btc-updown-5m-2026-10-24-0040z UP filled ask 0.14 fair 0.220 edge 0.071
+00:42:28 cpc-btc-updown-5m-2026-10-24-0040z UP filled ask 0.13 fair 0.211 edge 0.073
+00:42:46 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80528.51, 0.32, 5), 'eth': (2367.76, 0.34, 5), 'sol': (101.89, 0.41, 5), 'xrp': (1.28, 0.44, 5), 'dvol': {'btc': 0.381, 'eth': 0.5194}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:42:46 ws: {'msgs': 2241, 'books': 2241, 'errors': 0, 'raw': 4} стаканов 15
+00:43:46 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80513.55, 0.31, 5), 'eth': (2367.28, 0.33, 5), 'sol': (101.89, 0.4, 5), 'xrp': (1.28, 0.44, 5), 'dvol': {'btc': 0.381, 'eth': 0.5194}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:43:46 ws: {'msgs': 1513, 'books': 1513, 'errors': 0, 'raw': 4} стаканов 15
+00:44:47 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80548.58, 0.3, 5), 'eth': (2368.64, 0.34, 5), 'sol': (101.96, 0.41, 5), 'xrp': (1.28, 0.44, 5), 'dvol': {'btc': 0.381, 'eth': 0.5194}, 'kalshi_K': 6, 'kalshi_err': {}} коды {}
+00:44:47 ws: {'msgs': 1056, 'books': 1056, 'errors': 0, 'raw': 4} стаканов 15
+00:45:00 рынок cpceth-eth-updown-15m-2026-10-24-0045z θ 0.0695 [('Yes', True), ('No', False)]
+00:45:00 рынок cpcsol-sol-updown-15m-2026-10-24-0045z θ 0.0695 [('Yes', True), ('No', False)]
+00:45:00 рынок cpc-btc-updown-15m-2026-10-24-0045z θ 0.0695 [('Yes', True), ('No', False)]
+00:45:00 рынок cpc-btc-updown-5m-2026-10-24-0045z θ 0.0695 [('Yes', True), ('No', False)]
+00:45:00 рынок cpcxrp-xrp-updown-15m-2026-10-24-0045z θ 0.0695 [('Yes', True), ('No', False)]
+00:45:05 итог cpc-btc-updown-5m-2026-10-24-0035z K 80677.03583333334 F 80588.15254166667 own DOWN official DOWN сделок 1
+00:45:10 cpc-btc-updown-5m-2026-10-24-0045z UP filled ask 0.36 fair 0.452 edge 0.076
+00:45:22 cpc-btc-updown-5m-2026-10-24-0045z UP выход 0.36 -> 0.6 P&L 2.0731
+00:45:43 cpc-btc-updown-5m-2026-10-24-0045z DOWN filled ask 0.16 fair 0.221 edge 0.052
+00:45:47 пульс: рынков 13 с K 13 стакан ок/ошибок 3110 15 индекс (цена, годовая vol, бирж) {'btc': (80571.79, 0.32, 5), 'eth': (2369.89, 0.36, 5), 'sol': (102.04, 0.42, 5), 'xrp': (1.28, 0.48, 5), 'dvol': {'btc': 0.3814, 'eth': 0.52}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:45:47 ws: {'msgs': 2727, 'books': 2727, 'errors': 0, 'raw': 4} стаканов 20
+00:46:02 cpc-btc-updown-5m-2026-10-24-0045z DOWN выход 0.16 -> 0.31 P&L 1.4315
+00:46:02 cpc-btc-updown-5m-2026-10-24-0045z UP filled ask 0.69 fair 0.747 edge 0.042
+00:46:15 cpc-btc-updown-5m-2026-10-24-0045z UP выход 0.69 -> 0.67 P&L -0.332
+00:46:22 cpc-btc-updown-5m-2026-10-24-0045z DOWN filled ask 0.34 fair 0.432 edge 0.077
+00:46:31 cpc-btc-updown-5m-2026-10-24-0045z DOWN выход 0.34 -> 0.52 P&L 1.5132
+00:46:47 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80548.95, 0.31, 5), 'eth': (2368.01, 0.36, 5), 'sol': (101.95, 0.43, 5), 'xrp': (1.28, 0.49, 5), 'dvol': {'btc': 0.3814, 'eth': 0.52}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:46:47 ws: {'msgs': 2980, 'books': 2980, 'errors': 0, 'raw': 4} стаканов 20
+00:46:52 cpc-btc-updown-5m-2026-10-24-0045z UP filled ask 0.43 fair 0.522 edge 0.075
+00:47:02 cpceth-eth-updown-15m-2026-10-24-0045z DOWN filled ask 0.58 fair 0.658 edge 0.061
+00:47:07 cpc-btc-updown-5m-2026-10-24-0045z UP выход 0.43 -> 0.51 P&L 0.1609
+00:47:38 cpceth-eth-updown-15m-2026-10-24-0045z DOWN filled ask 0.54 fair 0.623 edge 0.065
+00:47:47 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80558.08, 0.31, 5), 'eth': (2367.52, 0.37, 5), 'sol': (101.95, 0.42, 5), 'xrp': (1.28, 0.5, 5), 'dvol': {'btc': 0.3814, 'eth': 0.52}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:47:47 ws: {'msgs': 2850, 'books': 2850, 'errors': 0, 'raw': 4} стаканов 20
+00:48:47 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80591.76, 0.3, 5), 'eth': (2368.69, 0.37, 5), 'sol': (101.98, 0.43, 5), 'xrp': (1.28, 0.49, 5), 'dvol': {'btc': 0.3814, 'eth': 0.52}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:48:47 ws: {'msgs': 2798, 'books': 2798, 'errors': 0, 'raw': 4} стаканов 20
+00:49:10 cpcxrp-xrp-updown-15m-2026-10-24-0045z DOWN filled ask 0.62 fair 0.698 edge 0.062
+00:49:47 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80656.61, 0.3, 5), 'eth': (2371.64, 0.38, 5), 'sol': (102.11, 0.43, 5), 'xrp': (1.28, 0.51, 5), 'dvol': {'btc': 0.3814, 'eth': 0.52}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:49:47 ws: {'msgs': 2703, 'books': 2703, 'errors': 0, 'raw': 4} стаканов 20
+00:50:00 рынок cpc-btc-updown-5m-2026-10-24-0050z θ 0.0695 [('Yes', True), ('No', False)]
+00:50:05 итог cpcxrp-xrp-updown-15m-2026-10-24-0030z K 1.2864 F 1.2833995416666668 own DOWN official DOWN сделок 0
+00:50:05 итог cpc-btc-updown-15m-2026-10-24-0030z K 80693.88 F 80546.30833333333 own DOWN official DOWN сделок 2
+00:50:05 итог cpceth-eth-updown-15m-2026-10-24-0030z K 2373.32 F 2368.7543333333333 own DOWN official DOWN сделок 3
+00:50:05 итог cpc-btc-updown-5m-2026-10-24-0040z K 80588.15254166667 F 80546.30833333333 own DOWN official DOWN сделок 5
+00:50:05 итог cpcsol-sol-updown-15m-2026-10-24-0030z K 102.2188 F 101.96692916666666 own DOWN official DOWN сделок 1
+00:50:20 cpc-btc-updown-5m-2026-10-24-0050z DOWN filled ask 0.36 fair 0.488 edge 0.112
+00:50:39 cpcxrp-xrp-updown-15m-2026-10-24-0045z DOWN filled ask 0.39 fair 0.464 edge 0.057
+00:50:42 kraken reconnect ConnectionClosedError(None, None, None)
+00:50:48 пульс: рынков 13 с K 13 стакан ок/ошибок 3117 4 индекс (цена, годовая vol, бирж) {'btc': (80605.96, 0.3, 5), 'eth': (2370.11, 0.37, 5), 'sol': (102.05, 0.43, 5), 'xrp': (1.28, 0.51, 5), 'dvol': {'btc': 0.3811, 'eth': 0.5197999999999999}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:50:48 ws: {'msgs': 2950, 'books': 2950, 'errors': 0, 'raw': 4} стаканов 20
+00:51:01 cpc-btc-updown-5m-2026-10-24-0050z DOWN filled ask 0.51 fair 0.574 edge 0.046
+00:51:13 cpcxrp-xrp-updown-15m-2026-10-24-0045z DOWN filled ask 0.35 fair 0.431 edge 0.066
+00:51:14 cpc-btc-updown-5m-2026-10-24-0050z DOWN выход 0.36 -> 0.62 P&L 3.1685
+00:51:14 cpc-btc-updown-5m-2026-10-24-0050z DOWN выход 0.5 -> 0.62 P&L 0.5589
+00:51:17 cpc-btc-updown-5m-2026-10-24-0050z UP filled ask 0.38 fair 0.448 edge 0.052
+00:51:32 cpc-btc-updown-5m-2026-10-24-0050z UP выход 0.38 -> 0.36 P&L -0.3778
+00:51:48 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80602.05, 0.29, 5), 'eth': (2371.14, 0.36, 5), 'sol': (102.08, 0.44, 5), 'xrp': (1.28, 0.52, 5), 'dvol': {'btc': 0.3811, 'eth': 0.5197999999999999}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:51:48 ws: {'msgs': 3008, 'books': 3008, 'errors': 0, 'raw': 4} стаканов 20
+00:51:54 cpcxrp-xrp-updown-15m-2026-10-24-0045z DOWN missed ask 0.33 fair 0.406 edge 0.060
+00:52:02 cpceth-eth-updown-15m-2026-10-24-0045z DOWN выход 0.58 -> 0.14 P&L -3.7131
+00:52:02 cpceth-eth-updown-15m-2026-10-24-0045z DOWN выход 0.54 -> 0.14 P&L -3.537
+00:52:14 cpc-btc-updown-5m-2026-10-24-0050z DOWN missed ask 0.38 fair 0.442 edge 0.045
+00:52:29 cpcxrp-xrp-updown-15m-2026-10-24-0045z DOWN filled ask 0.14 fair 0.212 edge 0.063
+00:52:32 cpc-btc-updown-5m-2026-10-24-0050z UP filled ask 0.59 fair 0.655 edge 0.048
+00:52:33 cpc-btc-updown-5m-2026-10-24-0050z UP выход 0.6 -> 0.6 P&L -0.2202
+00:52:45 cpc-btc-updown-5m-2026-10-24-0050z DOWN thin ask 0.33 fair 0.411 edge 0.065
+00:52:48 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80640.99, 0.29, 5), 'eth': (2373.68, 0.37, 5), 'sol': (102.18, 0.44, 5), 'xrp': (1.29, 0.53, 5), 'dvol': {'btc': 0.3811, 'eth': 0.5197999999999999}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:52:48 ws: {'msgs': 3149, 'books': 3149, 'errors': 0, 'raw': 4} стаканов 20
+00:53:15 cpcxrp-xrp-updown-15m-2026-10-24-0045z DOWN filled ask 0.15 fair 0.212 edge 0.053
+00:53:25 cpc-btc-updown-5m-2026-10-24-0050z UP thin ask 0.38 fair 0.474 edge 0.077
+00:53:33 cpc-btc-updown-5m-2026-10-24-0050z DOWN missed ask 0.57 fair 0.633 edge 0.046
+00:53:48 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80609.7, 0.28, 5), 'eth': (2371.84, 0.37, 5), 'sol': (102.11, 0.43, 5), 'xrp': (1.28, 0.51, 5), 'dvol': {'btc': 0.3811, 'eth': 0.5197999999999999}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:53:48 ws: {'msgs': 2737, 'books': 2737, 'errors': 0, 'raw': 4} стаканов 20
+00:53:55 cpc-btc-updown-5m-2026-10-24-0050z UP thin ask 0.19 fair 0.268 edge 0.067
+00:54:04 cpc-btc-updown-5m-2026-10-24-0050z DOWN missed ask 0.59 fair 0.743 edge 0.136
+00:54:34 cpc-btc-updown-5m-2026-10-24-0050z DOWN thin ask 0.35 fair 0.495 edge 0.129
+00:54:48 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80606.05, 0.27, 5), 'eth': (2371.76, 0.36, 5), 'sol': (102.14, 0.43, 5), 'xrp': (1.28, 0.51, 5), 'dvol': {'btc': 0.3811, 'eth': 0.5197999999999999}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:54:48 ws: {'msgs': 2682, 'books': 2682, 'errors': 0, 'raw': 4} стаканов 20
+00:55:00 рынок cpc-btc-updown-5m-2026-10-24-0055z θ 0.0695 [('Yes', True), ('No', False)]
+00:55:05 итог cpc-btc-updown-5m-2026-10-24-0045z K 80538.83 F 80621.8255 own UP official UP сделок 5
+00:55:11 cpc-btc-updown-5m-2026-10-24-0055z UP filled ask 0.23 fair 0.312 edge 0.069
+00:55:32 cpc-btc-updown-15m-2026-10-24-0045z DOWN filled ask 0.25 fair 0.323 edge 0.060
+00:55:38 cpc-btc-updown-5m-2026-10-24-0055z UP выход 0.23 -> 0.16 P&L -1.0558
+00:55:48 пульс: рынков 13 с K 13 стакан ок/ошибок 3016 105 индекс (цена, годовая vol, бирж) {'btc': (80558.55, 0.27, 5), 'eth': (2370.19, 0.36, 5), 'sol': (102.06, 0.43, 5), 'xrp': (1.28, 0.5, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5194}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:55:48 ws: {'msgs': 2551, 'books': 2551, 'errors': 0, 'raw': 4} стаканов 20
+00:56:05 cpcsol-sol-updown-15m-2026-10-24-0045z DOWN filled ask 0.25 fair 0.308 edge 0.045
+00:56:11 cpceth-eth-updown-15m-2026-10-24-0045z DOWN filled ask 0.34 fair 0.416 edge 0.061
+00:56:27 cpc-btc-updown-15m-2026-10-24-0045z DOWN filled ask 0.56 fair 0.632 edge 0.054
+00:56:45 cpceth-eth-updown-15m-2026-10-24-0045z DOWN filled ask 0.25 fair 0.328 edge 0.065
+00:56:45 cpcsol-sol-updown-15m-2026-10-24-0045z DOWN filled ask 0.13 fair 0.206 edge 0.069
+00:56:48 пульс: рынков 13 с K 13 стакан ок/ошибок 3113 7 индекс (цена, годовая vol, бирж) {'btc': (80524.37, 0.27, 5), 'eth': (2370.03, 0.36, 5), 'sol': (102.06, 0.43, 5), 'xrp': (1.28, 0.51, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5194}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:56:48 ws: {'msgs': 2849, 'books': 2849, 'errors': 0, 'raw': 4} стаканов 20
+00:56:58 cpc-btc-updown-15m-2026-10-24-0045z DOWN missed ask 0.42 fair 0.511 edge 0.074
+00:57:12 cpc-btc-updown-15m-2026-10-24-0045z DOWN выход 0.25 -> 0.51 P&L 2.2226
+00:57:12 cpc-btc-updown-15m-2026-10-24-0045z DOWN выход 0.56 -> 0.51 P&L -0.6143
+00:57:40 cpceth-eth-updown-15m-2026-10-24-0045z DOWN thin ask 0.13 fair 0.223 edge 0.085
+00:57:49 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80536.95, 0.27, 5), 'eth': (2370.44, 0.36, 5), 'sol': (102.07, 0.44, 5), 'xrp': (1.28, 0.51, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5194}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:57:49 ws: {'msgs': 2650, 'books': 2650, 'errors': 0, 'raw': 4} стаканов 20
+00:57:52 cpc-btc-updown-15m-2026-10-24-0045z DOWN filled ask 0.42 fair 0.504 edge 0.067
+00:58:22 cpc-btc-updown-15m-2026-10-24-0045z DOWN thin ask 0.13 fair 0.199 edge 0.061
+00:58:31 cpc-btc-updown-5m-2026-10-24-0055z UP filled ask 0.11 fair 0.193 edge 0.076
+00:58:49 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80593.35, 0.27, 5), 'eth': (2372.94, 0.37, 5), 'sol': (102.23, 0.44, 5), 'xrp': (1.29, 0.52, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5194}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:58:49 ws: {'msgs': 2426, 'books': 2426, 'errors': 0, 'raw': 4} стаканов 20
+00:59:01 cpc-btc-updown-5m-2026-10-24-0055z UP filled ask 0.06 fair 0.131 edge 0.067
+00:59:31 cpc-btc-updown-15m-2026-10-24-0045z DOWN missed ask 0.31 fair 0.410 edge 0.085
+00:59:49 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80530.3, 0.28, 5), 'eth': (2371.78, 0.37, 5), 'sol': (102.17, 0.44, 5), 'xrp': (1.29, 0.52, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5194}, 'kalshi_K': 10, 'kalshi_err': {}} коды {}
+00:59:49 ws: {'msgs': 1791, 'books': 1791, 'errors': 0, 'raw': 4} стаканов 20
+01:00:00 рынок cpc-btc-updown-5m-2026-10-24-0100z θ 0.0695 [('Yes', True), ('No', False)]
+01:00:00 рынок cpc-btc-updown-15m-2026-10-24-0100z θ 0.0695 [('Yes', True), ('No', False)]
+01:00:00 рынок cpc-btc-updown-1h-2026-10-24-0100z θ 0.0695 [('Yes', True), ('No', False)]
+01:00:00 рынок cpceth-eth-updown-1h-2026-10-24-0100z θ 0.0695 [('Yes', True), ('No', False)]
+01:00:00 рынок cpceth-eth-updown-15m-2026-10-24-0100z θ 0.0695 [('Yes', True), ('No', False)]
+01:00:00 рынок cpcxrp-xrp-updown-15m-2026-10-24-0100z θ 0.0695 [('Yes', True), ('No', False)]
+01:00:00 рынок cpcsol-sol-updown-1h-2026-10-24-0100z θ 0.0695 [('Yes', True), ('No', False)]
+01:00:00 рынок cpcsol-sol-updown-15m-2026-10-24-0100z θ 0.0695 [('Yes', True), ('No', False)]
+01:00:00 рынок cpcxrp-xrp-updown-1h-2026-10-24-0100z θ 0.0695 [('Yes', True), ('No', False)]
+01:00:05 итог cpc-btc-updown-5m-2026-10-24-0050z K 80621.8255 F 80618.88191666667 own DOWN official UP сделок 4
+01:00:35 итог cpc-btc-updown-1h-2026-10-24-0000z K 81075.75 F 80546.31975 own DOWN official DOWN сделок 0
+01:00:39 cpc-btc-updown-5m-2026-10-24-0100z UP filled ask 0.63 fair 0.737 edge 0.091
+01:00:49 пульс: рынков 13 с K 13 стакан ок/ошибок 2965 164 индекс (цена, годовая vol, бирж) {'btc': (80609.55, 0.28, 5), 'eth': (2375.15, 0.36, 5), 'sol': (102.38, 0.44, 5), 'xrp': (1.29, 0.52, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5195000000000001}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:00:49 ws: {'msgs': 3296, 'books': 3296, 'errors': 0, 'raw': 4} стаканов 24
+01:01:05 итог cpceth-eth-updown-1h-2026-10-24-0000z K 2384.49 F 2371.8997916666663 own DOWN official DOWN сделок 0
+01:01:05 итог cpceth-eth-updown-15m-2026-10-24-0045z K 2368.91 F 2371.8997916666663 own UP official UP сделок 4
+01:01:10 cpc-btc-updown-5m-2026-10-24-0100z UP missed ask 0.76 fair 0.855 edge 0.082
+01:01:49 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80599.29, 0.27, 5), 'eth': (2374.36, 0.36, 5), 'sol': (102.29, 0.44, 5), 'xrp': (1.29, 0.52, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5195000000000001}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:01:49 ws: {'msgs': 3784, 'books': 3784, 'errors': 0, 'raw': 4} стаканов 24
+01:01:49 cpc-btc-updown-5m-2026-10-24-0100z UP filled ask 0.77 fair 0.858 edge 0.075
+01:02:05 итог cpcsol-sol-updown-1h-2026-10-24-0000z K 102.7192 F 102.1578 own DOWN official DOWN сделок 0
+01:02:35 итог cpcxrp-xrp-updown-1h-2026-10-24-0000z K 1.2937 F 1.2851403750000001 own DOWN official DOWN сделок 0
+01:02:38 cpc-btc-updown-5m-2026-10-24-0100z UP выход 0.63 -> 0.77 P&L 1.281
+01:02:38 cpc-btc-updown-5m-2026-10-24-0100z UP выход 0.77 -> 0.77 P&L -0.2481
+01:02:49 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80571.55, 0.27, 5), 'eth': (2373.68, 0.35, 5), 'sol': (102.27, 0.44, 5), 'xrp': (1.29, 0.52, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5195000000000001}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:02:49 ws: {'msgs': 3243, 'books': 3243, 'errors': 0, 'raw': 4} стаканов 24
+01:03:50 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80551.86, 0.29, 5), 'eth': (2372.47, 0.35, 5), 'sol': (102.2, 0.45, 5), 'xrp': (1.29, 0.52, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5195000000000001}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:03:50 ws: {'msgs': 3933, 'books': 3933, 'errors': 0, 'raw': 4} стаканов 24
+01:04:50 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80560.55, 0.28, 5), 'eth': (2373.05, 0.34, 5), 'sol': (102.24, 0.44, 5), 'xrp': (1.29, 0.51, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5195000000000001}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:04:50 ws: {'msgs': 3804, 'books': 3804, 'errors': 0, 'raw': 4} стаканов 24
+01:05:00 рынок cpc-btc-updown-5m-2026-10-24-0105z θ 0.0695 [('Yes', True), ('No', False)]
+01:05:05 итог cpc-btc-updown-15m-2026-10-24-0045z K 80538.83 F 80546.31975 own UP official UP сделок 3
+01:05:05 итог cpcsol-sol-updown-15m-2026-10-24-0045z K 101.968 F 102.1578 own UP official UP сделок 2
+01:05:05 итог cpcxrp-xrp-updown-15m-2026-10-24-0045z K 1.2835 F 1.2851403750000001 own UP official UP сделок 5
+01:05:05 итог cpc-btc-updown-5m-2026-10-24-0055z K 80618.88191666667 F 80546.31975 own DOWN official DOWN сделок 3
+01:05:50 пульс: рынков 13 с K 13 стакан ок/ошибок 3119 2 индекс (цена, годовая vol, бирж) {'btc': (80550.3, 0.27, 5), 'eth': (2372.64, 0.34, 5), 'sol': (102.24, 0.46, 5), 'xrp': (1.29, 0.52, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5189}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:05:50 ws: {'msgs': 3928, 'books': 3928, 'errors': 0, 'raw': 4} стаканов 24
+01:06:50 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80556.33, 0.26, 5), 'eth': (2372.56, 0.34, 5), 'sol': (102.25, 0.44, 5), 'xrp': (1.29, 0.51, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5189}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:06:50 ws: {'msgs': 3920, 'books': 3920, 'errors': 0, 'raw': 4} стаканов 24
+01:06:52 cpc-btc-updown-5m-2026-10-24-0105z UP filled ask 0.58 fair 0.666 edge 0.069
+01:07:50 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80639.79, 0.27, 5), 'eth': (2374.18, 0.33, 5), 'sol': (102.33, 0.44, 5), 'xrp': (1.29, 0.52, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5189}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:07:50 ws: {'msgs': 4278, 'books': 4278, 'errors': 0, 'raw': 4} стаканов 24
+01:07:58 cpc-btc-updown-5m-2026-10-24-0105z UP выход 0.58 -> 0.97 P&L 3.2578
+01:08:50 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80636.85, 0.26, 5), 'eth': (2373.91, 0.32, 5), 'sol': (102.3, 0.43, 5), 'xrp': (1.29, 0.5, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5189}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:08:50 ws: {'msgs': 3850, 'books': 3850, 'errors': 0, 'raw': 4} стаканов 24
+01:09:51 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80646.92, 0.26, 5), 'eth': (2374.68, 0.31, 5), 'sol': (102.34, 0.42, 5), 'xrp': (1.29, 0.49, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5189}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:09:51 ws: {'msgs': 3615, 'books': 3615, 'errors': 0, 'raw': 4} стаканов 24
+01:10:00 рынок cpc-btc-updown-5m-2026-10-24-0110z θ 0.0695 [('Yes', True), ('No', False)]
+01:10:05 итог cpc-btc-updown-5m-2026-10-24-0100z K 80544.0 F 80564.53458333334 own UP official UP сделок 2
+01:10:51 пульс: рынков 13 с K 13 стакан ок/ошибок 3119 2 индекс (цена, годовая vol, бирж) {'btc': (80657.7, 0.25, 5), 'eth': (2374.86, 0.31, 5), 'sol': (102.34, 0.43, 5), 'xrp': (1.29, 0.49, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5186999999999999}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:10:51 ws: {'msgs': 4074, 'books': 4074, 'errors': 0, 'raw': 4} стаканов 24
+01:10:52 cpc-btc-updown-5m-2026-10-24-0110z DOWN filled ask 0.31 fair 0.392 edge 0.068
+01:11:36 cpc-btc-updown-5m-2026-10-24-0110z DOWN filled ask 0.31 fair 0.383 edge 0.058
+01:11:51 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80676.3, 0.25, 5), 'eth': (2375.7, 0.3, 5), 'sol': (102.41, 0.42, 5), 'xrp': (1.29, 0.48, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5186999999999999}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:11:51 ws: {'msgs': 3366, 'books': 3366, 'errors': 0, 'raw': 4} стаканов 24
+01:12:10 cpc-btc-updown-5m-2026-10-24-0110z DOWN выход 0.31 -> 0.27 P&L -0.6616
+01:12:10 cpc-btc-updown-5m-2026-10-24-0110z DOWN выход 0.31 -> 0.27 P&L -0.5862
+01:12:37 cpc-btc-updown-5m-2026-10-24-0110z DOWN filled ask 0.24 fair 0.313 edge 0.060
+01:12:51 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80666.43, 0.24, 5), 'eth': (2374.66, 0.3, 5), 'sol': (102.36, 0.42, 5), 'xrp': (1.29, 0.48, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5186999999999999}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:12:51 ws: {'msgs': 3527, 'books': 3527, 'errors': 0, 'raw': 4} стаканов 24
+01:13:15 cpc-btc-updown-5m-2026-10-24-0110z DOWN filled ask 0.23 fair 0.316 edge 0.074
+01:13:45 cpc-btc-updown-5m-2026-10-24-0110z DOWN filled ask 0.26 fair 0.374 edge 0.100
+01:13:51 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80645.9, 0.24, 5), 'eth': (2374.69, 0.29, 5), 'sol': (102.35, 0.41, 5), 'xrp': (1.29, 0.47, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5186999999999999}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:13:51 ws: {'msgs': 2970, 'books': 2970, 'errors': 0, 'raw': 4} стаканов 24
+01:14:51 пульс: рынков 13 с K 13 стакан ок/ошибок 3120 0 индекс (цена, годовая vol, бирж) {'btc': (80666.15, 0.22, 5), 'eth': (2375.18, 0.28, 5), 'sol': (102.41, 0.4, 5), 'xrp': (1.29, 0.45, 5), 'dvol': {'btc': 0.3807, 'eth': 0.5186999999999999}, 'kalshi_K': 14, 'kalshi_err': {}} коды {}
+01:14:51 ws: {'msgs': 2223, 'books': 2223, 'errors': 0, 'raw': 4} стаканов 24
+01:15:00 рынок cpcxrp-xrp-updown-15m-2026-10-24-0115z θ 0.0695 [('Yes', True), ('No', False)]
+01:15:00 рынок cpcsol-sol-updown-15m-2026-10-24-0115z θ 0.0695 [('Yes', True), ('No', False)]
+01:15:00 рынок cpc-btc-updown-15m-2026-10-24-0115z θ 0.0695 [('Yes', True), ('No', False)]
+01:15:00 рынок cpc-btc-updown-5m-2026-10-24-0115z θ 0.0695 [('Yes', True), ('No', False)]
+01:15:00 рынок cpceth-eth-updown-15m-2026-10-24-0115z θ 0.0695 [('Yes', True), ('No', False)]
+01:15:05 итог cpc-btc-updown-5m-2026-10-24-0105z K 80564.53458333334 F 80644.31933333333 own UP official UP сделок 1
+01:15:18 cpc-btc-updown-5m-2026-10-24-0115z UP missed ask 0.75 fair 0.823 edge 0.060
