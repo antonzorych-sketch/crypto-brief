@@ -1,0 +1,324 @@
+{"t": 1792780661.5137894, "slug": "cpceth-eth-updown-5m-2026-10-23-1835z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.28, "tau": 138, "status": "missed"}
+{"t": 1792780663.0189035, "slug": "cpc-btc-updown-15m-2026-10-23-1830z", "coin": "btc", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 437, "status": "filled", "px": 0.29, "qty": 16.67, "cost": 5.0718}
+{"t": 1792780685.0975006, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1830z", "coin": "xrp", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 415, "status": "filled", "px": 0.28, "qty": 16.67, "cost": 4.9002}
+{"t": 1792780685.8495066, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1830z", "coin": "xrp", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.28, "tau": 414, "status": "filled", "px": 0.28, "qty": 17.86, "cost": 5.2502}
+{"t": 1792780693.6278708, "slug": "cpceth-eth-updown-15m-2026-10-23-1830z", "coin": "eth", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 406, "status": "filled", "px": 0.29, "qty": 16.67, "cost": 5.0718}
+{"t": 1792780733.7681243, "slug": "cpceth-eth-updown-15m-2026-10-23-1830z", "coin": "eth", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 366, "status": "filled", "px": 0.62, "qty": 16.4, "cost": 10.4352}
+{"t": 1792780763.6203792, "slug": "cpcsol-sol-updown-15m-2026-10-23-1830z", "coin": "sol", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 336, "status": "missed"}
+{"t": 1792780775.158403, "slug": "cpcsol-sol-updown-15m-2026-10-23-1830z", "coin": "sol", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 325, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792780805.762749, "slug": "cpc-btc-updown-5m-2026-10-23-1840z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.26, "tau": 294, "status": "missed"}
+{"t": 1792780806.7655985, "slug": "cpc-btc-updown-5m-2026-10-23-1840z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 293, "status": "filled", "px": 0.28, "qty": 9.0, "cost": 2.6461}
+{"t": 1792780809.2744358, "slug": "cpc-btc-updown-5m-2026-10-23-1840z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 291, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792780813.0368118, "slug": "cpc-btc-updown-5m-2026-10-23-1840z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 287, "status": "missed"}
+{"t": 1792780813.789172, "slug": "cpc-btc-updown-5m-2026-10-23-1840z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 286, "status": "filled", "px": 0.62, "qty": 9.0, "cost": 5.7274}
+{"t": 1792780814.5411336, "slug": "cpc-btc-updown-5m-2026-10-23-1840z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 285, "status": "missed"}
+{"t": 1792780822.5746014, "slug": "cpc-btc-updown-5m-2026-10-23-1840z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 277, "status": "filled", "px": 0.62, "qty": 2.0, "cost": 1.2727}
+{"t": 1792780823.3280325, "slug": "cpc-btc-updown-5m-2026-10-23-1840z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 277, "status": "filled", "px": 0.62, "qty": 1.06, "cost": 0.6774}
+{"t": 1792780828.8480403, "slug": "cpceth-eth-updown-5m-2026-10-23-1840z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 271, "status": "missed"}
+{"t": 1792780830.854667, "slug": "cpceth-eth-updown-5m-2026-10-23-1840z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 269, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792780866.9883285, "slug": "cpceth-eth-updown-5m-2026-10-23-1840z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.57, "tau": 233, "status": "filled", "px": 0.57, "qty": 16.67, "cost": 9.7839}
+{"t": 1792780872.7547133, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1840z", "coin": "xrp", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 227, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792780893.578243, "slug": "cpcsol-sol-updown-15m-2026-10-23-1830z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 206, "status": "filled", "px": 0.53, "qty": 15.87, "cost": 8.6875}
+{"t": 1792780893.8297162, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1830z", "coin": "xrp", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.65, "tau": 206, "status": "filled", "px": 0.57, "qty": 8.21, "cost": 4.8167}
+{"t": 1792780894.584132, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1830z", "coin": "xrp", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.61, "tau": 205, "status": "filled", "px": 0.6, "qty": 1.08, "cost": 0.6636}
+{"t": 1792780894.584132, "slug": "cpcsol-sol-updown-5m-2026-10-23-1840z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 205, "status": "missed"}
+{"t": 1792780894.8356059, "slug": "cpcsol-sol-updown-15m-2026-10-23-1830z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.51, "tau": 205, "status": "filled", "px": 0.5, "qty": 0.79, "cost": 0.4106}
+{"t": 1792780895.3374186, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1830z", "coin": "xrp", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.6, "tau": 205, "status": "missed"}
+{"t": 1792780895.3374186, "slug": "cpcsol-sol-updown-5m-2026-10-23-1840z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.25, "tau": 205, "status": "missed"}
+{"t": 1792780896.0895112, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1830z", "coin": "xrp", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.65, "tau": 204, "status": "filled", "px": 0.65, "qty": 0.02, "cost": 0.011}
+{"t": 1792780897.092012, "slug": "cpcsol-sol-updown-5m-2026-10-23-1840z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 203, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792780959.3070922, "slug": "cpcsol-sol-updown-5m-2026-10-23-1840z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.52, "tau": 141, "status": "missed"}
+{"t": 1792780960.0587742, "slug": "cpcsol-sol-updown-15m-2026-10-23-1830z", "coin": "sol", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 140, "status": "filled", "px": 0.29, "qty": 3.0, "cost": 0.9129}
+{"t": 1792780960.310268, "slug": "cpcsol-sol-updown-5m-2026-10-23-1840z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.59, "tau": 140, "status": "missed"}
+{"t": 1792780961.314372, "slug": "cpcsol-sol-updown-5m-2026-10-23-1840z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.59, "tau": 139, "status": "missed"}
+{"t": 1792780962.3182108, "slug": "cpcsol-sol-updown-5m-2026-10-23-1840z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.63, "tau": 138, "status": "filled", "px": 0.6, "qty": 15.87, "cost": 9.7886}
+{"t": 1792780963.0712616, "slug": "cpcsol-sol-updown-5m-2026-10-23-1840z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.6, "tau": 137, "status": "missed"}
+{"t": 1792780964.0734138, "slug": "cpcsol-sol-updown-5m-2026-10-23-1840z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.58, "tau": 136, "status": "missed"}
+{"t": 1792780964.8260243, "slug": "cpcsol-sol-updown-5m-2026-10-23-1840z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.6, "tau": 135, "status": "filled", "px": 0.57, "qty": 0.79, "cost": 0.4659}
+{"t": 1792780988.649944, "slug": "cpcsol-sol-updown-15m-2026-10-23-1830z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.58, "tau": 111, "status": "missed"}
+{"t": 1792781025.2873945, "slug": "cpcsol-sol-updown-15m-2026-10-23-1830z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 75, "status": "filled", "px": 0.61, "qty": 0.51, "cost": 0.3187}
+{"t": 1792781026.0403957, "slug": "cpcsol-sol-updown-15m-2026-10-23-1830z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.6, "tau": 74, "status": "missed"}
+{"t": 1792781028.7993917, "slug": "cpcsol-sol-updown-15m-2026-10-23-1830z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.6, "tau": 71, "status": "missed"}
+{"t": 1792781029.5538654, "slug": "cpcsol-sol-updown-15m-2026-10-23-1830z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 70, "status": "missed"}
+{"t": 1792781030.3064332, "slug": "cpcsol-sol-updown-15m-2026-10-23-1830z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 70, "status": "filled", "px": 0.49, "qty": 0.02, "cost": 0.0083}
+{"t": 1792781040.0855763, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1830z", "side": "UP", "why": "unwind", "status": "sold", "px": 0.52, "qty": 25.23, "pnl": 5.2632}
+{"t": 1792781042.5927567, "slug": "cpcsol-sol-updown-15m-2026-10-23-1830z", "side": "UP", "why": "unwind", "status": "sold", "px": 0.32, "qty": 2.47, "pnl": 0.0014}
+{"t": 1792781108.8279107, "slug": "cpceth-eth-updown-5m-2026-10-23-1845z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 291, "status": "missed"}
+{"t": 1792781109.0802865, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1845z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.23, "tau": 291, "status": "missed"}
+{"t": 1792781110.5853753, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1845z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.26, "tau": 289, "status": "filled", "px": 0.26, "qty": 19.23, "cost": 5.2572}
+{"t": 1792781110.8359952, "slug": "cpceth-eth-updown-5m-2026-10-23-1845z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 289, "status": "missed"}
+{"t": 1792781111.8397393, "slug": "cpceth-eth-updown-5m-2026-10-23-1845z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 288, "status": "missed"}
+{"t": 1792781126.6393838, "slug": "cpc-btc-updown-5m-2026-10-23-1845z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 273, "status": "filled", "px": 0.28, "qty": 16.67, "cost": 4.9002}
+{"t": 1792781127.3934147, "slug": "cpc-btc-updown-5m-2026-10-23-1845z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.28, "tau": 273, "status": "missed"}
+{"t": 1792781128.1470711, "slug": "cpc-btc-updown-5m-2026-10-23-1845z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.28, "tau": 272, "status": "missed"}
+{"t": 1792781128.8998826, "slug": "cpc-btc-updown-5m-2026-10-23-1845z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 271, "status": "missed"}
+{"t": 1792781129.6519818, "slug": "cpc-btc-updown-5m-2026-10-23-1845z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.6, "tau": 270, "status": "filled", "px": 0.58, "qty": 16.67, "cost": 9.9488}
+{"t": 1792781133.1645665, "slug": "cpceth-eth-updown-5m-2026-10-23-1845z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 267, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792781138.9372995, "slug": "cpceth-eth-updown-5m-2026-10-23-1845z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 261, "status": "filled", "px": 0.63, "qty": 15.87, "cost": 10.2571}
+{"t": 1792781170.2970927, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1845z", "coin": "xrp", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 830, "status": "filled", "px": 0.28, "qty": 16.67, "cost": 4.9002}
+{"t": 1792781171.30102, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1845z", "coin": "xrp", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.28, "tau": 829, "status": "filled", "px": 0.26, "qty": 17.86, "cost": 4.8816}
+{"t": 1792781189.1169086, "slug": "cpcsol-sol-updown-15m-2026-10-23-1845z", "coin": "sol", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 811, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792781207.181278, "slug": "cpceth-eth-updown-15m-2026-10-23-1845z", "coin": "eth", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.28, "tau": 793, "status": "missed"}
+{"t": 1792781207.9346852, "slug": "cpceth-eth-updown-15m-2026-10-23-1845z", "coin": "eth", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 792, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792781217.217203, "slug": "cpc-btc-updown-15m-2026-10-23-1845z", "coin": "btc", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.28, "tau": 783, "status": "filled", "px": 0.28, "qty": 17.86, "cost": 5.2502}
+{"t": 1792781412.1697047, "slug": "cpcsol-sol-updown-5m-2026-10-23-1850z", "coin": "sol", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 288, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792781439.0156403, "slug": "cpc-btc-updown-5m-2026-10-23-1850z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 261, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792781443.5330448, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1850z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 256, "status": "filled", "px": 0.27, "qty": 16.67, "cost": 4.7283}
+{"t": 1792781444.5368922, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1850z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 255, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792781448.3046799, "slug": "cpc-btc-updown-5m-2026-10-23-1850z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 252, "status": "filled", "px": 0.62, "qty": 15.87, "cost": 10.1012}
+{"t": 1792781449.8111544, "slug": "cpc-btc-updown-5m-2026-10-23-1850z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 250, "status": "filled", "px": 0.62, "qty": 0.26, "cost": 0.1629}
+{"t": 1792781450.814756, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1850z", "coin": "xrp", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.65, "tau": 249, "status": "missed"}
+{"t": 1792781452.068304, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1850z", "coin": "xrp", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 248, "status": "missed"}
+{"t": 1792781452.821026, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1850z", "coin": "xrp", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.64, "tau": 247, "status": "filled", "px": 0.64, "qty": 8.59, "cost": 5.6376}
+{"t": 1792781487.4514194, "slug": "cpceth-eth-updown-5m-2026-10-23-1850z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 213, "status": "missed"}
+{"t": 1792781493.4717193, "slug": "cpceth-eth-updown-5m-2026-10-23-1850z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 207, "status": "missed"}
+{"t": 1792781493.9737153, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1845z", "coin": "xrp", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.66, "tau": 506, "status": "filled", "px": 0.63, "qty": 8.62, "cost": 5.5715}
+{"t": 1792781494.2244928, "slug": "cpc-btc-updown-15m-2026-10-23-1845z", "coin": "btc", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.65, "tau": 506, "status": "filled", "px": 0.65, "qty": 15.38, "cost": 10.2432}
+{"t": 1792781494.2244928, "slug": "cpceth-eth-updown-15m-2026-10-23-1845z", "coin": "eth", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 506, "status": "filled", "px": 0.62, "qty": 15.87, "cost": 10.1012}
+{"t": 1792781494.7268476, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1845z", "coin": "xrp", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.66, "tau": 505, "status": "filled", "px": 0.64, "qty": 0.39, "cost": 0.2571}
+{"t": 1792781494.9779584, "slug": "cpceth-eth-updown-15m-2026-10-23-1845z", "coin": "eth", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 505, "status": "filled", "px": 0.62, "qty": 0.26, "cost": 0.1629}
+{"t": 1792781495.4798517, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1845z", "coin": "xrp", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.64, "tau": 505, "status": "filled", "px": 0.64, "qty": 0.01, "cost": 0.008}
+{"t": 1792781495.4798517, "slug": "cpcsol-sol-updown-5m-2026-10-23-1850z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.58, "tau": 205, "status": "missed"}
+{"t": 1792781496.9844682, "slug": "cpcsol-sol-updown-5m-2026-10-23-1850z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.55, "tau": 203, "status": "filled", "px": 0.55, "qty": 17.24, "cost": 9.7793}
+{"t": 1792781512.7851367, "slug": "cpceth-eth-updown-5m-2026-10-23-1850z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.24, "tau": 187, "status": "filled", "px": 0.21, "qty": 20.83, "cost": 4.6152}
+{"t": 1792781523.3262749, "slug": "cpceth-eth-updown-5m-2026-10-23-1850z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.24, "tau": 177, "status": "missed"}
+{"t": 1792781524.0798955, "slug": "cpceth-eth-updown-5m-2026-10-23-1850z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 176, "status": "missed"}
+{"t": 1792781524.833419, "slug": "cpceth-eth-updown-5m-2026-10-23-1850z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 175, "status": "missed"}
+{"t": 1792781546.905482, "slug": "cpceth-eth-updown-5m-2026-10-23-1850z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.23, "tau": 153, "status": "missed"}
+{"t": 1792781640.230386, "slug": "cpc-btc-updown-5m-2026-10-23-1850z", "side": "UP", "why": "unwind", "status": "sold", "px": 0.99, "qty": 0.54, "pnl": 0.3628}
+{"t": 1792781646.7567787, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1850z", "side": "UP", "why": "unwind", "status": "sold", "px": 0.99, "qty": 24.74, "pnl": 16.9416}
+{"t": 1792781738.3027523, "slug": "cpcsol-sol-updown-5m-2026-10-23-1855z", "coin": "sol", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 262, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792781859.9665353, "slug": "cpcsol-sol-updown-5m-2026-10-23-1855z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 140, "status": "missed"}
+{"t": 1792781860.4688694, "slug": "cpc-btc-updown-5m-2026-10-23-1855z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.23, "tau": 140, "status": "filled", "px": 0.23, "qty": 21.74, "cost": 5.2676}
+{"t": 1792781877.022945, "slug": "cpcsol-sol-updown-5m-2026-10-23-1855z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.6, "tau": 123, "status": "missed"}
+{"t": 1792781882.2900631, "slug": "cpcsol-sol-updown-5m-2026-10-23-1855z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.45, "tau": 118, "status": "missed"}
+{"t": 1792781883.5450513, "slug": "cpcsol-sol-updown-5m-2026-10-23-1855z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.36, "tau": 116, "status": "missed"}
+{"t": 1792781886.5531232, "slug": "cpcsol-sol-updown-5m-2026-10-23-1855z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.29, "tau": 113, "status": "filled", "px": 0.29, "qty": 16.67, "cost": 5.0718}
+{"t": 1792781890.06344, "slug": "cpcsol-sol-updown-15m-2026-10-23-1845z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 110, "status": "missed"}
+{"t": 1792781893.07386, "slug": "cpcsol-sol-updown-15m-2026-10-23-1845z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.57, "tau": 107, "status": "missed"}
+{"t": 1792781895.081981, "slug": "cpcsol-sol-updown-15m-2026-10-23-1845z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 105, "status": "filled", "px": 0.59, "qty": 15.87, "cost": 9.6319}
+{"t": 1792781896.0845118, "slug": "cpcsol-sol-updown-15m-2026-10-23-1845z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.59, "tau": 104, "status": "filled", "px": 0.59, "qty": 0.79, "cost": 0.4816}
+{"t": 1792781920.1595058, "slug": "cpc-btc-updown-5m-2026-10-23-1855z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.71, "tau": 80, "status": "missed"}
+{"t": 1792781926.1767, "slug": "cpc-btc-updown-5m-2026-10-23-1855z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.7, "tau": 74, "status": "missed"}
+{"t": 1792781927.9319646, "slug": "cpc-btc-updown-5m-2026-10-23-1855z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.68, "tau": 72, "status": "filled", "px": 0.68, "qty": 14.71, "cost": 10.2224}
+{"t": 1792781940.2280545, "slug": "cpc-btc-updown-5m-2026-10-23-1855z", "side": "DOWN", "why": "unwind", "status": "sold", "px": 0.66, "qty": 7.03, "pnl": 2.828}
+{"t": 1792782042.3217175, "slug": "cpceth-eth-updown-15m-2026-10-23-1900z", "coin": "eth", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 858, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792782043.8277411, "slug": "cpc-btc-updown-5m-2026-10-23-1900z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 256, "status": "missed"}
+{"t": 1792782048.5917685, "slug": "cpcsol-sol-updown-5m-2026-10-23-1900z", "coin": "sol", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 251, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792782059.8830092, "slug": "cpc-btc-updown-5m-2026-10-23-1900z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 240, "status": "missed"}
+{"t": 1792782060.6356754, "slug": "cpc-btc-updown-5m-2026-10-23-1900z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 239, "status": "filled", "px": 0.3, "qty": 11.0, "cost": 3.4605}
+{"t": 1792782061.8888633, "slug": "cpc-btc-updown-5m-2026-10-23-1900z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 238, "status": "filled", "px": 0.28, "qty": 16.67, "cost": 4.9002}
+{"t": 1792782062.390994, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1900z", "coin": "xrp", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 838, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792782063.6453793, "slug": "cpcsol-sol-updown-15m-2026-10-23-1900z", "coin": "sol", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 836, "status": "filled", "px": 0.28, "qty": 16.67, "cost": 4.9002}
+{"t": 1792782065.403932, "slug": "cpcsol-sol-updown-15m-2026-10-23-1900z", "coin": "sol", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 835, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792782069.919347, "slug": "cpcsol-sol-updown-15m-2026-10-23-1900z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.66, "tau": 830, "status": "filled", "px": 0.66, "qty": 8.08, "cost": 5.4594}
+{"t": 1792782072.6786754, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1900z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.26, "tau": 227, "status": "filled", "px": 0.26, "qty": 19.23, "cost": 5.2572}
+{"t": 1792782243.7620213, "slug": "cpcsol-sol-updown-5m-2026-10-23-1900z", "side": "UP", "why": "unwind", "status": "sold", "px": 0.37, "qty": 16.67, "pnl": 0.6534}
+{"t": 1792782244.2639298, "slug": "cpcsol-sol-updown-5m-2026-10-23-1900z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 56, "status": "missed"}
+{"t": 1792782343.604755, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1905z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 256, "status": "missed"}
+{"t": 1792782344.6080656, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1905z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 255, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792782412.0891545, "slug": "cpc-btc-updown-15m-2026-10-23-1900z", "coin": "btc", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 488, "status": "missed"}
+{"t": 1792782412.0891545, "slug": "cpc-btc-updown-5m-2026-10-23-1905z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 188, "status": "missed"}
+{"t": 1792782412.8407903, "slug": "cpc-btc-updown-15m-2026-10-23-1900z", "coin": "btc", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 487, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792782415.0973988, "slug": "cpc-btc-updown-5m-2026-10-23-1905z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 185, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792782427.6418276, "slug": "cpceth-eth-updown-5m-2026-10-23-1905z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 172, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792782442.9467924, "slug": "cpcsol-sol-updown-5m-2026-10-23-1905z", "coin": "sol", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 157, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792782452.2322104, "slug": "cpceth-eth-updown-5m-2026-10-23-1905z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 148, "status": "filled", "px": 0.58, "qty": 10.0, "cost": 5.9693}
+{"t": 1792782452.9848835, "slug": "cpceth-eth-updown-5m-2026-10-23-1905z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.58, "tau": 147, "status": "missed"}
+{"t": 1792782453.4868305, "slug": "cpcsol-sol-updown-5m-2026-10-23-1905z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.64, "tau": 147, "status": "missed"}
+{"t": 1792782454.2390633, "slug": "cpceth-eth-updown-5m-2026-10-23-1905z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.61, "tau": 146, "status": "filled", "px": 0.6, "qty": 1.0, "cost": 0.6167}
+{"t": 1792782454.9914124, "slug": "cpceth-eth-updown-5m-2026-10-23-1905z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.6, "tau": 145, "status": "missed"}
+{"t": 1792782455.242215, "slug": "cpcsol-sol-updown-5m-2026-10-23-1905z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.64, "tau": 145, "status": "missed"}
+{"t": 1792782455.7436953, "slug": "cpceth-eth-updown-5m-2026-10-23-1905z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 144, "status": "filled", "px": 0.62, "qty": 5.81, "cost": 3.6951}
+{"t": 1792782457.2478173, "slug": "cpcsol-sol-updown-5m-2026-10-23-1905z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.64, "tau": 143, "status": "missed"}
+{"t": 1792782625.328918, "slug": "cpc-btc-updown-5m-2026-10-23-1910z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 275, "status": "missed"}
+{"t": 1792782626.0826085, "slug": "cpc-btc-updown-5m-2026-10-23-1910z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 274, "status": "filled", "px": 0.27, "qty": 17.24, "cost": 4.8914}
+{"t": 1792782626.834929, "slug": "cpc-btc-updown-5m-2026-10-23-1910z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.28, "tau": 273, "status": "filled", "px": 0.27, "qty": 2.0, "cost": 0.5674}
+{"t": 1792782631.6034272, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1910z", "coin": "xrp", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 268, "status": "filled", "px": 0.29, "qty": 16.67, "cost": 5.0718}
+{"t": 1792782633.3601615, "slug": "cpc-btc-updown-5m-2026-10-23-1910z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.67, "tau": 267, "status": "filled", "px": 0.67, "qty": 14.63, "cost": 10.0297}
+{"t": 1792782650.9202826, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1910z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.63, "tau": 249, "status": "missed"}
+{"t": 1792782651.6733654, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1910z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.61, "tau": 248, "status": "filled", "px": 0.61, "qty": 16.67, "cost": 10.4422}
+{"t": 1792782656.6913342, "slug": "cpceth-eth-updown-5m-2026-10-23-1910z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 243, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792782659.9526913, "slug": "cpcsol-sol-updown-5m-2026-10-23-1910z", "coin": "sol", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 240, "status": "missed"}
+{"t": 1792782679.0191655, "slug": "cpcsol-sol-updown-5m-2026-10-23-1910z", "coin": "sol", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 221, "status": "missed"}
+{"t": 1792782687.5520291, "slug": "cpcsol-sol-updown-5m-2026-10-23-1910z", "coin": "sol", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 212, "status": "filled", "px": 0.29, "qty": 16.67, "cost": 5.0718}
+{"t": 1792782698.336694, "slug": "cpcsol-sol-updown-5m-2026-10-23-1910z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.64, "tau": 202, "status": "missed"}
+{"t": 1792782699.3412027, "slug": "cpcsol-sol-updown-5m-2026-10-23-1910z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.61, "tau": 201, "status": "missed"}
+{"t": 1792782702.100024, "slug": "cpcsol-sol-updown-5m-2026-10-23-1910z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 198, "status": "filled", "px": 0.6, "qty": 6.0, "cost": 3.7001}
+{"t": 1792782704.859777, "slug": "cpcsol-sol-updown-5m-2026-10-23-1910z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.64, "tau": 195, "status": "missed"}
+{"t": 1792782706.366334, "slug": "cpcsol-sol-updown-5m-2026-10-23-1910z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.64, "tau": 194, "status": "missed"}
+{"t": 1792782708.121043, "slug": "cpcsol-sol-updown-5m-2026-10-23-1910z", "coin": "sol", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 192, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792782742.4944296, "slug": "cpceth-eth-updown-5m-2026-10-23-1910z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.64, "tau": 158, "status": "missed"}
+{"t": 1792782746.7559977, "slug": "cpcsol-sol-updown-5m-2026-10-23-1910z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.61, "tau": 153, "status": "missed"}
+{"t": 1792782840.1058176, "slug": "cpc-btc-updown-5m-2026-10-23-1910z", "side": "DOWN", "why": "unwind", "status": "sold", "px": 0.99, "qty": 4.61, "pnl": 3.251}
+{"t": 1792782946.9948595, "slug": "cpc-btc-updown-5m-2026-10-23-1915z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 253, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792782954.5168965, "slug": "cpc-btc-updown-5m-2026-10-23-1915z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.63, "tau": 245, "status": "filled", "px": 0.62, "qty": 15.87, "cost": 10.1012}
+{"t": 1792782955.2700782, "slug": "cpc-btc-updown-5m-2026-10-23-1915z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.55, "tau": 245, "status": "filled", "px": 0.53, "qty": 0.29, "cost": 0.158}
+{"t": 1792782956.0222957, "slug": "cpc-btc-updown-5m-2026-10-23-1915z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.53, "tau": 244, "status": "filled", "px": 0.53, "qty": 0.01, "cost": 0.006}
+{"t": 1792782976.84554, "slug": "cpceth-eth-updown-15m-2026-10-23-1915z", "coin": "eth", "tf": "15m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 823, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792782982.1127946, "slug": "cpceth-eth-updown-5m-2026-10-23-1915z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 218, "status": "missed"}
+{"t": 1792782988.6365616, "slug": "cpceth-eth-updown-5m-2026-10-23-1915z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.23, "tau": 211, "status": "filled", "px": 0.23, "qty": 10.0, "cost": 2.4231}
+{"t": 1792782990.1408753, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1915z", "coin": "xrp", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 210, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792782992.3989353, "slug": "cpcsol-sol-updown-5m-2026-10-23-1915z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 208, "status": "missed"}
+{"t": 1792782994.9066415, "slug": "cpcsol-sol-updown-5m-2026-10-23-1915z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 205, "status": "filled", "px": 0.27, "qty": 16.67, "cost": 4.7283}
+{"t": 1792782999.4211488, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1915z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.63, "tau": 201, "status": "missed"}
+{"t": 1792783001.4279194, "slug": "cpceth-eth-updown-5m-2026-10-23-1915z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.24, "tau": 199, "status": "missed"}
+{"t": 1792783002.6836586, "slug": "cpceth-eth-updown-5m-2026-10-23-1915z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.23, "tau": 197, "status": "filled", "px": 0.21, "qty": 21.74, "cost": 4.8159}
+{"t": 1792783003.6881928, "slug": "cpcsol-sol-updown-5m-2026-10-23-1915z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 196, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792783020.2442257, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1915z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.59, "tau": 180, "status": "filled", "px": 0.55, "qty": 15.0, "cost": 8.508}
+{"t": 1792783021.2477095, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1915z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.6, "tau": 179, "status": "filled", "px": 0.6, "qty": 2.24, "cost": 1.3822}
+{"t": 1792783024.0076761, "slug": "cpcsol-sol-updown-5m-2026-10-23-1915z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.67, "tau": 176, "status": "filled", "px": 0.62, "qty": 4.0, "cost": 2.5455}
+{"t": 1792783024.7596629, "slug": "cpcsol-sol-updown-5m-2026-10-23-1915z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.65, "tau": 175, "status": "missed"}
+{"t": 1792783025.0105183, "slug": "cpceth-eth-updown-15m-2026-10-23-1915z", "coin": "eth", "tf": "15m", "side": "UP", "why": "pair", "px0": 0.62, "tau": 775, "status": "filled", "px": 0.62, "qty": 16.13, "cost": 10.2641}
+{"t": 1792783025.7657952, "slug": "cpceth-eth-updown-5m-2026-10-23-1915z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.7, "tau": 174, "status": "filled", "px": 0.7, "qty": 10.0, "cost": 7.146}
+{"t": 1792783025.7657952, "slug": "cpcsol-sol-updown-5m-2026-10-23-1915z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.56, "tau": 174, "status": "filled", "px": 0.53, "qty": 5.39, "cost": 2.9516}
+{"t": 1792783026.5182784, "slug": "cpcsol-sol-updown-5m-2026-10-23-1915z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.53, "tau": 173, "status": "filled", "px": 0.51, "qty": 0.31, "cost": 0.161}
+{"t": 1792783027.271474, "slug": "cpceth-eth-updown-5m-2026-10-23-1915z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.71, "tau": 173, "status": "missed"}
+{"t": 1792783027.271474, "slug": "cpcsol-sol-updown-5m-2026-10-23-1915z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.54, "tau": 173, "status": "filled", "px": 0.5, "qty": 0.01, "cost": 0.0058}
+{"t": 1792783030.030912, "slug": "cpceth-eth-updown-5m-2026-10-23-1915z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.7, "tau": 170, "status": "missed"}
+{"t": 1792783031.0341074, "slug": "cpceth-eth-updown-5m-2026-10-23-1915z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.68, "tau": 169, "status": "missed"}
+{"t": 1792783031.7882676, "slug": "cpceth-eth-updown-5m-2026-10-23-1915z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.72, "tau": 168, "status": "missed"}
+{"t": 1792783032.7928302, "slug": "cpceth-eth-updown-5m-2026-10-23-1915z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.68, "tau": 167, "status": "missed"}
+{"t": 1792783034.0497777, "slug": "cpceth-eth-updown-5m-2026-10-23-1915z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.69, "tau": 166, "status": "filled", "px": 0.69, "qty": 1.64, "cost": 1.1592}
+{"t": 1792783096.773157, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1915z", "coin": "xrp", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 703, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792783098.527346, "slug": "cpcsol-sol-updown-15m-2026-10-23-1915z", "coin": "sol", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 701, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792783128.380409, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-1915z", "coin": "xrp", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 672, "status": "filled", "px": 0.63, "qty": 15.87, "cost": 10.2571}
+{"t": 1792783140.1795735, "slug": "cpc-btc-updown-5m-2026-10-23-1915z", "side": "DOWN", "why": "unwind", "status": "sold", "px": 0.61, "qty": 1.07, "pnl": 0.3091}
+{"t": 1792783140.1795735, "slug": "cpceth-eth-updown-5m-2026-10-23-1915z", "side": "DOWN", "why": "unwind", "status": "sold", "px": 0.95, "qty": 20.09, "pnl": 14.5719}
+{"t": 1792783140.1795735, "slug": "cpcsol-sol-updown-5m-2026-10-23-1915z", "side": "DOWN", "why": "unwind", "status": "sold", "px": 0.89, "qty": 24.2, "pnl": 14.1516}
+{"t": 1792783143.1915197, "slug": "cpcsol-sol-updown-15m-2026-10-23-1915z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.64, "tau": 657, "status": "filled", "px": 0.61, "qty": 15.62, "cost": 9.7896}
+{"t": 1792783143.9460068, "slug": "cpcsol-sol-updown-15m-2026-10-23-1915z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.61, "tau": 656, "status": "missed"}
+{"t": 1792783144.6996708, "slug": "cpcsol-sol-updown-15m-2026-10-23-1915z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "pair", "px0": 0.62, "tau": 655, "status": "filled", "px": 0.62, "qty": 0.76, "cost": 0.4811}
+{"t": 1792783260.858315, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1920z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 239, "status": "filled", "px": 0.29, "qty": 6.0, "cost": 1.8259}
+{"t": 1792783279.1701274, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 221, "status": "missed"}
+{"t": 1792783280.1723082, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 220, "status": "missed"}
+{"t": 1792783282.9309065, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 217, "status": "missed"}
+{"t": 1792783283.935747, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 216, "status": "missed"}
+{"t": 1792783309.5225916, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1920z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 190, "status": "missed"}
+{"t": 1792783310.2756252, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-1920z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 190, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792783328.5908504, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.28, "tau": 171, "status": "filled", "px": 0.28, "qty": 10.0, "cost": 2.9401}
+{"t": 1792783330.3472128, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.25, "tau": 170, "status": "filled", "px": 0.22, "qty": 20.0, "cost": 4.6385}
+{"t": 1792783330.5983627, "slug": "cpc-btc-updown-5m-2026-10-23-1920z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 169, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792783363.2043264, "slug": "cpc-btc-updown-5m-2026-10-23-1920z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.63, "tau": 137, "status": "filled", "px": 0.61, "qty": 15.87, "cost": 9.945}
+{"t": 1792783363.9586992, "slug": "cpc-btc-updown-5m-2026-10-23-1920z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.63, "tau": 136, "status": "filled", "px": 0.63, "qty": 0.5, "cost": 0.3256}
+{"t": 1792783367.722749, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.56, "tau": 132, "status": "missed"}
+{"t": 1792783369.228316, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.58, "tau": 131, "status": "missed"}
+{"t": 1792783371.9895806, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.54, "tau": 128, "status": "missed"}
+{"t": 1792783372.7412426, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.54, "tau": 127, "status": "missed"}
+{"t": 1792783373.7447102, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.58, "tau": 126, "status": "filled", "px": 0.56, "qty": 10.0, "cost": 5.7712}
+{"t": 1792783374.497341, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.55, "tau": 126, "status": "missed"}
+{"t": 1792783375.2507675, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.55, "tau": 125, "status": "missed"}
+{"t": 1792783379.014197, "slug": "cpceth-eth-updown-5m-2026-10-23-1920z", "coin": "eth", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.58, "tau": 121, "status": "filled", "px": 0.58, "qty": 3.79, "cost": 2.2642}
+{"t": 1792783440.2210433, "slug": "cpc-btc-updown-5m-2026-10-23-1920z", "side": "DOWN", "why": "unwind", "status": "sold", "px": 0.78, "qty": 0.29, "pnl": 0.1314}
+{"t": 1792783454.023442, "slug": "cpc-btc-updown-15m-2026-10-23-1915z", "coin": "btc", "tf": "15m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 346, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792783608.8272269, "slug": "cpc-btc-updown-15m-2026-10-23-1915z", "coin": "btc", "tf": "15m", "side": "UP", "why": "pair", "px0": 0.58, "tau": 191, "status": "missed"}
+{"t": 1792783609.5800705, "slug": "cpc-btc-updown-15m-2026-10-23-1915z", "coin": "btc", "tf": "15m", "side": "UP", "why": "pair", "px0": 0.6, "tau": 190, "status": "filled", "px": 0.6, "qty": 16.67, "cost": 10.278}
+{"t": 1792783740.0531213, "slug": "cpcsol-sol-updown-15m-2026-10-23-1915z", "side": "UP", "why": "unwind", "status": "sold", "px": 0.96, "qty": 0.86, "pnl": 0.5618}
+{"t": 1792795130.4906056, "slug": "cpc-btc-updown-15m-2026-10-23-2230z", "coin": "btc", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.03, "tau": 370, "status": "filled", "px": 0.03, "qty": 166.67, "cost": 5.3371}
+{"t": 1792795130.4906056, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-2230z", "coin": "xrp", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.04, "tau": 370, "status": "filled", "px": 0.04, "qty": 125.0, "cost": 5.3336}
+{"t": 1792795133.7576296, "slug": "cpcsol-sol-updown-15m-2026-10-23-2230z", "coin": "sol", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.02, "tau": 366, "status": "filled", "px": 0.02, "qty": 228.26, "cost": 4.8761}
+{"t": 1792795135.5140603, "slug": "cpcsol-sol-updown-15m-2026-10-23-2230z", "coin": "sol", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.02, "tau": 364, "status": "filled", "px": 0.02, "qty": 220.0, "cost": 4.6997}
+{"t": 1792795162.1042726, "slug": "cpceth-eth-updown-15m-2026-10-23-2230z", "coin": "eth", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.02, "tau": 338, "status": "filled", "px": 0.02, "qty": 63.01, "cost": 1.346}
+{"t": 1792795191.2238154, "slug": "cpceth-eth-updown-15m-2026-10-23-2230z", "coin": "eth", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.02, "tau": 309, "status": "filled", "px": 0.02, "qty": 250.0, "cost": 5.3406}
+{"t": 1792795265.760056, "slug": "cpcsol-sol-updown-5m-2026-10-23-2240z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.28, "tau": 234, "status": "filled", "px": 0.23, "qty": 13.0, "cost": 3.15}
+{"t": 1792795312.9511127, "slug": "cpcsol-sol-updown-5m-2026-10-23-2240z", "coin": "sol", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.67, "tau": 187, "status": "filled", "px": 0.63, "qty": 13.0, "cost": 8.4006}
+{"t": 1792795344.3159685, "slug": "cpc-btc-updown-5m-2026-10-23-2240z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.27, "tau": 156, "status": "filled", "px": 0.26, "qty": 18.52, "cost": 5.0624}
+{"t": 1792795357.362612, "slug": "cpc-btc-updown-5m-2026-10-23-2240z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.68, "tau": 143, "status": "missed"}
+{"t": 1792795362.3816612, "slug": "cpc-btc-updown-5m-2026-10-23-2240z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.68, "tau": 138, "status": "filled", "px": 0.68, "qty": 14.98, "cost": 10.4117}
+{"t": 1792795568.9399498, "slug": "cpceth-eth-updown-5m-2026-10-23-2245z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 231, "status": "missed"}
+{"t": 1792795573.2051063, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-2245z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 227, "status": "filled", "px": 0.24, "qty": 1.0, "cost": 0.2527}
+{"t": 1792795575.9662566, "slug": "cpceth-eth-updown-5m-2026-10-23-2245z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 224, "status": "missed"}
+{"t": 1792795576.7206638, "slug": "cpceth-eth-updown-5m-2026-10-23-2245z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 223, "status": "filled", "px": 0.28, "qty": 3.0, "cost": 0.882}
+{"t": 1792795577.7234988, "slug": "cpceth-eth-updown-5m-2026-10-23-2245z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.25, "tau": 222, "status": "missed"}
+{"t": 1792795578.97927, "slug": "cpceth-eth-updown-5m-2026-10-23-2245z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.27, "tau": 221, "status": "filled", "px": 0.25, "qty": 2.0, "cost": 0.5261}
+{"t": 1792795579.732474, "slug": "cpceth-eth-updown-5m-2026-10-23-2245z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.25, "tau": 220, "status": "missed"}
+{"t": 1792795580.4860146, "slug": "cpceth-eth-updown-5m-2026-10-23-2245z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.26, "tau": 220, "status": "filled", "px": 0.23, "qty": 19.23, "cost": 4.6598}
+{"t": 1792795610.6024568, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-2245z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.26, "tau": 189, "status": "filled", "px": 0.22, "qty": 12.0, "cost": 2.7831}
+{"t": 1792795629.6693854, "slug": "cpc-btc-updown-5m-2026-10-23-2245z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 170, "status": "filled", "px": 0.29, "qty": 5.0, "cost": 1.5216}
+{"t": 1792795631.9267762, "slug": "cpc-btc-updown-5m-2026-10-23-2245z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 168, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792795634.185496, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-2245z", "coin": "xrp", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 766, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792795643.9676907, "slug": "cpcsol-sol-updown-15m-2026-10-23-2245z", "coin": "sol", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 756, "status": "missed"}
+{"t": 1792795645.4760432, "slug": "cpcsol-sol-updown-15m-2026-10-23-2245z", "coin": "sol", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 755, "status": "filled", "px": 0.29, "qty": 16.67, "cost": 5.0718}
+{"t": 1792795650.2467036, "slug": "cpceth-eth-updown-15m-2026-10-23-2245z", "coin": "eth", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 750, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792795657.7774057, "slug": "cpc-btc-updown-15m-2026-10-23-2245z", "coin": "btc", "tf": "15m", "side": "UP", "why": "entry", "px0": 0.28, "tau": 742, "status": "filled", "px": 0.28, "qty": 17.86, "cost": 5.2502}
+{"t": 1792795847.4747932, "slug": "cpc-btc-updown-5m-2026-10-23-2250z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 253, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792795851.238453, "slug": "cpceth-eth-updown-5m-2026-10-23-2250z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 249, "status": "missed"}
+{"t": 1792795851.991607, "slug": "cpceth-eth-updown-5m-2026-10-23-2250z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 248, "status": "missed"}
+{"t": 1792795853.2459395, "slug": "cpceth-eth-updown-5m-2026-10-23-2250z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 247, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792796107.458308, "slug": "cpc-btc-updown-5m-2026-10-23-2255z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 293, "status": "filled", "px": 0.29, "qty": 3.0, "cost": 0.9129}
+{"t": 1792796111.473903, "slug": "cpc-btc-updown-5m-2026-10-23-2255z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.64, "tau": 289, "status": "missed"}
+{"t": 1792796117.997719, "slug": "cpc-btc-updown-5m-2026-10-23-2255z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 282, "status": "filled", "px": 0.3, "qty": 7.81, "cost": 2.457}
+{"t": 1792796118.751014, "slug": "cpc-btc-updown-5m-2026-10-23-2255z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 281, "status": "missed"}
+{"t": 1792796120.0059643, "slug": "cpc-btc-updown-5m-2026-10-23-2255z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 280, "status": "filled", "px": 0.29, "qty": 16.67, "cost": 5.0718}
+{"t": 1792796139.3303666, "slug": "cpceth-eth-updown-5m-2026-10-23-2255z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 261, "status": "filled", "px": 0.26, "qty": 17.24, "cost": 4.7133}
+{"t": 1792796140.0835037, "slug": "cpceth-eth-updown-5m-2026-10-23-2255z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.26, "tau": 260, "status": "missed"}
+{"t": 1792796140.8381338, "slug": "cpceth-eth-updown-5m-2026-10-23-2255z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.28, "tau": 259, "status": "missed"}
+{"t": 1792796141.5907886, "slug": "cpceth-eth-updown-5m-2026-10-23-2255z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.28, "tau": 258, "status": "missed"}
+{"t": 1792796142.5953348, "slug": "cpceth-eth-updown-5m-2026-10-23-2255z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 257, "status": "missed"}
+{"t": 1792796143.3484309, "slug": "cpceth-eth-updown-5m-2026-10-23-2255z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.29, "tau": 257, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792796251.003901, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-2255z", "coin": "xrp", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.21, "tau": 149, "status": "missed"}
+{"t": 1792796264.8068247, "slug": "cpc-btc-updown-5m-2026-10-23-2255z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 135, "status": "missed"}
+{"t": 1792796288.6402664, "slug": "cpc-btc-updown-5m-2026-10-23-2255z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 111, "status": "missed"}
+{"t": 1792796290.6508403, "slug": "cpc-btc-updown-5m-2026-10-23-2255z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 109, "status": "filled", "px": 0.63, "qty": 3.0, "cost": 1.9386}
+{"t": 1792796291.4042168, "slug": "cpc-btc-updown-5m-2026-10-23-2255z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 109, "status": "filled", "px": 0.63, "qty": 7.81, "cost": 5.0468}
+{"t": 1792796291.656418, "slug": "cpceth-eth-updown-5m-2026-10-23-2255z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.67, "tau": 108, "status": "missed"}
+{"t": 1792796292.1590438, "slug": "cpc-btc-updown-5m-2026-10-23-2255z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.63, "tau": 108, "status": "filled", "px": 0.63, "qty": 0.23, "cost": 0.1471}
+{"t": 1792796294.6709745, "slug": "cpceth-eth-updown-5m-2026-10-23-2255z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.64, "tau": 105, "status": "missed"}
+{"t": 1792796295.4246738, "slug": "cpceth-eth-updown-5m-2026-10-23-2255z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.66, "tau": 105, "status": "filled", "px": 0.66, "qty": 8.36, "cost": 5.6476}
+{"t": 1792796340.0920813, "slug": "cpc-btc-updown-5m-2026-10-23-2255z", "side": "UP", "why": "unwind", "status": "sold", "px": 0.96, "qty": 16.44, "pnl": 10.7351}
+{"t": 1792796340.0920813, "slug": "cpceth-eth-updown-5m-2026-10-23-2255z", "side": "UP", "why": "unwind", "status": "sold", "px": 0.94, "qty": 26.12, "pnl": 16.7787}
+{"t": 1792796415.3765745, "slug": "cpc-btc-updown-5m-2026-10-23-2300z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 285, "status": "filled", "px": 0.23, "qty": 9.0, "cost": 2.1808}
+{"t": 1792796416.1292043, "slug": "cpc-btc-updown-5m-2026-10-23-2300z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.23, "tau": 284, "status": "missed"}
+{"t": 1792796416.881259, "slug": "cpc-btc-updown-5m-2026-10-23-2300z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.27, "tau": 283, "status": "filled", "px": 0.26, "qty": 18.52, "cost": 5.0624}
+{"t": 1792796445.7358007, "slug": "cpc-btc-updown-5m-2026-10-23-2300z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.71, "tau": 254, "status": "missed"}
+{"t": 1792796446.990081, "slug": "cpc-btc-updown-5m-2026-10-23-2300z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.7, "tau": 253, "status": "filled", "px": 0.69, "qty": 9.0, "cost": 6.3438}
+{"t": 1792796452.5073102, "slug": "cpc-btc-updown-5m-2026-10-23-2300z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.67, "tau": 247, "status": "missed"}
+{"t": 1792796454.515207, "slug": "cpceth-eth-updown-5m-2026-10-23-2300z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 245, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792796461.5424774, "slug": "cpcsol-sol-updown-15m-2026-10-23-2300z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 838, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792796478.1032283, "slug": "cpcsol-sol-updown-15m-2026-10-23-2300z", "coin": "sol", "tf": "15m", "side": "UP", "why": "pair", "px0": 0.63, "tau": 822, "status": "filled", "px": 0.63, "qty": 15.87, "cost": 10.2571}
+{"t": 1792796491.908046, "slug": "cpceth-eth-updown-15m-2026-10-23-2300z", "coin": "eth", "tf": "15m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 808, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792796491.908046, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-2300z", "coin": "xrp", "tf": "15m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 808, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792796497.178925, "slug": "cpc-btc-updown-15m-2026-10-23-2300z", "coin": "btc", "tf": "15m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 803, "status": "filled", "px": 0.29, "qty": 16.67, "cost": 5.0718}
+{"t": 1792796525.0397038, "slug": "cpc-btc-updown-15m-2026-10-23-2300z", "coin": "btc", "tf": "15m", "side": "UP", "why": "pair", "px0": 0.64, "tau": 775, "status": "filled", "px": 0.64, "qty": 15.89, "cost": 10.421}
+{"t": 1792796540.347805, "slug": "cpceth-eth-updown-15m-2026-10-23-2300z", "coin": "eth", "tf": "15m", "side": "UP", "why": "pair", "px0": 0.64, "tau": 760, "status": "filled", "px": 0.63, "qty": 15.62, "cost": 10.0969}
+{"t": 1792796541.100876, "slug": "cpceth-eth-updown-15m-2026-10-23-2300z", "coin": "eth", "tf": "15m", "side": "UP", "why": "pair", "px0": 0.64, "tau": 759, "status": "filled", "px": 0.63, "qty": 0.24, "cost": 0.1578}
+{"t": 1792796542.6058261, "slug": "cpc-btc-updown-5m-2026-10-23-2300z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.68, "tau": 157, "status": "missed"}
+{"t": 1792796757.91981, "slug": "cpceth-eth-updown-5m-2026-10-23-2305z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 242, "status": "missed"}
+{"t": 1792796758.4220593, "slug": "cpc-btc-updown-5m-2026-10-23-2305z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 242, "status": "missed"}
+{"t": 1792796758.6726665, "slug": "cpceth-eth-updown-5m-2026-10-23-2305z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 241, "status": "filled", "px": 0.28, "qty": 16.67, "cost": 4.9002}
+{"t": 1792796759.425522, "slug": "cpceth-eth-updown-5m-2026-10-23-2305z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.26, "tau": 241, "status": "filled", "px": 0.25, "qty": 19.23, "cost": 5.0583}
+{"t": 1792796759.9276466, "slug": "cpc-btc-updown-5m-2026-10-23-2305z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 240, "status": "filled", "px": 0.29, "qty": 10.0, "cost": 3.0431}
+{"t": 1792796760.179148, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-2300z", "coin": "xrp", "tf": "15m", "side": "UP", "why": "pair", "px0": 0.63, "tau": 540, "status": "filled", "px": 0.63, "qty": 15.87, "cost": 10.2571}
+{"t": 1792796761.18207, "slug": "cpc-btc-updown-5m-2026-10-23-2305z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 239, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792797024.6387622, "slug": "cpc-btc-updown-5m-2026-10-23-2310z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.25, "tau": 275, "status": "filled", "px": 0.19, "qty": 20.0, "cost": 4.0139}
+{"t": 1792797025.391475, "slug": "cpc-btc-updown-5m-2026-10-23-2310z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.19, "tau": 275, "status": "missed"}
+{"t": 1792797026.3949218, "slug": "cpc-btc-updown-5m-2026-10-23-2310z", "coin": "btc", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.19, "tau": 274, "status": "filled", "px": 0.19, "qty": 26.32, "cost": 5.2815}
+{"t": 1792797035.1819568, "slug": "cpceth-eth-updown-15m-2026-10-23-2300z", "coin": "eth", "tf": "15m", "side": "UP", "why": "pair", "px0": 0.24, "tau": 265, "status": "filled", "px": 0.24, "qty": 0.01, "cost": 0.0026}
+{"t": 1792797035.1819568, "slug": "cpceth-eth-updown-5m-2026-10-23-2310z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 265, "status": "missed"}
+{"t": 1792797039.4460888, "slug": "cpceth-eth-updown-5m-2026-10-23-2310z", "coin": "eth", "tf": "5m", "side": "UP", "why": "entry", "px0": 0.3, "tau": 261, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792797121.2457986, "slug": "cpceth-eth-updown-5m-2026-10-23-2310z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.61, "tau": 179, "status": "missed"}
+{"t": 1792797238.9372187, "slug": "cpceth-eth-updown-5m-2026-10-23-2310z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.35, "tau": 61, "status": "missed"}
+{"t": 1792797239.6904848, "slug": "cpceth-eth-updown-5m-2026-10-23-2310z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "pair", "px0": 0.39, "tau": 60, "status": "filled", "px": 0.36, "qty": 16.67, "cost": 6.2669}
+{"t": 1792797240.1925294, "slug": "cpc-btc-updown-15m-2026-10-23-2300z", "side": "DOWN", "why": "unwind", "status": "sold", "px": 0.99, "qty": 0.78, "pnl": 0.5352}
+{"t": 1792797240.1925294, "slug": "cpceth-eth-updown-15m-2026-10-23-2300z", "side": "DOWN", "why": "unwind", "status": "sold", "px": 0.92, "qty": 1.36, "pnl": 0.8316}
+{"t": 1792797240.1925294, "slug": "cpcsol-sol-updown-15m-2026-10-23-2300z", "side": "DOWN", "why": "unwind", "status": "sold", "px": 0.99, "qty": 0.79, "pnl": 0.5355}
+{"t": 1792797240.1925294, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-2300z", "side": "DOWN", "why": "unwind", "status": "sold", "px": 0.99, "qty": 0.79, "pnl": 0.5355}
+{"t": 1792797348.3715985, "slug": "cpceth-eth-updown-5m-2026-10-23-2315z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 252, "status": "missed"}
+{"t": 1792797351.3876908, "slug": "cpc-btc-updown-5m-2026-10-23-2315z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 249, "status": "missed"}
+{"t": 1792797352.895964, "slug": "cpc-btc-updown-5m-2026-10-23-2315z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.26, "tau": 247, "status": "filled", "px": 0.26, "qty": 19.23, "cost": 5.2572}
+{"t": 1792797352.895964, "slug": "cpceth-eth-updown-5m-2026-10-23-2315z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 247, "status": "filled", "px": 0.29, "qty": 16.67, "cost": 5.0718}
+{"t": 1792797395.3093438, "slug": "cpceth-eth-updown-15m-2026-10-23-2315z", "coin": "eth", "tf": "15m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 805, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792797407.098342, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-2315z", "coin": "xrp", "tf": "15m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 793, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792797410.364833, "slug": "cpc-btc-updown-15m-2026-10-23-2315z", "coin": "btc", "tf": "15m", "side": "DOWN", "why": "entry", "px0": 0.29, "tau": 790, "status": "filled", "px": 0.29, "qty": 17.24, "cost": 5.2467}
+{"t": 1792797411.8698683, "slug": "cpcxrp-xrp-updown-5m-2026-10-23-2315z", "coin": "xrp", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.28, "tau": 188, "status": "missed"}
+{"t": 1792797422.158523, "slug": "cpcxrp-xrp-updown-15m-2026-10-23-2315z", "coin": "xrp", "tf": "15m", "side": "UP", "why": "pair", "px0": 0.64, "tau": 778, "status": "filled", "px": 0.64, "qty": 15.62, "cost": 10.2502}
+{"t": 1792797462.8040016, "slug": "cpcsol-sol-updown-5m-2026-10-23-2315z", "coin": "sol", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.23, "tau": 137, "status": "filled", "px": 0.21, "qty": 10.0, "cost": 2.2153}
+{"t": 1792797464.811291, "slug": "cpcsol-sol-updown-15m-2026-10-23-2315z", "coin": "sol", "tf": "15m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 735, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792797616.1489272, "slug": "cpc-btc-updown-5m-2026-10-23-2320z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 284, "status": "filled", "px": 0.3, "qty": 10.0, "cost": 3.146}
+{"t": 1792797617.1548724, "slug": "cpc-btc-updown-5m-2026-10-23-2320z", "coin": "btc", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.3, "tau": 283, "status": "filled", "px": 0.3, "qty": 16.67, "cost": 5.2432}
+{"t": 1792797619.4152045, "slug": "cpc-btc-updown-5m-2026-10-23-2320z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.63, "tau": 281, "status": "missed"}
+{"t": 1792797633.4718254, "slug": "cpc-btc-updown-5m-2026-10-23-2320z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.63, "tau": 267, "status": "missed"}
+{"t": 1792797635.2279735, "slug": "cpc-btc-updown-5m-2026-10-23-2320z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.62, "tau": 265, "status": "missed"}
+{"t": 1792797656.8118856, "slug": "cpceth-eth-updown-5m-2026-10-23-2320z", "coin": "eth", "tf": "5m", "side": "DOWN", "why": "entry", "px0": 0.25, "tau": 243, "status": "filled", "px": 0.25, "qty": 20.0, "cost": 5.2606}
+{"t": 1792797729.326192, "slug": "cpc-btc-updown-5m-2026-10-23-2320z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.63, "tau": 171, "status": "filled", "px": 0.62, "qty": 10.0, "cost": 6.3637}
+{"t": 1792797730.0813174, "slug": "cpc-btc-updown-5m-2026-10-23-2320z", "coin": "btc", "tf": "5m", "side": "UP", "why": "pair", "px0": 0.62, "tau": 170, "status": "filled", "px": 0.62, "qty": 1.29, "cost": 0.8211}
