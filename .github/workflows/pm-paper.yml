@@ -45,16 +45,15 @@ jobs:
           M="${{ github.event.inputs.minutes }}"
           if [ -z "$M" ]; then if [ "${{ github.event_name }}" = "push" ]; then M=12; else M=320; fi; fi
           export RUN_ID=$(date -u +%Y%m%d-%H%M)
-          python -u pm/arb.py --minutes "$M" > pm/paper/last-arb-log.txt 2>&1 & P1=$!
+          # арбитраж и пары отключены (прогон 23.10: арбитража нет, пары −$223); LIP только на сериях с плюсом
           python -u pm/weather.py --minutes "$M" > pm/paper/last-wx-log.txt 2>&1 & P2=$!
-          python -u pm/pair.py --minutes "$M" > pm/paper/last-pair-log.txt 2>&1 & P3=$!
-          python -u pm/lip.py --minutes "$M" > pm/paper/last-lip-log.txt 2>&1 & P4=$!
+          python -u pm/lip.py --minutes "$M" --series KXTEMP,KXHIGH,KXLOW,KXBRENT,KXNATGAS --top 30 > pm/paper/last-lip-log.txt 2>&1 & P4=$!
           python -u pm/spx.py --minutes "$M" > pm/paper/last-spx-log.txt 2>&1 & P5=$!
           # промежуточная сводка в Telegram каждые 45 минут, пока идёт прогон
           # каждые 45 минут: отчёт, сохранение в pm-results (дашборд обновляется) и промежуточная сводка в Telegram
           ( while sleep 2700; do python pm/ksettle.py > /dev/null 2>&1; python pm/report.py > /dev/null 2>&1; bash pm/save.sh interim > /dev/null 2>&1; python pm/notify.py --interim > /dev/null 2>&1; done ) & PN=$!
-          python -u pm/lag.py --minutes "$M" --coins "${{ github.event.inputs.coins || 'btc,eth,sol,xrp' }}" --edge "${{ github.event.inputs.edge || '0.04' }}" 2>&1 | tee pm/paper/last-log.txt
-          wait $P1 $P2 $P3 $P4 $P5
+          python -u pm/lag.py --minutes "$M" --coins "${{ github.event.inputs.coins || 'btc,eth,sol,xrp' }}" --edge "${{ github.event.inputs.edge || '0.04' }}" --edge-last 0.05 --shrink 0.85 --shrink-last 0.9 2>&1 | tee pm/paper/last-log.txt
+          wait $P2 $P4 $P5
           kill $PN 2>/dev/null || true
       - name: Report and save
         if: always()

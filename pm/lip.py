@@ -28,7 +28,9 @@ ap.add_argument('--usd-per-side', type=float, default=50.0, help='$ в заяв�
 ap.add_argument('--max-contracts', type=float, default=2000)
 ap.add_argument('--stop-before', type=float, default=600, help='за сколько секунд до конца периода снимаем заявки (под конец торгуют осведомлённые)')
 ap.add_argument('--cycle', type=float, default=20.0, help='с между снимками одного рынка')
+ap.add_argument('--series', default='', help='только серии с этими префиксами через запятую (пусто — все)')
 A = ap.parse_args()
+SER = tuple(x.strip() for x in A.series.split(',') if x.strip())
 J = K.Journal('lip')
 PROG = {}     # ticker -> программа {reward, start, end, target, df}
 ST = {}       # (ticker, start) -> состояние нашего виртуального участия
@@ -150,7 +152,7 @@ async def main():
         now = time.time()
         for key, st in list(ST.items()):
             if now >= st['end']: finish(key, st); del ST[key]
-        live = sorted((t for t, p in PROG.items() if p['start'] <= now < p['end'] - 30), key=lambda t: -PROG[t]['rate_h'])[:A.top]
+        live = sorted((t for t, p in PROG.items() if p['start'] <= now < p['end'] - 30 and (not SER or t.startswith(SER))), key=lambda t: -PROG[t]['rate_h'])[:A.top]
         t0 = time.time()
         for t in live:
             await watch(t)
