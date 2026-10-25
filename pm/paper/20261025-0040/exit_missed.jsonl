@@ -1,2 +1,7 @@
 {"slug": "cpc-btc-updown-15m-2026-10-25-0315z", "side": "DOWN", "limit": 0.6, "px_next": 0.58, "t": 1792898878.241863}
 {"slug": "cpcsol-sol-updown-15m-2026-10-25-0315z", "side": "DOWN", "limit": 0.45, "px_next": 0.44, "t": 1792898894.2839386}
+{"slug": "cpcxrp-xrp-updown-15m-2026-10-25-0345z", "side": "DOWN", "limit": 0.29, "px_next": 0.27, "t": 1792900046.0681572}
+{"slug": "cpcxrp-xrp-updown-1h-2026-10-25-0300z", "side": "DOWN", "limit": 0.52, "px_next": 0.42, "t": 1792900380.0250301}
+{"slug": "cpcsol-sol-updown-1h-2026-10-25-0300z", "side": "DOWN", "limit": 0.63, "px_next": 0.59, "t": 1792900435.9393845}
+{"slug": "cpc-btc-updown-5m-2026-10-25-0355z", "side": "UP", "limit": 0.33, "px_next": 0.29, "t": 1792900626.4594674}
+{"slug": "cpc-btc-updown-15m-2026-10-25-0400z", "side": "UP", "limit": 0.74, "px_next": 0.72, "t": 1792901520.5961003}
