@@ -28,6 +28,7 @@ CITIES = {  # серия: (станция ICAO, часовой пояс, шир�
 ap = argparse.ArgumentParser()
 ap.add_argument('--minutes', type=float, default=320)
 ap.add_argument('--edge', type=float, default=0.06)
+ap.add_argument('--only', default='', help='торговать только эти серии через запятую (пусто — все)')
 ap.add_argument('--stake', type=float, default=5.0)
 ap.add_argument('--max-per-market', type=float, default=15.0)
 ap.add_argument('--max-spread', type=float, default=0.06)
@@ -150,7 +151,7 @@ async def city_loop(ser):
 
 async def main():
     log('погодный бот: города', list(CITIES), 'перевес', A.edge)
-    tasks = [asyncio.create_task(x) for x in (obs_loop(), fc_loop(), *(city_loop(s) for s in CITIES))]
+    tasks = [asyncio.create_task(x) for x in (obs_loop(), fc_loop(), *(city_loop(s) for s in CITIES if not A.only or s in A.only.split(',')))]
     stop = time.time() + A.minutes * 60
     while time.time() < stop:
         await asyncio.sleep(60)
